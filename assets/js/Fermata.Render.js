@@ -19,6 +19,7 @@ var Fermata = Fermata || {};
 
       this.ctx = this.renderer.getContext();
 
-      console.log(data.getParts());
+      //data.sortMeasure();
+      //console.log(data.getMesure(1, 'P1'));
   };
 }).call(this);
