@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flat</title>
+    <link href="./assets/css/main.css" rel="stylesheet">
+    <!-- Fermata deps -->
+    <script src="./assets/js/deps/jquery-1.8.2.min.js"></script>
+
+    <!-- VexFlow Uncompiled Sources -->
+    <script src="./assets/js/vexflow/header.js"></script>
+    <script src="./assets/js/vexflow/vex.js"></script>
+    <script src="./assets/js/vexflow/flow.js"></script>
+    <script src="./assets/js/vexflow/tables.js"></script>
+    <script src="./assets/js/vexflow/fonts/vexflow_font.js"></script>
+    <script src="./assets/js/vexflow/glyph.js"></script>
+    <script src="./assets/js/vexflow/stave.js"></script>
+    <script src="./assets/js/vexflow/staveconnector.js"></script>
+    <script src="./assets/js/vexflow/tabstave.js"></script>
+    <script src="./assets/js/vexflow/tickcontext.js"></script>
+    <script src="./assets/js/vexflow/tickable.js"></script>
+    <script src="./assets/js/vexflow/note.js"></script>
+    <script src="./assets/js/vexflow/barnote.js"></script>
+    <script src="./assets/js/vexflow/ghostnote.js"></script>
+    <script src="./assets/js/vexflow/stavenote.js"></script>
+    <script src="./assets/js/vexflow/tabnote.js"></script>
+    <script src="./assets/js/vexflow/beam.js"></script>
+    <script src="./assets/js/vexflow/voice.js"></script>
+    <script src="./assets/js/vexflow/voicegroup.js"></script>
+    <script src="./assets/js/vexflow/modifier.js"></script>
+    <script src="./assets/js/vexflow/modifiercontext.js"></script>
+    <script src="./assets/js/vexflow/accidental.js"></script>
+    <script src="./assets/js/vexflow/dot.js"></script>
+    <script src="./assets/js/vexflow/formatter.js"></script>
+    <script src="./assets/js/vexflow/stavetie.js"></script>
+    <script src="./assets/js/vexflow/tabtie.js"></script>
+    <script src="./assets/js/vexflow/tabslide.js"></script>
+    <script src="./assets/js/vexflow/bend.js"></script>
+    <script src="./assets/js/vexflow/vibrato.js"></script>
+    <script src="./assets/js/vexflow/annotation.js"></script>
+    <script src="./assets/js/vexflow/articulation.js"></script>
+    <script src="./assets/js/vexflow/tuning.js"></script>
+    <script src="./assets/js/vexflow/stavemodifier.js"></script>
+    <script src="./assets/js/vexflow/keysignature.js"></script>
+    <script src="./assets/js/vexflow/timesignature.js"></script>
+    <script src="./assets/js/vexflow/clef.js"></script>
+    <script src="./assets/js/vexflow/music.js"></script>
+    <script src="./assets/js/vexflow/keymanager.js"></script>
+    <script src="./assets/js/vexflow/renderer.js"></script>
+    <script src="./assets/js/vexflow/raphaelcontext.js"></script>
+    <script src="./assets/js/vexflow/stavevolta.js"></script>
+    <script src="./assets/js/vexflow/staverepetition.js"></script>
+    <script src="./assets/js/vexflow/stavebarline.js"></script>
+    <script src="./assets/js/vexflow/stavesection.js"></script>
+    <script src="./assets/js/vexflow/stavehairpin.js"></script>
+    <script src="./assets/js/vexflow/stavetempo.js"></script>
+    <script src="./assets/js/vexflow/tremolo.js"></script>
+
+    <!-- Fermat srcs -->
+    <script src="./assets/js/Fermata.js"></script>
+    <script src="./assets/js/Fermata.Data.js"></script>
+    <script src="./assets/js/Fermata.Render.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        var score = {"score-partwise":{"version":"3.0","part-list":{"score-part":{"id":"P1","part-name":{"$t":"Music"}}},"part":{"id":"P1","measure":[{"number":"1","attributes":{"divisions":{"$t":"1"},"key":{"fifths":{"$t":"0"}},"time":{"beats":{"$t":"4"},"beat-type":{"$t":"4"}},"clef":{"sign":{"$t":"G"},"line":{"$t":"2"}}},"note":{"pitch":{"step":{"$t":"C"},"octave":{"$t":"4"}},"duration":{"$t":"4"},"type":{"$t":"whole"}}},{"number":"2","attributes":{"divisions":{"$t":"1"},"key":{"fifths":{"$t":"0"}},"time":{"beats":{"$t":"4"},"beat-type":{"$t":"4"}},"clef":{"sign":{"$t":"G"},"line":{"$t":"2"}}},"note":{"pitch":{"step":{"$t":"C"},"octave":{"$t":"4"}},"duration":{"$t":"4"},"type":{"$t":"whole"}}}]}}};
+
+        var data = new Fermata.Data(score);
+        var render = new Fermata.Render(data, '.canvas-score');
+      });
+    </script>
+  </head>
+  <body>
+    <div class="toolbar-top">
+      <div class="first"></div>
+      <div class="second"></div>
+    </div>
+    <div class="container-score"><canvas class="canvas-score"></canvas></div>
+    <div class="toolbar-bottom"></div>
+  </body>
+</html>
