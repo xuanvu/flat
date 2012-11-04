@@ -100,9 +100,92 @@ var Fermata = Fermata || {};
   
   Fermata.Render.prototype.renderPart = function (part)
   {
-  //TODO: impelement
+    var processes = [
+    {
+      key: "measure", 
+      type: this.FuncTypes.PLUS, 
+      func: this.renderMeasure
+    }
+    ];
+    
+    this.exploreSubNodes(part, processes);
   }
   
+  Fermata.Render.prototype.renderMeasure = function (measure)
+  {
+    //TODO: attribute (bottom of the file)
+    
+    var processes = [
+    {
+      key: "note", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    
+    {
+      key: "backup", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    
+    {
+      key: "forward", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    
+    {
+      key: "direction", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "attributes", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "harmony", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "figured-bass", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "print", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },    {
+      key: "sound", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },    {
+      key: "barline", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "grouping", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "link", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    {
+      key: "bookmark", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO implement this function
+    },
+    ];
+    
+    this.exploreSubNodes(part, processes);
+  }
   
   Fermata.Render.prototype.render = function (measure) {
     var stave = new Vex.Flow.Stave(10, 0, 500);
