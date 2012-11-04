@@ -61,6 +61,7 @@
     <script src="./assets/js/Fermata.js"></script>
     <script src="./assets/js/Fermata.Data.js"></script>
     <script src="./assets/js/Fermata.Render.js"></script>
+    <script src="./assets/js/Fermata.Mapping.Clef.js"></script>
 
     <script>
       $(document).ready(function() {
@@ -68,6 +69,8 @@
 
         var data = new Fermata.Data(score);
         var render = new Fermata.Render(data, '.canvas-score');
+        
+        render.renderAll();
       });
     </script>
   </head>
