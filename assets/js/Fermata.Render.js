@@ -34,6 +34,76 @@ var Fermata = Fermata || {};
   }
   
   
+  //Note: info in score element
+  Fermata.Render.prototype.renderScorePartwise = function (scorePartwise)
+  {
+    //TODO: process document-attributes
+    this.renderScoreHeader(scorePartwise);
+    var processes = [
+    {
+      key: "part", 
+      type: this.FuncTypes.PLUS, 
+      func: this.renderPart
+    }
+    ];
+    
+    this.exploreSubNodes(scorePartwise, processes);
+  }
+  
+  Fermata.Render.prototype.renderScoreHeader = function (scoreHeader)
+  {
+    var processes = [
+    {
+      key: "work", 
+      type: this.FuncTypes.QUESTION, 
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "movement-number", 
+      type: this.FuncTypes.QUESTION, 
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "movement-title", 
+      type: this.FuncTypes.QUESTION, 
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "identification", 
+      type: this.FuncTypes.QUESTION, 
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "defaults", 
+      type: this.FuncTypes.QUESTION, 
+      func: null//TODO: implement the function
+    },
+    {
+      key: "credit", 
+      type: this.FuncTypes.STAR, 
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "part-list", 
+      type: this.FuncTypes.DEFAULT, 
+      func: null//TODO: implement the function
+    }
+    ]
+    
+    this.exploreSubNodes(scoreHeader, processes);
+  }
+  
+  Fermata.Render.prototype.renderPart = function (part)
+  {
+  //TODO: impelement
+  }
+  
+  
   Fermata.Render.prototype.render = function (measure) {
     var stave = new Vex.Flow.Stave(10, 0, 500);
     var clef = measure["attributes"].clef.sign.$t;
