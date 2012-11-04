@@ -53,72 +53,80 @@ var Fermata = Fermata || {};
     DEFAULT: "default"
   };
   
-  Fermata.Render.prototype.exploreSubNodes = function (object, datas)
+  /**
+   * object is the node of interest
+   * processes is an array of objects:
+   * {type, key, func}
+   * type is the number of apparitions of the object
+   * key is the key of the child element. 
+   * func is the function to apply to the child elements
+   */
+  Fermata.Render.prototype.exploreSubNodes = function (object, processes)
   {
-    for (var i = 0 ; i < datas.length ; i++)
+    for (var i = 0 ; i < processes.length ; i++)
     {
-      var data = datas[i];
+      var process = processes[i];
       
-      if (data.type === this.FuncTypes.STAR)
+      if (process.type === this.FuncTypes.STAR)
       {
-        this.call_0orN(object, data);
+        this.call_0orN(object, process);
       }
-      else if (data.type === this.FuncTypes.QUESTION)
+      else if (process.type === this.FuncTypes.QUESTION)
       {
-        this.call_0or1(object, data);
+        this.call_0or1(object, process);
       }
-      else if (data.type === this.FuncTypes.PLUS)
+      else if (process.type === this.FuncTypes.PLUS)
       {
-        this.call_1orN(object, data);
+        this.call_1orN(object, process);
       } 
-      else if (data.type === this.FuncTypes.DEFAULT)
+      else if (process.type === this.FuncTypes.DEFAULT)
       {
-        this.call_1(object, data);
+        this.call_1(object, process);
       }
     }
   }
  
-  Fermata.Render.prototype.call_1 = function (object, data)
+  Fermata.Render.prototype.call_1 = function (object, process)
   {
-    var child = object[data.key];
+    var child = object[process.key];
       
-    data.func(child);
+    process.func(child);
   }
  
-  Fermata.Render.prototype.call_1orN = function (object, data)
+  Fermata.Render.prototype.call_1orN = function (object, process)
   {
-    var child = object[data.key];
+    var child = object[process.key];
       
     for (var j = 0 ; j < child.length ; j++)
     {
       var elem = child[j];
         
-      data.func(elem);
+      process.func(elem);
     }
   }
 
 
-  Fermata.Render.prototype.call_0or1 = function (object, data)
+  Fermata.Render.prototype.call_0or1 = function (object, process)
   {
-    if (typeof(object[data.key]) !== "undefined")
+    if (typeof(object[process.key]) !== "undefined")
     {
-      var child = object[data.key];
+      var child = object[process.key];
       
-      data.func(child);
+      process.func(child);
     }
   }
   
-  Fermata.Render.prototype.call_0orN = function (object, data)
+  Fermata.Render.prototype.call_0orN = function (object, process)
   {
-    if (typeof(object[data.key]) !== "undefined")
+    if (typeof(object[process.key]) !== "undefined")
     {
-      var child = object[data.key];
+      var child = object[process.key];
       
       for (var j = 0 ; j < child.length ; j++)
       {
         var elem = child[j];
         
-        data.func(elem);
+        process.func(elem);
       }
     }
   }
