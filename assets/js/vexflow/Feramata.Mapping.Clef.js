@@ -6,7 +6,7 @@
 
 var Fermata =          Fermata || {};
 Fermata.Mapping =      Fermata.Mapping || {};
-Fermata.Mapping.Clef = Fermata.Mapping.Clef || {};
+Fermata.Mapping.Clef = {};
 
 (function () {
   "use strict";  
