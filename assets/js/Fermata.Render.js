@@ -113,8 +113,6 @@ var Fermata = Fermata || {};
   
   Fermata.Render.prototype.renderMeasure = function (measure)
   {
-    //TODO: attribute (bottom of the file)
-    //attributes
     this.renderMeasureAttributes(measure);
     
     
