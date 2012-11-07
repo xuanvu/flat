@@ -194,6 +194,42 @@ var Fermata = Fermata || {};
   {
     //TODO : do the rest
     var number = measure["number"];
+    var implicit = false;
+    var nonControlling = false;
+    var width = 0; //TODO: default value unknown. We have to lnow which one it is
+    
+    
+    //TODO: refactor the verification
+    if (typeof(measure["implicit"]) !== "undefined")
+    {
+      if (measure["implicit"] === "yes")
+      {
+        implicit = true;
+      }
+      else if (measure["implicit"] !== "no")
+      {
+      //invalid value
+      //TODO: should we raise an exception ?
+      }
+    }
+    
+    if (typeof(measure["non-controlling"]) !== "undefined")
+    {
+      if (measure["non-controlling"] === "yes")
+      {
+        nonControlling = true;
+      }
+      else if (measure["non-controlling"] !== "no")
+      {
+      //invalid value
+      //TODO: should we raise an exception ?
+      }
+    }
+    
+    if (typeof(measure["width"]) !== "undefined")
+    {
+      width = measure["width"]; //TODO: check if the value is a number
+    }
   }
   
   Fermata.Render.prototype.render = function (measure) {
