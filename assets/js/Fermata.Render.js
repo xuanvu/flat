@@ -143,7 +143,7 @@ var Fermata = Fermata || {};
     {
       key: "attributes", 
       type: this.FuncTypes.STAR, 
-      func: null//TODO implement this function
+      func: this.renderAttributes  //TODO implement this function
     },
     {
       key: "harmony", 
@@ -186,6 +186,18 @@ var Fermata = Fermata || {};
     ];
     
     this.exploreSubNodes(part, processes);
+  }
+
+
+  /*
+    this functions takes a node of attribute using to
+    describes a measure.
+    it's not the same as renderMeasureAttributes using to parse
+    attribute in XML declaration !!
+  */
+  Fermata.Render.prototype.renderAttributes = function(node)
+  {
+    //TODO: implement 
   }
   
   Fermata.Render.prototype.NoteType = 
