@@ -185,7 +185,7 @@ var Fermata = Fermata || {};
     },
     ];
     
-    this.exploreSubNodes(part, processes);
+    this.exploreSubNodes(measure, processes);
   }
 
 
@@ -202,7 +202,7 @@ var Fermata = Fermata || {};
     {
       key: "division",
       type: this.FuncTypes.QUESTION,
-      func: null // TODO implement function to treat division
+      func: this.Attributedivision // TODO implement function to treat division
     },
     {
       key: "key",
@@ -225,9 +225,9 @@ var Fermata = Fermata || {};
       func: null // TODO
     },
     {
-      key: "instruments?",
+      key: "instruments",
       type: this.FuncTypes.QUESTION,
-      func: null // TODO
+      func: this.AttributeInstrument
     },
     {
       key: "clef",
@@ -253,11 +253,26 @@ var Fermata = Fermata || {};
       key: "measure-style"
       type: this.FuncTypes.STAR
       func: null
-    },
-    ]
-
+    }
+    ];
+    this.exploreSubNodes(attributes, process);
   }
   
+  Fermata.render.prototype.Attributedivision = function(node)
+  {
+    this.Attributesdata["division"] = node["division"];
+  }
+
+  Fermata.render.prototype.AttributeInstrument = function(node)
+  {
+    this.Attributesdata["instrument"] = node["instruments"];
+  }
+
+  Fermata.render.prototype.Attributesdata = {
+    {"division" : val},
+    {"instrument" : val}
+  };
+
   Fermata.Render.prototype.NoteType = 
   {
     NORMAL: "normal",
