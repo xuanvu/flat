@@ -188,24 +188,49 @@ var Fermata = Fermata || {};
     this.exploreSubNodes(part, processes);
   }
   
+  Fermata.Render.prototype.NoteType = 
+  {
+    NORMAL: "normal",
+    CUE: "cue",
+    GRACE: "grace"
+  };
+  
+  
+  
   Fermata.Render.prototype.renderNote = function(note)
   {
     //TODO: implement
   }
   
+  Fermata.Render.prototype.getNoteType = function (note)
+  {
+    if (typeof(note["grace"]) !== "undefined")
+    {
+      return this.NoteType.GRACE;
+    }
+    else if (typeof(note["cue"]) !== "undefined")
+    {
+      return this.NoteType.CUE;
+    }
+    else
+    {
+      return this.NoteType.NORMAL;
+    }
+  }
+  
   Fermata.Render.prototype.renderCueNote = function(cueNote)
   {
-    //TODO: implement
+  //TODO: implement
   }
   
   Fermata.Render.prototype.renderNormalNote = function(normalNote)
   {
-    //TODO: implement
+  //TODO: implement
   }
   
-    Fermata.Render.prototype.renderGraceNote = function(graceNote)
+  Fermata.Render.prototype.renderGraceNote = function(graceNote)
   {
-    //TODO: implement
+  //TODO: implement
   }
   
   Fermata.Render.prototype.renderMeasureAttributes = function(measure)
