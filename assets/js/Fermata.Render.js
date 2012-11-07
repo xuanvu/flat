@@ -199,7 +199,31 @@ var Fermata = Fermata || {};
   
   Fermata.Render.prototype.renderNote = function(note)
   {
-    //TODO: implement
+    var noteType = this.getNoteType(note);
+    
+    var processes = [
+    {
+      val: this.NoteType.NORMAL,
+      func: this.renderNormalNote
+    },
+    {
+      val: this.NoteType.CUE,
+      func: this.renderCueNote
+    },
+    {
+      val: this.NoteType.GRACE,
+      func: this.renderGraceNote
+    }];
+  
+    for (var i = 0 ; i < processes.length ; i++)
+    {
+      var process = processes[i];
+      
+      if (process.val === noteType)
+      {
+        process.func(note);
+      }
+    }
   }
   
   Fermata.Render.prototype.getNoteType = function (note)
