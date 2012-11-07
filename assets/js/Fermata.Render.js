@@ -188,6 +188,11 @@ var Fermata = Fermata || {};
     this.exploreSubNodes(part, processes);
   }
   
+  Fermata.Render.prototype.renderNote = function(note)
+  {
+    //TODO: implement
+  }
+  
   Fermata.Render.prototype.renderMeasureAttributes = function(measure)
   {
     //TODO : do the rest
