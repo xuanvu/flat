@@ -120,7 +120,7 @@ var Fermata = Fermata || {};
     {
       key: "note", 
       type: this.FuncTypes.STAR, 
-      func: null//TODO implement this function
+      func: this.renderNote
     },
     
     {
