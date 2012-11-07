@@ -143,7 +143,7 @@ var Fermata = Fermata || {};
     {
       key: "attributes", 
       type: this.FuncTypes.STAR, 
-      func: this.renderAttributes  //TODO implement this function
+      func: this.renderAttributes
     },
     {
       key: "harmony", 
@@ -195,9 +195,67 @@ var Fermata = Fermata || {};
     it's not the same as renderMeasureAttributes using to parse
     attribute in XML declaration !!
   */
-  Fermata.Render.prototype.renderAttributes = function(node)
+  Fermata.Render.prototype.renderAttributes = function(attributes)
   {
-    //TODO: implement 
+    // Elements entities will be implement later
+    var process = [
+    {
+      key: "division",
+      type: this.FuncTypes.QUESTION,
+      func: null // TODO implement function to treat division
+    },
+    {
+      key: "key",
+      type: this.FuncTypes.STAR,
+      func: null // TODO
+    },
+    {
+      key: "time",
+      type: this.FuncTypes.STAR,
+      func: null // TODO
+    },
+    {
+      key: "staves",
+      type: this.FuncTypes.QUESTION,
+      func: null // TODO 
+    },
+    {
+      key: "part-symbol",
+      type: this.FuncTypes.QUESTION,
+      func: null // TODO
+    },
+    {
+      key: "instruments?",
+      type: this.FuncTypes.QUESTION,
+      func: null // TODO
+    },
+    {
+      key: "clef",
+      type: this.FuncTypes.STAR,
+      func: null // TODO
+    },
+    {
+      key: "staff-details",
+      type: this.FuncTypes.STAR,
+      func: null // TODO
+    },
+    {
+      key: "transpose",
+      type: this.FuncTypes.STAR,
+      func: null // TODO
+    },
+    {
+      key: "directive",
+      type: this.FuncTypes.STAR,
+      func: null // TODO
+    },
+    {
+      key: "measure-style"
+      type: this.FuncTypes.STAR
+      func: null
+    },
+    ]
+
   }
   
   Fermata.Render.prototype.NoteType = 
