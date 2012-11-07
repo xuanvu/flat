@@ -114,6 +114,9 @@ var Fermata = Fermata || {};
   Fermata.Render.prototype.renderMeasure = function (measure)
   {
     //TODO: attribute (bottom of the file)
+    //attributes
+    this.renderMeasureAttributes(measure);
+    
     
     var processes = [
     {
@@ -185,6 +188,12 @@ var Fermata = Fermata || {};
     ];
     
     this.exploreSubNodes(part, processes);
+  }
+  
+  Fermata.Render.prototype.renderMeasureAttributes = function(measure)
+  {
+    //TODO : do the rest
+    var number = measure["number"];
   }
   
   Fermata.Render.prototype.render = function (measure) {
