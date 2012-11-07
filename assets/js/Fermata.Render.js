@@ -193,6 +193,21 @@ var Fermata = Fermata || {};
     //TODO: implement
   }
   
+  Fermata.Render.prototype.renderCueNote = function(cueNote)
+  {
+    //TODO: implement
+  }
+  
+  Fermata.Render.prototype.renderNormalNote = function(normalNote)
+  {
+    //TODO: implement
+  }
+  
+    Fermata.Render.prototype.renderGraceNote = function(graceNote)
+  {
+    //TODO: implement
+  }
+  
   Fermata.Render.prototype.renderMeasureAttributes = function(measure)
   {
     //TODO : do the rest
