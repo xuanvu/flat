@@ -1,5 +1,5 @@
 /*
-  Files that is containing all functions to treat with measures 
+  Files that is containing all functions to treat with measures
   attributes
   */
 
@@ -32,7 +32,7 @@
     {
       key: "staves",
       type: this.FuncTypes.QUESTION,
-      func: null // TODO 
+      func: null // TODO
     },
     {
       key: "part-symbol",
@@ -79,19 +79,19 @@
     // TOdo beaucoup d'Entities ici !
     var process = [
       {
-        key: "sign",
-        type: this.FuncTypes.DEFAULT,
-        func: function(){this.renderAttributes.clef.sign()}
+	key: "sign",
+	type: this.FuncTypes.DEFAULT,
+	func: function(){this.renderAttributes.clef.sign()}
       },
       {
-        key: "line",
-        type: this.FuncTypes.QUESTION,
-        func: function(){this.renderAttributes.clef.line()}
+	key: "line",
+	type: this.FuncTypes.QUESTION,
+	func: function(){this.renderAttributes.clef.line()}
       },
       {
-        key: "clef-octave-change",
-        type: this.FuncTypes.QUESTION,
-        func: null
+	key: "clef-octave-change",
+	type: this.FuncTypes.QUESTION,
+	func: null
       }
     ];
     this.exploreSubNodes(node, process);
@@ -112,14 +112,14 @@
     //To do géré la multidefinition de beat
     var process = [
       {
-        key: "beats",
-        type: this.FuncTypes.DEFAULT,
-        func: function(){this.renderAttributes.time.beats()}
+	key: "beats",
+	type: this.FuncTypes.DEFAULT,
+	func: function(){this.renderAttributes.time.beats()}
       },
       {
-        key: "beat-types",
-        type: this.FuncTypes.DEFAULT,
-        func: function(){this.renderAttributes.time.types()}
+	key: "beat-types",
+	type: this.FuncTypes.DEFAULT,
+	func: function(){this.renderAttributes.time.types()}
       },
     ];
     this.exploreSubNodes(node, process);
@@ -141,19 +141,19 @@
     {
       var process = [
       {
-        key: "cancel",
-        type: this.FuncTypes.QUESTION,
-        func: null // TODO
+	key: "cancel",
+	type: this.FuncTypes.QUESTION,
+	func: null // TODO
       },
       {
-        key: "fifths",
-        type: this.FuncTypes.DEFAULT,
-        func: this.AttributeKeyFifth
+	key: "fifths",
+	type: this.FuncTypes.DEFAULT,
+	func: this.AttributeKeyFifth
       },
       {
-        key: "mode",
-        type: this.FuncTypes.QUESTION,
-        func: null
+	key: "mode",
+	type: this.FuncTypes.QUESTION,
+	func: null
       }
       ];
       this.exploreSubNodes(node, process);
@@ -163,33 +163,33 @@
       // TODO manage fact that this key can appaears many times
       var process = [
       {
-        key: "key-step",
-        type: this.FuncTypes.DEFAULT,
-        func: null // TODO
+	key: "key-step",
+	type: this.FuncTypes.DEFAULT,
+	func: null // TODO
       },
       {
-        key: "key-alter",
-        type: this.FuncTypes.DEFAULT,
-        func: null // TODO
+	key: "key-alter",
+	type: this.FuncTypes.DEFAULT,
+	func: null // TODO
       },
       {
-        key: "key-accidental",
-        type: this.FuncTypes.QUESTION,
-        func: null // TODO
+	key: "key-accidental",
+	type: this.FuncTypes.QUESTION,
+	func: null // TODO
       }
       ];
       this.exploreSubNodes(node, process);
     }
       var process = [
       {
-        key: "key-octave",
-        type: this.FuncTypes.STAR,
-        func: null
+	key: "key-octave",
+	type: this.FuncTypes.STAR,
+	func: null
       }
       ];
       this.exploreSubNodes(node, process);
   }
-  
+
   Fermata.Render.prototype.Attributedivision = function(node)
   {
     this.Attributesdata.division = node["division"];
@@ -224,4 +224,3 @@
       change: null
     }
   };
-  

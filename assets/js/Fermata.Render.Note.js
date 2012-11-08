@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -13,7 +13,7 @@ if (typeof(Fermata.Render) === "undefined")
 (function () {
   "use strict";
 
-  Fermata.Render.prototype.NoteType = 
+  Fermata.Render.prototype.NoteType =
   {
     NORMAL: "normal",
     CUE: "cue",
@@ -23,7 +23,7 @@ if (typeof(Fermata.Render) === "undefined")
   Fermata.Render.prototype.renderNote = function(note)
   {
     var noteType = this.getNoteType(note);
-    
+
     var processes = [
     {
       val: this.NoteType.NORMAL,
@@ -37,18 +37,18 @@ if (typeof(Fermata.Render) === "undefined")
       val: this.NoteType.GRACE,
       func: function(){this.renderGraceNote();}
     }];
-  
+
     for (var i = 0 ; i < processes.length ; i++)
     {
       var process = processes[i];
-      
+
       if (process.val === noteType)
       {
-        process.func(note);
+	process.func(note);
       }
     }
   }
-  
+
   Fermata.Render.prototype.getNoteType = function (note)
   {
     if (typeof(note["grace"]) !== "undefined")
@@ -64,20 +64,20 @@ if (typeof(Fermata.Render) === "undefined")
       return this.NoteType.NORMAL;
     }
   }
-  
+
   Fermata.Render.prototype.renderCueNote = function(cueNote)
   {
   //TODO: implement
   }
-  
+
   Fermata.Render.prototype.renderNormalNote = function(normalNote)
   {
   //TODO: implement
   }
-  
+
   Fermata.Render.prototype.renderGraceNote = function(graceNote)
   {
   //TODO: implement
   }
-  
+
 }).call(this);

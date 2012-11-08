@@ -2,11 +2,11 @@ var Fermata = Fermata || {};
 
 (function () {
   "use strict";
-  
+
   Fermata.Render = function (data, container) {
     this.data = data;
     this.container = container;
-    
+
     // Client-side, jQuery selector
     if (container !== null) {
       this.container = $(container)[0];
@@ -16,24 +16,24 @@ var Fermata = Fermata || {};
     else {
       this.renderer = new Vex.Flow.Renderer(this.container, Vex.Flow.Renderer.Backends.SVG);
     }
-    
+
     this.ctx = this.renderer.getContext();
-  
+
   //data.sortMeasure();
   //console.log(data.getMesure(1, 'P1'));
   };
-  
+
   Fermata.Render.prototype.renderAll = function() {
     var parts = this.data.getParts();
-    
+
     for (var i = 0 ; i < parts.idx.length ; i++) {
       var part = parts.idx[i];
-      
+
       this.renderPart(part);
     }
   }
-  
-  
+
+
   //Note: info in score element
   Fermata.Render.prototype.renderScorePartwise = function (scorePartwise)
   {
@@ -41,153 +41,153 @@ var Fermata = Fermata || {};
     this.renderScoreHeader(scorePartwise);
     var processes = [
     {
-      key: "part", 
-      type: this.FuncTypes.PLUS, 
+      key: "part",
+      type: this.FuncTypes.PLUS,
       func: function(){this.renderPart();}
     }
     ];
-    
+
     this.exploreSubNodes(scorePartwise, processes);
   }
-  
+
   Fermata.Render.prototype.renderScoreHeader = function (scoreHeader)
   {
     var processes = [
     {
-      key: "work", 
-      type: this.FuncTypes.QUESTION, 
+      key: "work",
+      type: this.FuncTypes.QUESTION,
       func: null//TODO: implement the function
     },
-    
+
     {
-      key: "movement-number", 
-      type: this.FuncTypes.QUESTION, 
+      key: "movement-number",
+      type: this.FuncTypes.QUESTION,
       func: null//TODO: implement the function
     },
-    
+
     {
-      key: "movement-title", 
-      type: this.FuncTypes.QUESTION, 
+      key: "movement-title",
+      type: this.FuncTypes.QUESTION,
       func: null//TODO: implement the function
     },
-    
+
     {
-      key: "identification", 
-      type: this.FuncTypes.QUESTION, 
+      key: "identification",
+      type: this.FuncTypes.QUESTION,
       func: null//TODO: implement the function
     },
-    
+
     {
-      key: "defaults", 
-      type: this.FuncTypes.QUESTION, 
+      key: "defaults",
+      type: this.FuncTypes.QUESTION,
       func: null//TODO: implement the function
     },
     {
-      key: "credit", 
-      type: this.FuncTypes.STAR, 
+      key: "credit",
+      type: this.FuncTypes.STAR,
       func: null//TODO: implement the function
     },
-    
+
     {
-      key: "part-list", 
-      type: this.FuncTypes.DEFAULT, 
+      key: "part-list",
+      type: this.FuncTypes.DEFAULT,
       func: null//TODO: implement the function
     }
     ]
-    
+
     this.exploreSubNodes(scoreHeader, processes);
   }
-  
+
   Fermata.Render.prototype.renderPart = function (part)
   {
     var processes = [
     {
-      key: "measure", 
-      type: this.FuncTypes.PLUS, 
+      key: "measure",
+      type: this.FuncTypes.PLUS,
       func: function(){this.renderMeasure();}
     }
     ];
-    
+
     this.exploreSubNodes(part, processes);
   }
-  
+
   Fermata.Render.prototype.renderMeasure = function (measure)
   {
     Fermata.Render.prototype.renderMeasureAttributes(measure);
-    
-    
+
+
     var processes = [
     {
-      key: "note", 
-      type: this.FuncTypes.STAR, 
+      key: "note",
+      type: this.FuncTypes.STAR,
       func: function(){this.renderNote();}
     },
-    
+
     {
-      key: "backup", 
-      type: this.FuncTypes.STAR, 
+      key: "backup",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
-    
+
     {
-      key: "forward", 
-      type: this.FuncTypes.STAR, 
+      key: "forward",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
-    
+
     {
-      key: "direction", 
-      type: this.FuncTypes.STAR, 
+      key: "direction",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     {
-      key: "attributes", 
-      type: this.FuncTypes.STAR, 
+      key: "attributes",
+      type: this.FuncTypes.STAR,
       func: function(){this.renderAttributes();}
     },
     {
-      key: "harmony", 
-      type: this.FuncTypes.STAR, 
+      key: "harmony",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     {
-      key: "figured-bass", 
-      type: this.FuncTypes.STAR, 
+      key: "figured-bass",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     {
-      key: "print", 
-      type: this.FuncTypes.STAR, 
+      key: "print",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },    {
-      key: "sound", 
-      type: this.FuncTypes.STAR, 
+      key: "sound",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },    {
-      key: "barline", 
-      type: this.FuncTypes.STAR, 
+      key: "barline",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     {
-      key: "grouping", 
-      type: this.FuncTypes.STAR, 
+      key: "grouping",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     {
-      key: "link", 
-      type: this.FuncTypes.STAR, 
+      key: "link",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     {
-      key: "bookmark", 
-      type: this.FuncTypes.STAR, 
+      key: "bookmark",
+      type: this.FuncTypes.STAR,
       func: null//TODO implement this function
     },
     ];
-    
+
     this.exploreSubNodes(measure, processes);
   }
-  
+
   Fermata.Render.prototype.renderMeasureAttributes = function(measure)
   {
     //TODO : do the rest
@@ -195,14 +195,14 @@ var Fermata = Fermata || {};
     var implicit = false;
     var nonControlling = false;
     var width = 0; //TODO: default value unknown. We have to lnow which one it is
-    
-    
+
+
     //TODO: refactor the verification
     if (typeof(measure["implicit"]) !== "undefined")
     {
       if (measure["implicit"] === "yes")
       {
-        implicit = true;
+	implicit = true;
       }
       else if (measure["implicit"] !== "no")
       {
@@ -210,12 +210,12 @@ var Fermata = Fermata || {};
       //TODO: should we raise an exception ?
       }
     }
-    
+
     if (typeof(measure["non-controlling"]) !== "undefined")
     {
       if (measure["non-controlling"] === "yes")
       {
-        nonControlling = true;
+	nonControlling = true;
       }
       else if (measure["non-controlling"] !== "no")
       {
@@ -223,13 +223,13 @@ var Fermata = Fermata || {};
       //TODO: should we raise an exception ?
       }
     }
-    
+
     if (typeof(measure["width"]) !== "undefined")
     {
       width = measure["width"]; //TODO: check if the value is a number
     }
   }
-  
+
   Fermata.Render.prototype.render = function (measure) {
     var stave = new Vex.Flow.Stave(10, 0, 500);
     var clef = measure["attributes"].clef.sign.$t;
@@ -237,24 +237,24 @@ var Fermata = Fermata || {};
     stave.addClef(clefName);
     stave.setContext(this.ctx);
     stave.draw();
-  
+
   //TODO: to be continued...
   }
-  
-  Fermata.Render.prototype.FuncTypes = 
+
+  Fermata.Render.prototype.FuncTypes =
   {
     STAR: "*",
     PLUS: "+",
     QUESTION: "?",
     DEFAULT: "default"
   };
-  
+
   /**
    * object is the node of interest
    * processes is an array of objects:
    * {type, key, func}
    * type is the number of apparitions of the object
-   * key is the key of the child element. 
+   * key is the key of the child element.
    * func is the function to apply to the child elements
    */
   Fermata.Render.prototype.exploreSubNodes = function (object, processes)
@@ -262,41 +262,41 @@ var Fermata = Fermata || {};
     for (var i = 0 ; i < processes.length ; i++)
     {
       var process = processes[i];
-      
+
       if (process.type === this.FuncTypes.STAR)
       {
-        this.call_0orN(object, process);
+	this.call_0orN(object, process);
       }
       else if (process.type === this.FuncTypes.QUESTION)
       {
-        this.call_0or1(object, process);
+	this.call_0or1(object, process);
       }
       else if (process.type === this.FuncTypes.PLUS)
       {
-        this.call_1orN(object, process);
-      } 
+	this.call_1orN(object, process);
+      }
       else if (process.type === this.FuncTypes.DEFAULT)
       {
-        this.call_1(object, process);
+	this.call_1(object, process);
       }
     }
   }
- 
+
   Fermata.Render.prototype.call_1 = function (object, process)
   {
     var child = object[process.key];
-      
+
     process.func(child);
   }
- 
+
   Fermata.Render.prototype.call_1orN = function (object, process)
   {
     var child = object[process.key];
-      
+
     for (var j = 0 ; j < child.length ; j++)
     {
       var elem = child[j];
-        
+
       process.func(elem);
     }
   }
@@ -307,22 +307,22 @@ var Fermata = Fermata || {};
     if (typeof(object[process.key]) !== "undefined")
     {
       var child = object[process.key];
-      
+
       process.func(child);
     }
   }
-  
+
   Fermata.Render.prototype.call_0orN = function (object, process)
   {
     if (typeof(object[process.key]) !== "undefined")
     {
       var child = object[process.key];
-      
+
       for (var j = 0 ; j < child.length ; j++)
       {
-        var elem = child[j];
-        
-        process.func(elem);
+	var elem = child[j];
+
+	process.func(elem);
       }
     }
   }

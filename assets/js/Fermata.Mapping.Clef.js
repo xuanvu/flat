@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -9,25 +9,25 @@ Fermata.Mapping =      Fermata.Mapping || {};
 Fermata.Mapping.Clef = {};
 
 (function () {
-  "use strict";  
-  
+  "use strict";
+
   var musicXMLToVexflow = {
     "G": "treble"
   };
-    
+
   var vexFlowToMusicXml = {};
-    
+
   for (key in this.musicXMLToVexflow) {
     var value = musicXMLToVexflow[key];
-      
+
     this.vexFlowToMusicXml[value] = key;
   }
 
-  
+
   Fermata.Mapping.Clef.getVexflow = function(musicXml) {
     return musicXMLToVexflow[musicXml];
   }
-  
+
   Fermata.Mapping.Clef.getMusicXml = function(vexflow) {
     return vexFlowToMusicXml[vexflow];
   }
