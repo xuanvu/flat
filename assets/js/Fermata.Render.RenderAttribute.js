@@ -17,12 +17,12 @@
     {
       key: "division",
       type: this.FuncTypes.QUESTION,
-      func: this.Attributedivision // TODO implement function to treat division
+      func: this.Attributedivision
     },
     {
       key: "key",
       type: this.FuncTypes.STAR,
-      func: null // TODO
+      func: this.renderAttributes.keys
     },
     {
       key: "time",
@@ -74,9 +74,14 @@
     this.exploreSubNodes(attributes, process);
   }
 
+  Fermata.render.prototype.renderAttributes.time = function (node)
+  {
+    
+  }
+
   Fermata.render.prototype.renderAttributes.keys = function (node)
   {
-    if (typeof(node["fifths"]) !=== "undefined")
+    if (typeof(node["fifths"]) !== "undefined")
     {
       var process = [
       {
