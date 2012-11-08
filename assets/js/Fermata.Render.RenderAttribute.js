@@ -47,7 +47,7 @@
     {
       key: "clef",
       type: this.FuncTypes.STAR,
-      func: null // TODO
+      func: this.renderAttributes.clef // TODO
     },
     {
       key: "staff-details",
@@ -74,6 +74,39 @@
     this.exploreSubNodes(attributes, process);
   }
 
+  Fermata.Render.prototype.renderAttributes.clef = function (node)
+  {
+    // TOdo beaucoup d'Entities ici !
+    var process = [
+      {
+        key: "sign",
+        type: this.FuncTypes.DEFAULT,
+        func: this.renderAttributes.clef.sign
+      },
+      {
+        key: "line",
+        type: this.FuncTypes.QUESTION,
+        func: this.renderAttributes.clef.line
+      },
+      {
+        key: "clef-octave-change",
+        type: this.FuncTypes.QUESTION,
+        func: null
+      }
+    ];
+    this.exploreSubNodes(node, process);
+  }
+
+  Fermata.Render.prototype.renderAttributes.clef.line = function (node)
+  {
+    this.Attributesdata.clef.line = node["line"];
+  }
+
+  Fermata.Render.prototype.renderAttributes.clef.sign = function (node)
+  {
+    this.Attributesdata.clef.sign = node["sign"];
+  }
+
   Fermata.Render.prototype.renderAttributes.time = function (node)
   {
     //To do géré la multidefinition de beat
@@ -89,6 +122,7 @@
         func:this.renderAttributes.time.types
       },
     ];
+    this.exploreSubNodes(node, process);
   }
 
   Fermata.Render.prototype.renderAttributes.time.beats = function (node)
@@ -122,7 +156,7 @@
         func: null
       }
       ];
-      this.exploreSubNodes(attributes, process);
+      this.exploreSubNodes(node, process);
     }
     else
     {
@@ -144,7 +178,7 @@
         func: null // TODO
       }
       ];
-      this.exploreSubNodes(attributes, process);
+      this.exploreSubNodes(node, process);
     }
       var process = [
       {
@@ -153,6 +187,7 @@
         func: null
       }
       ];
+      this.exploreSubNodes(node, process);
   }
   
   Fermata.Render.prototype.Attributedivision = function(node)
@@ -182,6 +217,11 @@
       beats: null,
       type: null,
       interchangeable: null
+    },
+    clef: {
+      sign: null,
+      line: null,
+      change: null
     }
   };
   
