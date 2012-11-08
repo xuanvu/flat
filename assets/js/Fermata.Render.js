@@ -255,22 +255,49 @@ var Fermata = Fermata || {};
       func: null
     }
     ];
+
     this.exploreSubNodes(attributes, process);
+  }
+
+  Fermata.render.prototype.renderAttributes.keys = function (node)
+  {
+    var process = [
+    {
+      key: "cancel",
+      type: this.FuncTypes.QUESTION,
+      func: null // TODO
+    },
+    {
+      key: "fifths",
+      type: this.FuncTypes.DEFAULT,
+      func: this.AttributeKeyFifth
+    },
+    ];
+    dump(this.Attributesdata);
   }
   
   Fermata.render.prototype.Attributedivision = function(node)
   {
-    this.Attributesdata["division"] = node["division"];
+    this.Attributesdata.division = node["division"];
   }
 
   Fermata.render.prototype.AttributeInstrument = function(node)
   {
-    this.Attributesdata["instrument"] = node["instruments"];
+    this.Attributesdata.instrument = node["instruments"];
+  }
+
+  Fermata.render.prototype.AttributeKeyFifth = function(node)
+  {
+    this.Attributesdata.key.fifths = node["fifths"];
   }
 
   Fermata.render.prototype.Attributesdata = {
-    {"division" : val},
-    {"instrument" : val}
+    division : val,
+    instrument: val,
+    keys  {   cancel : val,
+              fifths : val,
+              mode : val,
+          }
   };
 
   Fermata.Render.prototype.NoteType = 
