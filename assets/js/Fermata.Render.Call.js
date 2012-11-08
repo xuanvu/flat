@@ -65,12 +65,7 @@ if (typeof(Fermata.Render) === "undefined")
   {
     var child = object[process.key];
 
-    for (var j = 0 ; j < child.length ; j++)
-    {
-      var elem = child[j];
-
-      process.func(elem);
-    }
+    this.call_loop(child, process.func);
   }
 
 
@@ -90,12 +85,7 @@ if (typeof(Fermata.Render) === "undefined")
     {
       var child = object[process.key];
 
-      for (var j = 0 ; j < child.length ; j++)
-      {
-        var elem = child[j];
-
-        process.func(elem);
-      }
+      this.call_loop(child, process.func);
     }
   }
   
