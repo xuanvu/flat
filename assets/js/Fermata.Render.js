@@ -43,7 +43,7 @@ var Fermata = Fermata || {};
     {
       key: "part", 
       type: this.FuncTypes.PLUS, 
-      func: this.renderPart
+      func: function(){this.renderPart()}
     }
     ];
     
@@ -104,7 +104,7 @@ var Fermata = Fermata || {};
     {
       key: "measure", 
       type: this.FuncTypes.PLUS, 
-      func: this.renderMeasure
+      func: function(){this.renderMeasure();}
     }
     ];
     
@@ -120,7 +120,7 @@ var Fermata = Fermata || {};
     {
       key: "note", 
       type: this.FuncTypes.STAR, 
-      func: this.renderNote
+      func: function(){this.renderNote()}
     },
     
     {
@@ -143,7 +143,7 @@ var Fermata = Fermata || {};
     {
       key: "attributes", 
       type: this.FuncTypes.STAR, 
-      func: this.renderAttributes
+      func: function(){this.renderAttributes()}
     },
     {
       key: "harmony", 
