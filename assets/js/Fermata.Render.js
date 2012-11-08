@@ -113,7 +113,7 @@ var Fermata = Fermata || {};
   
   Fermata.Render.prototype.renderMeasure = function (measure)
   {
-    this.renderMeasureAttributes(measure);
+    Fermata.Render.prototype.renderMeasureAttributes(measure);
     
     
     var processes = [
