@@ -17,17 +17,17 @@
     {
       key: "division",
       type: this.FuncTypes.QUESTION,
-      func: function(){this.Attributedivision()}
+      func: function(){this.Attributedivision();}
     },
     {
       key: "key",
       type: this.FuncTypes.STAR,
-      func: function(){this.renderAttributes.keys()}
+      func: function(){this.renderAttributes.keys();}
     },
     {
       key: "time",
       type: this.FuncTypes.STAR,
-      func: function(){this.renderAttributes.time()}
+      func: function(){this.renderAttributes.time();}
     },
     {
       key: "staves",
@@ -42,7 +42,7 @@
     {
       key: "instruments",
       type: this.FuncTypes.QUESTION,
-      func: function(){this.AttributeInstrument()}
+      func: function(){this.AttributeInstrument();}
     },
     {
       key: "clef",

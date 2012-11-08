@@ -27,15 +27,15 @@ if (typeof(Fermata.Render) === "undefined")
     var processes = [
     {
       val: this.NoteType.NORMAL,
-      func: function(){this.renderNormalNote()}
+      func: function(){this.renderNormalNote();}
     },
     {
       val: this.NoteType.CUE,
-      func: function(){this.renderCueNote()}
+      func: function(){this.renderCueNote();}
     },
     {
       val: this.NoteType.GRACE,
-      func: function(){this.renderGraceNote()}
+      func: function(){this.renderGraceNote();}
     }];
   
     for (var i = 0 ; i < processes.length ; i++)
