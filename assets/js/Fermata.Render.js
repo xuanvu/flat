@@ -194,7 +194,7 @@ var Fermata = Fermata || {};
     describes a measure.
     it's not the same as renderMeasureAttributes using to parse
     attribute in XML declaration !!
-  */
+   */
   Fermata.Render.prototype.renderAttributes = function(attributes)
   {
     // Elements entities will be implement later
@@ -250,8 +250,8 @@ var Fermata = Fermata || {};
       func: null // TODO
     },
     {
-      key: "measure-style"
-      type: this.FuncTypes.STAR
+      key: "measure-style",
+      type: this.FuncTypes.STAR,
       func: null
     }
     ];
@@ -292,12 +292,13 @@ var Fermata = Fermata || {};
   }
 
   Fermata.render.prototype.Attributesdata = {
-    division : val,
-    instrument: val,
-    keys  {   cancel : val,
-              fifths : val,
-              mode : val,
-          }
+    division: null,
+    instrument: null,
+    keys:  {
+      cancel: null,
+      fifths: null,
+      mode: null
+    }
   };
 
   Fermata.Render.prototype.NoteType = 
