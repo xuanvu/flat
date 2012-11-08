@@ -27,7 +27,7 @@
     {
       key: "time",
       type: this.FuncTypes.STAR,
-      func: null // TODO
+      func: this.renderAttributes.time
     },
     {
       key: "staves",
