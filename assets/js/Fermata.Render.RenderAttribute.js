@@ -76,19 +76,56 @@
 
   Fermata.render.prototype.renderAttributes.keys = function (node)
   {
-    var process = [
+    if (typeof(node["fifths"]) !=== "undefined")
     {
-      key: "cancel",
-      type: this.FuncTypes.QUESTION,
-      func: null // TODO
-    },
+      var process = [
+      {
+        key: "cancel",
+        type: this.FuncTypes.QUESTION,
+        func: null // TODO
+      },
+      {
+        key: "fifths",
+        type: this.FuncTypes.DEFAULT,
+        func: this.AttributeKeyFifth
+      },
+      {
+        key: "mode",
+        type: this.FuncTypes.QUESTION,
+        func: null
+      }
+      ];
+      this.exploreSubNodes(attributes, process);
+    }
+    else
     {
-      key: "fifths",
-      type: this.FuncTypes.DEFAULT,
-      func: this.AttributeKeyFifth
-    },
-    ];
-    dump(this.Attributesdata);
+      // TODO manage fact that this key can appaears many times
+      var process = [
+      {
+        key: "key-step",
+        type: this.FuncTypes.DEFAULT,
+        func: null // TODO
+      },
+      {
+        key: "key-alter",
+        type: this.FuncTypes.DEFAULT,
+        func: null // TODO
+      },
+      {
+        key: "key-accidental",
+        type: this.FuncTypes.QUESTION
+        func: null // TODO
+      }
+      ];
+      this.exploreSubNodes(attributes, process);
+    }
+      var process = [
+      {
+        key: "key-octave",
+        type: this.FuncTypes.STAR,
+        func: null
+      }
+      ];
   }
   
   Fermata.render.prototype.Attributedivision = function(node)
