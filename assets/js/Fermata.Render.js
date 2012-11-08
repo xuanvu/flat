@@ -29,7 +29,7 @@ var Fermata = Fermata || {};
     for (var i = 0 ; i < parts.idx.length ; i++) {
       var part = parts.idx[i];
       
-      this.render(part.measure[0]);
+      this.renderPart(part);
     }
   }
   
