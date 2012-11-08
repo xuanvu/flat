@@ -74,12 +74,12 @@
     this.exploreSubNodes(attributes, process);
   }
 
-  Fermata.render.prototype.renderAttributes.time = function (node)
+  Fermata.Render.prototype.renderAttributes.time = function (node)
   {
     
   }
 
-  Fermata.render.prototype.renderAttributes.keys = function (node)
+  Fermata.Render.prototype.renderAttributes.keys = function (node)
   {
     if (typeof(node["fifths"]) !== "undefined")
     {
@@ -118,7 +118,7 @@
       },
       {
         key: "key-accidental",
-        type: this.FuncTypes.QUESTION
+        type: this.FuncTypes.QUESTION,
         func: null // TODO
       }
       ];
@@ -133,22 +133,22 @@
       ];
   }
   
-  Fermata.render.prototype.Attributedivision = function(node)
+  Fermata.Render.prototype.Attributedivision = function(node)
   {
     this.Attributesdata.division = node["division"];
   }
 
-  Fermata.render.prototype.AttributeInstrument = function(node)
+  Fermata.Render.prototype.AttributeInstrument = function(node)
   {
     this.Attributesdata.instrument = node["instruments"];
   }
 
-  Fermata.render.prototype.AttributeKeyFifth = function(node)
+  Fermata.Render.prototype.AttributeKeyFifth = function(node)
   {
     this.Attributesdata.key.fifths = node["fifths"];
   }
 
-  Fermata.render.prototype.Attributesdata = {
+  Fermata.Render.prototype.Attributesdata = {
     division: null,
     instrument: null,
     keys:  {
@@ -157,3 +157,4 @@
       mode: null
     }
   };
+  
