@@ -39,12 +39,13 @@ var Fermata = Fermata || {};
   {
     //TODO: process document-attributes
     this.renderScoreHeader(scorePartwise);
+    var obj = this;
     var processes = [
     {
       key: "part",
       type: this.FuncTypes.PLUS,
       func: function(){
-        this.renderPart();
+        obj.renderPart();
       }
     }
     ];
@@ -102,12 +103,13 @@ var Fermata = Fermata || {};
 
   Fermata.Render.prototype.renderPart = function (part)
   {
+    var obj = this;
     var processes = [
     {
       key: "measure",
       type: this.FuncTypes.PLUS,
       func: function(){
-        this.renderMeasure();
+        obj.renderMeasure();
       }
     }
     ];
@@ -119,13 +121,13 @@ var Fermata = Fermata || {};
   {
     Fermata.Render.prototype.renderMeasureAttributes(measure);
 
-
+    var obj = this;
     var processes = [
     {
       key: "note",
       type: this.FuncTypes.STAR,
       func: function(){
-        this.renderNote();
+        obj.renderNote();
       }
     },
 
@@ -150,7 +152,7 @@ var Fermata = Fermata || {};
       key: "attributes",
       type: this.FuncTypes.STAR,
       func: function(){
-        this.renderAttributes();
+        obj.renderAttributes();
       }
     },
     {
