@@ -13,7 +13,7 @@ if (typeof(Fermata.Render) === "undefined")
 (function () {
   "use strict";
   
-    Fermata.Render.prototype.FuncTypes =
+  Fermata.Render.prototype.FuncTypes =
   {
     STAR: "*",
     PLUS: "+",
@@ -95,6 +95,23 @@ if (typeof(Fermata.Render) === "undefined")
         var elem = child[j];
 
         process.func(elem);
+      }
+    }
+  }
+  
+  Fermata.Render.prototype.call_loop = function (child, func)
+  {
+    if (Object.prototype.toString.call(child) !== '[object Array]')
+    {
+      func(child);
+    }
+    else
+    {
+      for (var i = 0 ; i < child.length ; i++)
+      {
+        var elem = child[i];
+
+        func(elem);
       }
     }
   }
