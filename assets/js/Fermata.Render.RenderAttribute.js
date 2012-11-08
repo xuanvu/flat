@@ -76,7 +76,29 @@
 
   Fermata.Render.prototype.renderAttributes.time = function (node)
   {
-    
+    //To do géré la multidefinition de beat
+    var process = [
+      {
+        key: "beats",
+        type: this.FuncTypes.DEFAULT,
+        func: this.renderAttributes.time.beats
+      },
+      {
+        key: "beat-types",
+        type: this.FuncTypes.DEFAULT,
+        func:this.renderAttributes.time.types
+      },
+    ];
+  }
+
+  Fermata.Render.prototype.renderAttributes.time.beats = function (node)
+  {
+    this.Attributesdata.beat.beats = node["beats"];
+  }
+
+    Fermata.Render.prototype.renderAttributes.time.types = function (node)
+  {
+    this.Attributesdata.beat.type = node["beat-type"];
   }
 
   Fermata.Render.prototype.renderAttributes.keys = function (node)
@@ -155,6 +177,11 @@
       cancel: null,
       fifths: null,
       mode: null
+    },
+    beat: {
+      beats: null,
+      type: null,
+      interchangeable: null
     }
   };
   
