@@ -43,7 +43,9 @@ var Fermata = Fermata || {};
     {
       key: "part",
       type: this.FuncTypes.PLUS,
-      func: function(){this.renderPart();}
+      func: function(){
+        this.renderPart();
+      }
     }
     ];
 
@@ -104,7 +106,9 @@ var Fermata = Fermata || {};
     {
       key: "measure",
       type: this.FuncTypes.PLUS,
-      func: function(){this.renderMeasure();}
+      func: function(){
+        this.renderMeasure();
+      }
     }
     ];
 
@@ -120,7 +124,9 @@ var Fermata = Fermata || {};
     {
       key: "note",
       type: this.FuncTypes.STAR,
-      func: function(){this.renderNote();}
+      func: function(){
+        this.renderNote();
+      }
     },
 
     {
@@ -143,7 +149,9 @@ var Fermata = Fermata || {};
     {
       key: "attributes",
       type: this.FuncTypes.STAR,
-      func: function(){this.renderAttributes();}
+      func: function(){
+        this.renderAttributes();
+      }
     },
     {
       key: "harmony",
@@ -202,7 +210,7 @@ var Fermata = Fermata || {};
     {
       if (measure["implicit"] === "yes")
       {
-	implicit = true;
+        implicit = true;
       }
       else if (measure["implicit"] !== "no")
       {
@@ -215,7 +223,7 @@ var Fermata = Fermata || {};
     {
       if (measure["non-controlling"] === "yes")
       {
-	nonControlling = true;
+        nonControlling = true;
       }
       else if (measure["non-controlling"] !== "no")
       {
@@ -265,19 +273,19 @@ var Fermata = Fermata || {};
 
       if (process.type === this.FuncTypes.STAR)
       {
-	this.call_0orN(object, process);
+        this.call_0orN(object, process);
       }
       else if (process.type === this.FuncTypes.QUESTION)
       {
-	this.call_0or1(object, process);
+        this.call_0or1(object, process);
       }
       else if (process.type === this.FuncTypes.PLUS)
       {
-	this.call_1orN(object, process);
+        this.call_1orN(object, process);
       }
       else if (process.type === this.FuncTypes.DEFAULT)
       {
-	this.call_1(object, process);
+        this.call_1(object, process);
       }
     }
   }
@@ -320,9 +328,9 @@ var Fermata = Fermata || {};
 
       for (var j = 0 ; j < child.length ; j++)
       {
-	var elem = child[j];
+        var elem = child[j];
 
-	process.func(elem);
+        process.func(elem);
       }
     }
   }
