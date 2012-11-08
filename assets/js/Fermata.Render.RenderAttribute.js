@@ -81,12 +81,12 @@
       {
         key: "sign",
         type: this.FuncTypes.DEFAULT,
-        func: this.renderAttributes.clef.sign
+        func: function(){this.renderAttributes.clef.sign()}
       },
       {
         key: "line",
         type: this.FuncTypes.QUESTION,
-        func: this.renderAttributes.clef.line
+        func: function(){this.renderAttributes.clef.line()}
       },
       {
         key: "clef-octave-change",
@@ -114,12 +114,12 @@
       {
         key: "beats",
         type: this.FuncTypes.DEFAULT,
-        func: this.renderAttributes.time.beats
+        func: function(){this.renderAttributes.time.beats()}
       },
       {
         key: "beat-types",
         type: this.FuncTypes.DEFAULT,
-        func:this.renderAttributes.time.types
+        func: function(){this.renderAttributes.time.types()}
       },
     ];
     this.exploreSubNodes(node, process);
