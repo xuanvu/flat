@@ -13,26 +13,27 @@
 Fermata.Render.prototype.renderAttributes = function(attributes)
 {
   // Elements entities will be implement later
+  var obj = this;
   var process = [
   {
     key: "division",
     type: this.FuncTypes.QUESTION,
     func: function(arg){
-      this.Attributedivision(arg);
+      obj.Attributedivision(arg);
     }
   },
   {
     key: "key",
     type: this.FuncTypes.STAR,
     func: function(arg){
-      this.AttributesKeys(arg);
+      obj.AttributesKeys(arg);
     }
   },
   {
     key: "time",
     type: this.FuncTypes.STAR,
     func: function(arg){
-      this.AttributesTime(arg);
+      obj.AttributesTime(arg);
     }
   },
   {
@@ -49,13 +50,15 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
     key: "instruments",
     type: this.FuncTypes.QUESTION,
     func: function(arg){
-      this.AttributeInstrument(arg);
+      obj.AttributeInstrument(arg);
     }
   },
   {
     key: "clef",
     type: this.FuncTypes.STAR,
-    func: this.AttributesClef // TODO
+    func: function(arg){
+      obj.AttributesClef(arg)
+      }
   },
   {
     key: "staff-details",
@@ -85,19 +88,20 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
 Fermata.Render.prototype.AttributesClef = function (node)
 {
   // TOdo beaucoup d'Entities ici !
+  var obj = this;
   var process = [
   {
     key: "sign",
     type: this.FuncTypes.DEFAULT,
     func: function(arg){
-      this.AttributesClefSign(arg)
+      obj.AttributesClefSign(arg)
       }
   },
   {
     key: "line",
     type: this.FuncTypes.QUESTION,
     func: function(arg){
-      this.AttributesClefLine(arg)
+      obj.AttributesClefLine(arg)
       }
   },
   {
@@ -122,19 +126,20 @@ Fermata.Render.prototype.AttributesClefSign = function (node)
 Fermata.Render.prototype.AttributesTime = function (node)
 {
   //To do géré la multidefinition de beat
+  var obj = this;
   var process = [
   {
     key: "beats",
     type: this.FuncTypes.DEFAULT,
     func: function(arg){
-      this.AttributesTimeBeats(arg)
+      obj.renderAttributesTimeBeats(arg)
       }
   },
   {
     key: "beat-types",
     type: this.FuncTypes.DEFAULT,
     func: function(arg){
-      this.renderAttributesTimeTypes(arg)
+      obj.renderAttributesTimeTypes(arg)
       }
   },
   ];
@@ -144,16 +149,17 @@ Fermata.Render.prototype.AttributesTime = function (node)
 Fermata.Render.prototype.renderAttributesTimeBeats = function (node)
 {
   this.Attributesdata.beat.beats = node["beats"];
-  dump(this.Attributesdata);
 }
 
 Fermata.Render.prototype.renderAttributesTimeTypes = function (node)
 {
+  console.log(this.Attributesdata);
   this.Attributesdata.beat.type = node["beat-type"];
 }
 
-Fermata.Render.prototype.AttributesKeys = function (node)
+Fermata.Render.prototype.AttributesKeys = function(node)
 {
+  var obj = this;
   if (typeof(node["fifths"]) !== "undefined")
   {
     var process = [
@@ -165,7 +171,9 @@ Fermata.Render.prototype.AttributesKeys = function (node)
     {
       key: "fifths",
       type: this.FuncTypes.DEFAULT,
-      func: this.AttributeKeyFifth
+      func: function(arg){
+        obj.AttributeKeyFifth(arg)
+      }
     },
     {
       key: "mode",
@@ -209,6 +217,7 @@ Fermata.Render.prototype.AttributesKeys = function (node)
 
 Fermata.Render.prototype.Attributedivision = function(node)
 {
+  dump(this.Attributesdata);
   this.Attributesdata.division = node["division"];
 }
 
@@ -219,7 +228,7 @@ Fermata.Render.prototype.AttributeInstrument = function(node)
 
 Fermata.Render.prototype.AttributeKeyFifth = function(node)
 {
-  this.Attributesdata.key.fifths = node["fifths"];
+  this.Attributesdata.keys.fifths = node["fifths"];
 }
 
 Fermata.Render.prototype.Attributesdata = {
