@@ -158,7 +158,9 @@ var Fermata = Fermata || {};
     {
       key: "harmony",
       type: this.FuncTypes.STAR,
-      func: null//TODO implement this function
+      func: function(){
+        obj.renderHarmony();
+      }
     },
     {
       key: "figured-bass",
