@@ -108,8 +108,8 @@ var Fermata = Fermata || {};
     {
       key: "measure",
       type: this.FuncTypes.PLUS,
-      func: function(){
-        obj.renderMeasure();
+      func: function(arg){
+        obj.renderMeasure(arg);
       }
     }
     ];
@@ -126,8 +126,8 @@ var Fermata = Fermata || {};
     {
       key: "note",
       type: this.FuncTypes.STAR,
-      func: function(){
-        obj.renderNote();
+      func: function(arg){
+        obj.renderNote(arg);
       }
     },
 
@@ -151,8 +151,8 @@ var Fermata = Fermata || {};
     {
       key: "attributes",
       type: this.FuncTypes.STAR,
-      func: function(){
-        obj.renderAttributes();
+      func: function(arg){
+        obj.renderAttributes(arg);
       }
     },
     {

@@ -17,22 +17,22 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
   {
     key: "division",
     type: this.FuncTypes.QUESTION,
-    func: function(){
-      this.Attributedivision();
+    func: function(arg){
+      this.Attributedivision(arg);
     }
   },
   {
     key: "key",
     type: this.FuncTypes.STAR,
-    func: function(){
-      this.AttributesKeys();
+    func: function(arg){
+      this.AttributesKeys(arg);
     }
   },
   {
     key: "time",
     type: this.FuncTypes.STAR,
-    func: function(){
-      this.AttributesTime();
+    func: function(arg){
+      this.AttributesTime(arg);
     }
   },
   {
@@ -48,8 +48,8 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
   {
     key: "instruments",
     type: this.FuncTypes.QUESTION,
-    func: function(){
-      this.AttributeInstrument();
+    func: function(arg){
+      this.AttributeInstrument(arg);
     }
   },
   {
@@ -89,15 +89,15 @@ Fermata.Render.prototype.AttributesClef = function (node)
   {
     key: "sign",
     type: this.FuncTypes.DEFAULT,
-    func: function(){
-      this.AttributesClefSign()
+    func: function(arg){
+      this.AttributesClefSign(arg)
       }
   },
   {
     key: "line",
     type: this.FuncTypes.QUESTION,
-    func: function(){
-      this.AttributesClefLine()
+    func: function(arg){
+      this.AttributesClefLine(arg)
       }
   },
   {
@@ -126,15 +126,15 @@ Fermata.Render.prototype.AttributesTime = function (node)
   {
     key: "beats",
     type: this.FuncTypes.DEFAULT,
-    func: function(){
-      this.AttributesTimeBeats()
+    func: function(arg){
+      this.AttributesTimeBeats(arg)
       }
   },
   {
     key: "beat-types",
     type: this.FuncTypes.DEFAULT,
-    func: function(){
-      this.renderAttributesTimeTypes()
+    func: function(arg){
+      this.renderAttributesTimeTypes(arg)
       }
   },
   ];
@@ -144,6 +144,7 @@ Fermata.Render.prototype.AttributesTime = function (node)
 Fermata.Render.prototype.renderAttributesTimeBeats = function (node)
 {
   this.Attributesdata.beat.beats = node["beats"];
+  dump(this.Attributesdata);
 }
 
 Fermata.Render.prototype.renderAttributesTimeTypes = function (node)
