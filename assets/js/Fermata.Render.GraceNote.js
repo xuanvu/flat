@@ -16,8 +16,24 @@ if (typeof(Fermata.Render) === "undefined")
   
   Fermata.Render.prototype.renderGraceNote = function(graceNote)
   {
+    var obj = this;  
+    var processes = [  
+    {
+      key: "grace",
+      type: this.FuncTypes.DEFAULT,
+      func: function (arg){
+        obj.renderGrace(arg);
+      }
+    },
+    {
+      key: "tie",
+      type: this.FuncTypes.STAR,
+      func: null//TODO implement
+    }];
+    this.exploreSubNodes(graceNote, processes);
+    
+    this.renderNoteCommon(graceNote);
     this.renderFullNote(graceNote);
-  //TODO: implement
   }
   
   Fermata.Render.prototype.renderGrace = function (grace)
