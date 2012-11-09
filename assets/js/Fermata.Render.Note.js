@@ -126,28 +126,14 @@ if (typeof(Fermata.Render) === "undefined")
   
   Fermata.Render.prototype.renderPitch = function (pitch)
   {
-    var obj = this;
-    var processes = [
-    {
-      key: "step",
-      type: this.FuncTypes.DEFAULT,
-      func: null//TODO: implement the function
-    },
+    var alter = 0;
+    var step = pitch["step"]["$t"];
+    var octave = pitch["octave"]["$t"];
     
+    if (typeof(pitch["alter"]) !== "undefined")
     {
-      key: "alter",
-      type: this.FuncTypes.QUESTION,
-      func: null//TODO: implement the function
-    },
-      
-    {
-      key: "octave",
-      type: this.FuncTypes.DEFAULT,
-      func: null//TODO: implement the function
+      alter = pitch["alter"]["$t"];
     }
-    ];
-    
-    this.exploreSubNodes(pitch, processes);
   }
 
 }).call(this);
