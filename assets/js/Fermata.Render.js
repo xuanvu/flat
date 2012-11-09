@@ -31,6 +31,7 @@ var Fermata = Fermata || {};
 
       this.renderPart(part);
     }
+    this.render();
   }
 
 
@@ -242,10 +243,10 @@ var Fermata = Fermata || {};
     }
   }
 
-  Fermata.Render.prototype.render = function (measure) {
+  Fermata.Render.prototype.render = function () {
     var stave = new Vex.Flow.Stave(10, 0, 500);
-    var clef = measure["attributes"].clef.sign.$t;
-    var clefName = Fermata.Mapping.Clef.getVexflow(clef);
+    //var clef = measure["attributes"].clef.sign.$t;
+    var clefName = Fermata.Mapping.Clef.getVexflow(this.Attributesdata.clef.sign);
     stave.addClef(clefName);
     stave.setContext(this.ctx);
     stave.draw();
