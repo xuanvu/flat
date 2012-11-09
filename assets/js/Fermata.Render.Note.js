@@ -217,4 +217,9 @@ if (typeof(Fermata.Render) === "undefined")
     }
   };
   
+  Fermata.Render.prototype.renderTie = function (tie)
+  {
+    //TODO
+  }
+  
 }).call(this);
