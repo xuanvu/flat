@@ -120,19 +120,37 @@ if (typeof(Fermata.Render) === "undefined")
     }
   }
   
+  Fermata.Render.prototype.renderNoteCommon = function (note)
+  {
+    var obj = this;  
+    var processes = [
+    {
+      key: "type",
+      type: this.FuncTypes.QUESTION,
+      func: function (arg){
+        obj.renderType(arg);
+      }
+    }];
+  
+    this.exploreSubNodes(note, processes);
+  }
+  
   Fermata.Render.prototype.renderNormalNote = function(normalNote)
   {
+    this.renderFullNote(normalNote);
+    var duration = normalNote["duration"]["$t"];
   //TODO: implement
   }
   
   Fermata.Render.prototype.renderGraceNote = function(graceNote)
   {
+    this.renderFullNote(graceNote);
   //TODO: implement
   }
   
   Fermata.Render.prototype.renderGrace = function (grace)
   {
-    this.renderAttributes(grace);
+    this.renderGraceAttributes(grace);
   }
   
   Fermata.Render.prototype.renderGraceAttributes = function (grace)
