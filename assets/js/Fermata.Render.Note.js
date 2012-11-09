@@ -177,6 +177,44 @@ if (typeof(Fermata.Render) === "undefined")
     {
       alter = pitch["alter"]["$t"];
     }
-  }
-
+  };
+  
+  Fermata.Render.prototype.renderUnpitched = function (unpitched)
+  {
+    var displayStep = null;
+    var displayOctave = null;
+    
+    if (typeof(unpitched["display-step"]) !== "undefined")
+    {
+      displayStep = unpitched["display-step"]["$t"];
+    }
+    if (typeof(unpitched["display-octave"]) !== "undefined")
+    {
+      displayOctave = unpitched["display-octave"]["$t"];
+    }
+  };
+  
+  Fermata.Render.prototype.renderRest = function (rest)
+  {
+    var displayStep = null;
+    var displayOctave = null;
+    var measure = false;
+    
+    if (typeof(rest["display-step"]) !== "undefined")
+    {
+      displayStep = rest["display-step"]["$t"];
+    }
+    if (typeof(rest["display-octave"]) !== "undefined")
+    {
+      displayOctave = rest["display-octave"]["$t"];
+    }
+    if (typeof(rest["measure"]) !== "undefined")
+    {
+      if (rest["measure"] === "yes")
+      {
+        measure = true;
+      }
+    }
+  };
+  
 }).call(this);
