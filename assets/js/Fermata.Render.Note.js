@@ -219,7 +219,33 @@ if (typeof(Fermata.Render) === "undefined")
   
   Fermata.Render.prototype.renderTie = function (tie)
   {
-    //TODO
-  }
+  //TODO
+  };
+  
+  Fermata.render.prototype.SymbolSize = 
+  {
+    FULL: "full",
+    CUE: "cue",
+    LARGE: "large"
+  };
+  
+  Fermata.Render.prototype.renderType = function (type)
+  {
+    var value = type["$t"];
+    var size = this.SymbolSize.FULL;
+    
+    if (typeof(type["size"]) !== "undefined")
+    {
+      if (type["size"] === this.SymbolSize.CUE)
+      {
+        size = this.SymbolSize.CUE;
+      }
+      else if (type["size"] === this.SymbolSize.LARGE)
+      {
+        size = this.SymbolSize.LARGE;
+      }
+    }
+    
+  };
   
 }).call(this);
