@@ -25,14 +25,14 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
     key: "key",
     type: this.FuncTypes.STAR,
     func: function(){
-      this.renderAttributes.keys();
+      this.AttributesKeys();
     }
   },
   {
     key: "time",
     type: this.FuncTypes.STAR,
     func: function(){
-      this.renderAttributes.time();
+      this.AttributesTime();
     }
   },
   {
@@ -55,7 +55,7 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
   {
     key: "clef",
     type: this.FuncTypes.STAR,
-    func: this.renderAttributes.clef // TODO
+    func: this.AttributesClef // TODO
   },
   {
     key: "staff-details",
@@ -82,7 +82,7 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
   this.exploreSubNodes(attributes, process);
 }
 
-Fermata.Render.prototype.renderAttributes.clef = function (node)
+Fermata.Render.prototype.AttributesClef = function (node)
 {
   // TOdo beaucoup d'Entities ici !
   var process = [
@@ -90,14 +90,14 @@ Fermata.Render.prototype.renderAttributes.clef = function (node)
     key: "sign",
     type: this.FuncTypes.DEFAULT,
     func: function(){
-      this.renderAttributes.clef.sign()
+      this.AttributesClefSign()
       }
   },
   {
     key: "line",
     type: this.FuncTypes.QUESTION,
     func: function(){
-      this.renderAttributes.clef.line()
+      this.AttributesClefLine()
       }
   },
   {
@@ -109,17 +109,17 @@ Fermata.Render.prototype.renderAttributes.clef = function (node)
   this.exploreSubNodes(node, process);
 }
 
-Fermata.Render.prototype.renderAttributes.clef.line = function (node)
+Fermata.Render.prototype.AttributesClefLine = function (node)
 {
   this.Attributesdata.clef.line = node["line"];
 }
 
-Fermata.Render.prototype.renderAttributes.clef.sign = function (node)
+Fermata.Render.prototype.AttributesClefSign = function (node)
 {
   this.Attributesdata.clef.sign = node["sign"];
 }
 
-Fermata.Render.prototype.renderAttributes.time = function (node)
+Fermata.Render.prototype.AttributesTime = function (node)
 {
   //To do géré la multidefinition de beat
   var process = [
@@ -127,31 +127,31 @@ Fermata.Render.prototype.renderAttributes.time = function (node)
     key: "beats",
     type: this.FuncTypes.DEFAULT,
     func: function(){
-      this.renderAttributes.time.beats()
+      this.AttributesTimeBeats()
       }
   },
   {
     key: "beat-types",
     type: this.FuncTypes.DEFAULT,
     func: function(){
-      this.renderAttributes.time.types()
+      this.renderAttributesTimeTypes()
       }
   },
   ];
   this.exploreSubNodes(node, process);
 }
 
-Fermata.Render.prototype.renderAttributes.time.beats = function (node)
+Fermata.Render.prototype.renderAttributesTimeBeats = function (node)
 {
   this.Attributesdata.beat.beats = node["beats"];
 }
 
-Fermata.Render.prototype.renderAttributes.time.types = function (node)
+Fermata.Render.prototype.renderAttributesTimeTypes = function (node)
 {
   this.Attributesdata.beat.type = node["beat-type"];
 }
 
-Fermata.Render.prototype.renderAttributes.keys = function (node)
+Fermata.Render.prototype.AttributesKeys = function (node)
 {
   if (typeof(node["fifths"]) !== "undefined")
   {
