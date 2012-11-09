@@ -7,7 +7,7 @@ var Fermata = Fermata || {};
 
 if (typeof(Fermata.Render) === "undefined")
 {
-  throw ("Fermata.Render.js MUST be included before Fermata.Render.Note.js");
+  throw ("Fermata.Render.js MUST be included before Fermata.Render.Call.js");
 }
 
 (function () {
