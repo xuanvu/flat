@@ -74,7 +74,53 @@ if (typeof(Fermata.Render) === "undefined")
   
   Fermata.Render.prototype.renderCueNote = function(cueNote)
   {
+    var obj = this;  
+    var processes = [  
+    {
+      key: "cue",
+      type: this.FuncTypes.DEFAULT,
+      func: null//TODO: implement the function
+    }];
+    this.exploreSubNodes(cueNote, processes);
+      
+    this.renderFullNote(cueNote);
+    var duration = cueNote["duration"]["$t"];
+  
+    
   //TODO: implement
+  }
+  
+  Fermata.render.prototype.renderFullNote = function (fullNote)
+  {
+    var obj = this;  
+    var processes = [
+    {
+      key: "chord",
+      type: this.FuncTypes.QUESTION,
+      func: function (arg){
+        obj.renderPitch(arg);
+      }
+    },
+    
+    {
+      key: "pitch",
+      type: this.FuncTypes.QUESTION,
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "unpitched",
+      type: this.FuncTypes.QUESTION,
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "rest",
+      type: this.FuncTypes.QUESTION,
+      func: null//TODO: implement the function
+    }];
+  
+    this.exploreSubNodes(fullNote, processes);
   }
   
   Fermata.Render.prototype.renderNormalNote = function(normalNote)
