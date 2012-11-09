@@ -16,7 +16,7 @@ if (typeof(Fermata.Render) === "undefined")
   
     
   Fermata.Render.prototype.renderNormalNote = function(normalNote)
-  {
+  { 
     this.renderFullNote(normalNote);
     var duration = normalNote["duration"]["$t"];
     this.renderNoteCommon(normalNote);

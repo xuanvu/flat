@@ -29,19 +29,19 @@ if (typeof(Fermata.Render) === "undefined")
     {
       val: this.NoteType.NORMAL,
       func: function(){
-        obj.renderNormalNote();
+        obj.renderNormalNote(note);
       }
     },
     {
       val: this.NoteType.CUE,
       func: function(){
-        obj.renderCueNote();
+        obj.renderCueNote(note);
       }
     },
     {
       val: this.NoteType.GRACE,
       func: function(){
-        obj.renderGraceNote();
+        obj.renderGraceNote(note);
       }
     }];
     
@@ -73,7 +73,7 @@ if (typeof(Fermata.Render) === "undefined")
   }
   
   Fermata.Render.prototype.renderFullNote = function (fullNote)
-  {
+  { 
     var obj = this;  
     var processes = [
     {
