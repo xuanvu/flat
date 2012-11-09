@@ -24,23 +24,24 @@ if (typeof(Fermata.Render) === "undefined")
   {
     var noteType = this.getNoteType(note);
     
+    var obj = this;
     var processes = [
     {
       val: this.NoteType.NORMAL,
       func: function(){
-        this.renderNormalNote();
+        obj.renderNormalNote();
       }
     },
     {
       val: this.NoteType.CUE,
       func: function(){
-        this.renderCueNote();
+        obj.renderCueNote();
       }
     },
     {
       val: this.NoteType.GRACE,
       func: function(){
-        this.renderGraceNote();
+        obj.renderGraceNote();
       }
     }];
     
@@ -119,9 +120,8 @@ if (typeof(Fermata.Render) === "undefined")
       {
         slash = grace["slash"];
       }
-      //TODO: what do we do if the value is not false neither true ?
+    //TODO: what do we do if the value is not false neither true ?
     }
   }
-
 
 }).call(this);
