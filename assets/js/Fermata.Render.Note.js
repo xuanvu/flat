@@ -114,7 +114,7 @@ if (typeof(Fermata.Render) === "undefined")
       type: this.FuncTypes.QUESTION,
       func: function (arg){
         obj.renderType(arg);
-      }
+      }//TODO: add the others elements
     }];
   
     this.exploreSubNodes(note, processes);
