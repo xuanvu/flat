@@ -120,13 +120,6 @@ if (typeof(Fermata.Render) === "undefined")
     this.exploreSubNodes(note, processes);
   }
   
-  Fermata.Render.prototype.renderNormalNote = function(normalNote)
-  {
-    this.renderFullNote(normalNote);
-    var duration = normalNote["duration"]["$t"];
-  //TODO: implement
-  }
-  
   Fermata.Render.prototype.renderPitch = function (pitch)
   {
     var alter = 0;

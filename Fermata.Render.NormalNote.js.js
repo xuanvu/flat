@@ -14,5 +14,12 @@ if (typeof(Fermata.Render) === "undefined")
 (function () {
   "use strict";
   
+    
+  Fermata.Render.prototype.renderNormalNote = function(normalNote)
+  {
+    this.renderFullNote(normalNote);
+    var duration = normalNote["duration"]["$t"];
+    this.renderNoteCommon(normalNote);
+  }
   
 }).call(this);
