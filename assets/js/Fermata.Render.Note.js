@@ -123,5 +123,31 @@ if (typeof(Fermata.Render) === "undefined")
     //TODO: what do we do if the value is not false neither true ?
     }
   }
+  
+  Fermata.Render.prototype.renderPitch = function (pitch)
+  {
+    var obj = this;
+    var processes = [
+    {
+      key: "step",
+      type: this.FuncTypes.DEFAULT,
+      func: null//TODO: implement the function
+    },
+    
+    {
+      key: "alter",
+      type: this.FuncTypes.QUESTION,
+      func: null//TODO: implement the function
+    },
+      
+    {
+      key: "octave",
+      type: this.FuncTypes.DEFAULT,
+      func: null//TODO: implement the function
+    }
+    ];
+    
+    this.exploreSubNodes(pitch, processes);
+  }
 
 }).call(this);
