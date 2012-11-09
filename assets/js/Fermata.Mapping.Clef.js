@@ -12,9 +12,9 @@ Fermata.Mapping.Clef = {};
   "use strict";
 
   var musicXMLToVexflow = {
-    "G": "treble"
-    "F": "bass"
-    "C": "alto"
+    "G": "treble",
+    "F": "bass",
+    "C": "alto",
     "TAB": "TAB"
   };
 
