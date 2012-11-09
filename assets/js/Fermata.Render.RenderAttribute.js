@@ -139,7 +139,7 @@ Fermata.Render.prototype.AttributesTime = function (node)
     key: "beat-type",
     type: this.FuncTypes.DEFAULT,
     func: function(arg){
-      obj.renderAttributesTimeTypes(arg)
+      obj.renderAttributesTimeTypes(arg);
       }
   },
   ];
