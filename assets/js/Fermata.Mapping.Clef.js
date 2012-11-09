@@ -13,6 +13,9 @@ Fermata.Mapping.Clef = {};
 
   var musicXMLToVexflow = {
     "G": "treble"
+    "F": "bass"
+    "C": "alto"
+    "TAB": "TAB"
   };
 
   var vexFlowToMusicXml = {};
