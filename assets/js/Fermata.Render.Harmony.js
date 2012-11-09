@@ -46,17 +46,17 @@ if (typeof(Fermata.Render) === "undefined")
     {
     }
 
-    Fermata.Render.prototype.renderCueHarmony = function(explicitHarmony)
+    Fermata.Render.prototype.renderExplicitHarmony = function(explicitHarmony)
     {
 	//TODO: implement
     }
 
-    Fermata.Render.prototype.renderNormalHarmony = function(impliedHarmony)
+    Fermata.Render.prototype.renderImpliedHarmony = function(impliedHarmony)
     {
 	//TODO: implement
     }
 
-    Fermata.Render.prototype.renderGraceHarmony = function(alternateHarmony)
+    Fermata.Render.prototype.renderAlternateHarmony = function(alternateHarmony)
     {
 	//TODO: implement
     }
