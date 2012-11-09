@@ -197,7 +197,7 @@ if (typeof(Fermata.Render) === "undefined")
   //TODO
   };
   
-  Fermata.render.prototype.SymbolSize = 
+  Fermata.Render.prototype.SymbolSize = 
   {
     FULL: "full",
     CUE: "cue",
