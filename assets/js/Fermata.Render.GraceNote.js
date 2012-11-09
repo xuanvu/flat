@@ -14,7 +14,13 @@ if (typeof(Fermata.Render) === "undefined")
 (function () {
   "use strict";
   
-   Fermata.Render.prototype.renderGrace = function (grace)
+  Fermata.Render.prototype.renderGraceNote = function(graceNote)
+  {
+    this.renderFullNote(graceNote);
+  //TODO: implement
+  }
+  
+  Fermata.Render.prototype.renderGrace = function (grace)
   {
     this.renderGraceAttributes(grace);
   }

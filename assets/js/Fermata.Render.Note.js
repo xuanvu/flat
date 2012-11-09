@@ -142,12 +142,6 @@ if (typeof(Fermata.Render) === "undefined")
   //TODO: implement
   }
   
-  Fermata.Render.prototype.renderGraceNote = function(graceNote)
-  {
-    this.renderFullNote(graceNote);
-  //TODO: implement
-  }
-  
   Fermata.Render.prototype.renderPitch = function (pitch)
   {
     var alter = 0;
