@@ -16,7 +16,7 @@ Fermata.Render.prototype.renderAttributes = function(attributes)
   var obj = this;
   var process = [
   {
-    key: "division",
+    key: "divisions",
     type: this.FuncTypes.QUESTION,
     func: function(arg){
       obj.Attributedivision(arg);
@@ -115,12 +115,12 @@ Fermata.Render.prototype.AttributesClef = function (node)
 
 Fermata.Render.prototype.AttributesClefLine = function (node)
 {
-  this.Attributesdata.clef.line = node["line"];
+  this.Attributesdata.clef.line = node["$t"];
 }
 
 Fermata.Render.prototype.AttributesClefSign = function (node)
 {
-  this.Attributesdata.clef.sign = node["sign"];
+  this.Attributesdata.clef.sign = node["$t"];
 }
 
 Fermata.Render.prototype.AttributesTime = function (node)
@@ -148,13 +148,12 @@ Fermata.Render.prototype.AttributesTime = function (node)
 
 Fermata.Render.prototype.renderAttributesTimeBeats = function (node)
 {
-  this.Attributesdata.beat.beats = node["beats"];
+  this.Attributesdata.beat.beats = node["$t"];
 }
 
 Fermata.Render.prototype.renderAttributesTimeTypes = function (node)
 {
-  console.log(this.Attributesdata);
-  this.Attributesdata.beat.type = node["beat-type"];
+  this.Attributesdata.beat.type = node["$t"];
 }
 
 Fermata.Render.prototype.AttributesKeys = function(node)
@@ -217,18 +216,17 @@ Fermata.Render.prototype.AttributesKeys = function(node)
 
 Fermata.Render.prototype.Attributedivision = function(node)
 {
-  dump(this.Attributesdata);
-  this.Attributesdata.division = node["division"];
+  this.Attributesdata.division = node["$t"];
 }
 
 Fermata.Render.prototype.AttributeInstrument = function(node)
 {
-  this.Attributesdata.instrument = node["instruments"];
+  this.Attributesdata.instrument = node["$t"];
 }
 
 Fermata.Render.prototype.AttributeKeyFifth = function(node)
 {
-  this.Attributesdata.keys.fifths = node["fifths"];
+  this.Attributesdata.keys.fifths = node["$t"];
 }
 
 Fermata.Render.prototype.Attributesdata = {
