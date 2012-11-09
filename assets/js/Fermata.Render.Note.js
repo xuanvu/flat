@@ -87,7 +87,7 @@ if (typeof(Fermata.Render) === "undefined")
     var duration = cueNote["duration"]["$t"];
   }
   
-  Fermata.render.prototype.renderFullNote = function (fullNote)
+  Fermata.Render.prototype.renderFullNote = function (fullNote)
   {
     var obj = this;  
     var processes = [
