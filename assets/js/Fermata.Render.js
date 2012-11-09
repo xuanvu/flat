@@ -197,7 +197,6 @@ var Fermata = Fermata || {};
       func: null//TODO implement this function
     },
     ];
-
     this.exploreSubNodes(measure, processes);
   }
 
@@ -248,6 +247,7 @@ var Fermata = Fermata || {};
     //var clef = measure["attributes"].clef.sign.$t;
     var clefName = Fermata.Mapping.Clef.getVexflow(this.Attributesdata.clef.sign);
     stave.addClef(clefName);
+    stave.addTimeSignature("C");
     stave.setContext(this.ctx);
     stave.draw();
 
