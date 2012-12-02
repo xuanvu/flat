@@ -38,9 +38,7 @@ var Fermata = Fermata || {};
     var clefName = Fermata.Mapping.Clef.getVexflow(this.Attributesdata.clef.sign);
     stave.addClef(clefName).setContext(this.ctx).draw();
     stave.addTimeSignature("C");
-
- 
-
+    
     // Create the notes
     var notes = [
     // A quarter-note C.
@@ -60,10 +58,11 @@ var Fermata = Fermata || {};
     stave.setContext(this.ctx);
 
      // Create a voice in 4/4
-  var voice = new Vex.Flow.Voice({
+    var voice = new Vex.Flow.Voice({
     num_beats: 4,
     beat_value: 4,
     resolution: Vex.Flow.RESOLUTION
+
   });
 
   // Add notes to voice
@@ -75,9 +74,6 @@ var Fermata = Fermata || {};
 
   // Render voice
   voice.draw(this.ctx, stave);
-
-
-
   //TODO: to be continued...
   }
 
