@@ -4415,10 +4415,10 @@ input[type="submit"].btn.btn-mini {
   background: #000;
   display: none;
 }
-/*.canvas-score {
-  width: 100%;
+.canvas-score {
+  width: 800px;
   height: 300px;
-}*/.pull-right {
+}.pull-right {
   float: right;
 }
 .pull-left {

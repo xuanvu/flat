@@ -28,12 +28,58 @@ var Fermata = Fermata || {};
 
     for (var i = 0 ; i < parts.idx.length ; i++) {
       var part = parts.idx[i];
-
       this.renderPart(part);
     }
     this.render();
   }
 
+  Fermata.Render.prototype.render = function () {
+    var stave = new Vex.Flow.Stave(10, 0, 800);
+    var clefName = Fermata.Mapping.Clef.getVexflow(this.Attributesdata.clef.sign);
+    stave.addClef(clefName).setContext(this.ctx).draw();
+    stave.addTimeSignature("C");
+
+ 
+
+    // Create the notes
+    var notes = [
+    // A quarter-note C.
+    new Vex.Flow.StaveNote({ keys: ["c/4"], duration: "q" }),
+
+    // A quarter-note D.
+    new Vex.Flow.StaveNote({ keys: ["d/4"], duration: "q" }),
+
+    // A quarter-note rest. Note that the key (b/4) specifies the vertical
+    // position of the rest.
+    new Vex.Flow.StaveNote({ keys: ["b/4"], duration: "qr" }),
+
+    // A C-Major chord.
+    new Vex.Flow.StaveNote({ keys: ["c/4", "e/4", "g/4"], duration: "q" })
+    ];
+
+    stave.setContext(this.ctx);
+
+     // Create a voice in 4/4
+  var voice = new Vex.Flow.Voice({
+    num_beats: 4,
+    beat_value: 4,
+    resolution: Vex.Flow.RESOLUTION
+  });
+
+  // Add notes to voice
+  voice.addTickables(notes);
+
+  // Format and justify the notes to 500 pixels
+  var formatter = new Vex.Flow.Formatter().
+    joinVoices([voice]).format([voice], 700);
+
+  // Render voice
+  voice.draw(this.ctx, stave);
+
+
+
+  //TODO: to be continued...
+  }
 
   //Note: info in score element
   Fermata.Render.prototype.renderScorePartwise = function (scorePartwise)
@@ -240,18 +286,6 @@ var Fermata = Fermata || {};
     {
       width = measure["width"]; //TODO: check if the value is a number
     }
-  }
-
-  Fermata.Render.prototype.render = function () {
-    var stave = new Vex.Flow.Stave(10, 0, 500);
-    //var clef = measure["attributes"].clef.sign.$t;
-    var clefName = Fermata.Mapping.Clef.getVexflow(this.Attributesdata.clef.sign);
-    stave.addClef(clefName);
-    stave.addTimeSignature("C");
-    stave.setContext(this.ctx);
-    stave.draw();
-
-  //TODO: to be continued...
   }
 
 }).call(this);
