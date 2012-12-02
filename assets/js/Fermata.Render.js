@@ -34,7 +34,7 @@ var Fermata = Fermata || {};
   }
 
   Fermata.Render.prototype.render = function () {
-    var stave = new Vex.Flow.Stave(10, 0, 800);
+    var stave = new Vex.Flow.Stave(10, 0, 600);
     var clefName = Fermata.Mapping.Clef.getVexflow(this.Attributesdata.clef.sign);
     stave.addClef(clefName).setContext(this.ctx).draw();
     stave.addTimeSignature("C");
@@ -71,7 +71,7 @@ var Fermata = Fermata || {};
 
   // Format and justify the notes to 500 pixels
   var formatter = new Vex.Flow.Formatter().
-    joinVoices([voice]).format([voice], 700);
+    joinVoices([voice]).format([voice], 200);
 
   // Render voice
   voice.draw(this.ctx, stave);
