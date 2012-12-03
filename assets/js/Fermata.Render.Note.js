@@ -198,7 +198,6 @@ if (typeof(Fermata.Render) === "undefined")
         size = this.SymbolSize.LARGE;
       }
     }
-    
   };
   
 }).call(this);

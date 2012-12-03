@@ -6,6 +6,7 @@ var Fermata = Fermata || {};
   Fermata.Render = function (data, container) {
     this.data = data;
     this.container = container;
+    this.staves = null;
 
     // Client-side, jQuery selector
     if (container !== null) {
@@ -64,14 +65,11 @@ var Fermata = Fermata || {};
     resolution: Vex.Flow.RESOLUTION
 
   });
-
   // Add notes to voice
   voice.addTickables(notes);
-
   // Format and justify the notes to 500 pixels
   var formatter = new Vex.Flow.Formatter().
     joinVoices([voice]).format([voice], 200);
-
   // Render voice
   voice.draw(this.ctx, stave);
   //TODO: to be continued...
