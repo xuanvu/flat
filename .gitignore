@@ -1,5 +1,7 @@
+/node_modules/
 /nbproject/
 .gradle
+/public/css/*
 
 #Temorary files
 *~

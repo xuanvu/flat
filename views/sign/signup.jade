@@ -1,0 +1,27 @@
+extends layout
+
+block title
+ | Signup
+
+block content
+  .span6.federated
+    a.btn.btn-google
+      i.icon-federated-google
+      | Sign up with Google
+    a.btn.btn-facebook
+      i.icon-federated-facebook
+      | Sign up with Facebook
+    a.btn.btn-twitter
+      i.icon-federated-twitter
+      | Sign up with Twitter
+  .span6.form
+    .row
+      input.span12.form-inline(type='email', placeholder='Email address')
+      input.span12.form-inline(type='text', placeholder='Username')
+      input.span12.form-inline(type='password', placeholder='Password')
+      p.pull-right.submit
+        input.btn.btn-primary(type='submit', value='Signup')
+      p.tos By registering you agree to Flat's Terms of Service.
+  .span12.other-action
+    | You already have an account? 
+    a(href='/signin') Sign in

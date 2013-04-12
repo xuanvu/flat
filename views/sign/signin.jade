@@ -1,0 +1,25 @@
+extends layout
+
+block title
+ | Sign in
+
+block content
+  .span6.federated
+    a.btn.btn-google
+      i.icon-federated-google
+      | Sign in with Google
+    a.btn.btn-facebook
+      i.icon-federated-facebook
+      | Sign in with Facebook
+    a.btn.btn-twitter
+      i.icon-federated-twitter
+      | Sign in with Twitter
+  .span6.form
+    .row.signin
+      input.span12.form-inline(type='text', placeholder='Username')
+      input.span12.form-inline(type='password', placeholder='Password')
+      p.pull-right.submit
+        input.btn.btn-primary(type='submit', value='Sign in')
+  .span12.other-action
+    | You need an account ? 
+    a(href='/signup') Sign up
