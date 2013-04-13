@@ -8,8 +8,7 @@ var express = require('express'),
     user = require('./routes/user'),
     http = require('http'),
     path = require('path'),
-    fs = require('fs'),
-    lessMiddleware = require('less-middleware');
+    fs = require('fs');
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
@@ -37,23 +36,14 @@ app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
+  var lessMiddleware = require('less-middleware');
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   app.use(lessMiddleware({
-    src: path.join(__dirname, 'public', 'less'),
-    dest: path.join(__dirname, 'public', 'css'),
-    prefix: '/css',
+    src: path.join(__dirname, 'public/less'),
+    dest: path.join(__dirname, 'public/dist/css'),
+    prefix: '/dist/css',
     force: true,
     compress: false
-  }));
-}
-// prod
-else {
-  app.use(lessMiddleware({
-    src: path.join(__dirname, 'public', 'less'),
-    dest: path.join(__dirname, 'public', 'css'),
-    prefix: '/css',
-    compress: true,
-    once: true
   }));
 }
 

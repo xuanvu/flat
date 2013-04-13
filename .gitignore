@@ -1,7 +1,7 @@
 /node_modules/
 /nbproject/
 .gradle
-/public/css/*
+/public/dist
 
 #Temorary files
 npm-debug.log
