@@ -1,0 +1,10 @@
+/node_modules/
+/nbproject/
+.gradle
+/public/dist
+
+#Temorary files
+npm-debug.log
+*~
+\#*#
+.#*

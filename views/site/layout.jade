@@ -1,0 +1,14 @@
+doctype 5
+html(lang='en')
+  head
+    title= 'Flat'
+    link(rel='stylesheet', href='/css/flat-site.css')
+  body.flat-site
+    .navbar.navbar-fixed-top.header
+      .container
+        .pull-left.logo
+          img(src='/img/logo-header.png',alt='Flat, compose everywhere')
+        .pull-right.signin
+          a.btn.btn-primary(href='/signin') Sign in
+    .content-wrapper
+      block content
