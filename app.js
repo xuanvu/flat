@@ -59,8 +59,9 @@ else {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
-app.get('/signup', routes.signup);
-app.get('/signin', routes.signin);
+app.get('/auth', routes.auth);
+// app.get('/signup', routes.signup);
+// app.get('/signin', routes.signin);
 // app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){

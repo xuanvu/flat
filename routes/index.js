@@ -1,12 +1,8 @@
 
 exports.index = function (req, res) {
-  res.render('site/home.jade');
+  res.redirect('/auth');
 };
 
-exports.signup = function (req, res) {
-  res.render('sign/signup.jade');
-};
-
-exports.signin = function (req, res) {
-  res.render('sign/signin.jade');
+exports.auth = function (req, res) {
+  res.render('auth/layout.html');
 };

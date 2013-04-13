@@ -4,6 +4,7 @@
 /public/css/*
 
 #Temorary files
+npm-debug.log
 *~
 \#*#
 .#*
