@@ -7,8 +7,16 @@
   },
   "dependencies": {
     "express": "3.1.1",
-    "jade": "*",
-    "less-middleware": "*"
+    "swagger-node-express": "1.2.3",
+    "validator": "0.5.0",
+    "express-validator": "0.3.2",
+    "less-middleware": "*",
+    "jugglingdb": "0.2.x",
+    "jugglingdb-mongodb": "latest",
+    "jugglingdb-nano": "latest",
+    "bcrypt": "*",
+    "passport": "0.1.x",
+    "passport-local":  "0.1.x"
   },
   "devDependencies": {
     "jshint": "*",

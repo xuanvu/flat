@@ -11,12 +11,14 @@
   </div>
   <div class="span6 form">
     <div class="row">
-      <input type="email" placeholder="Email address" class="span12 form-inline"/>
-      <input type="text" placeholder="Username" class="span12 form-inline"/>
-      <input type="password" placeholder="Password" class="span12 form-inline"/>
-      <p class="pull-right submit">
-        <input type="submit" value="Signup" class="btn btn-primary"/>
-      </p>
+      <form ng-submit="signup()"><!-- 
+        <input type="email" placeholder="Email address" class="span12 form-inline" ng-model="email" name="email" required />
+        <input type="text" placeholder="Username" class="span12 form-inline" ng-model="username" name="username" required />
+        <input type="password" placeholder="Password" class="span12 form-inline" ng-model="password" name="password" required /> -->
+        <p class="pull-right submit">
+          <input type="submit" value="Signup" class="btn btn-primary" />
+        </p>
+      </form>
       <p class="tos">
         By registering you agree to Flat's Terms of Service.
       </p>
