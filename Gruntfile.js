@@ -20,6 +20,28 @@ module.exports = function(grunt) {
         }
       }
     },
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          'public/dist/views/auth/_signup.html': 'public/views/auth/_signup.html',
+          'public/dist/views/auth/_signin.html': 'public/views/auth/_signin.html'
+        }
+      }
+    },
+    ngtemplates: {
+      flatAuth: {
+        options:    {
+          base:     'public/dist/views',
+          prepend:  '/views/'
+        },
+        src:        [ 'public/dist/views/auth/**.html' ],
+        dest:       'public/dist/js/auth-templates.js'
+      },
+    },
     concat: {
       js_deps: {
         src: [
@@ -31,7 +53,8 @@ module.exports = function(grunt) {
       },
       js_auth: {
         src: [
-          'public/js/auth/app.js', 
+          'public/js/auth/app.js',
+          '<%= ngtemplates.flatAuth.dest %>',
           'public/js/auth/controllers.js',
           'public/js/auth/services.js'
         ],
@@ -55,8 +78,10 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', ['clean', 'less', 'concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'less', 'htmlmin', 'ngtemplates', 'concat', 'uglify']);
 };
