@@ -80,6 +80,7 @@ schemas.getSchemas(schema);
 // Front
 app.get('/', routes.index);
 app.get('/auth', routes.auth);
+app.get('/dashboard', routes.dashboard);
 
 // API
 app.use('/api', appApi);
