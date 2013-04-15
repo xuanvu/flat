@@ -72,7 +72,7 @@ FlatApi.prototype.authSignup = function(sw) {
           if (err) {
             return _this.errorResponse(res, sw, 'Your username or e-mail is already used.', err.statusCode);
           }
-
+          req.session.user = user;
           res.send(200);
         });
       });

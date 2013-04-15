@@ -1,8 +1,13 @@
 <h1>
   <img src="/img/logo-200.png" alt="Flat, compose everywhere">
-  <span>Sign in</span>
+  <span>Sign up</span>
 </h1>
 
+<div class="alert alert-error" ng-show="errors">
+  <a class="close" data-dismiss="alert" ng-click="errors = false">&times;</a>
+  <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{error}}</li></ul>
+  <span ng-show="errors.length == 1">{{errors[0]}}</span>
+</div>
 <div class="content row">
   <div class="span6 federated">
     <a class="btn btn-google"><i class="icon-federated-google"></i>Sign up with Google</a>
@@ -11,10 +16,10 @@
   </div>
   <div class="span6 form">
     <div class="row">
-      <form ng-submit="signup()"><!-- 
+      <form ng-submit="signup()">
         <input type="email" placeholder="Email address" class="span12 form-inline" ng-model="email" name="email" required />
         <input type="text" placeholder="Username" class="span12 form-inline" ng-model="username" name="username" required />
-        <input type="password" placeholder="Password" class="span12 form-inline" ng-model="password" name="password" required /> -->
+        <input type="password" placeholder="Password" class="span12 form-inline" ng-model="password" name="password" required />
         <p class="pull-right submit">
           <input type="submit" value="Signup" class="btn btn-primary" />
         </p>

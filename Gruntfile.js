@@ -32,7 +32,8 @@ module.exports = function(grunt) {
       js_auth: {
         src: [
           'public/js/auth/app.js', 
-          'public/js/auth/controllers.js'
+          'public/js/auth/controllers.js',
+          'public/js/auth/services.js'
         ],
         dest: 'public/dist/js/flat-auth.js'
       }

@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('flatAuth', []). 
+var app = angular.module('flatAuth', ['flatAuthServices']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/signup', { templateUrl: '/views/auth/_signup.html', controller: SignupCtrl }).
