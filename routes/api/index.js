@@ -5,11 +5,15 @@ var models = require('./models'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
-function FlatApi(sw, schema) {
+function FlatApi(app, sw, schema) {
+  this.app = app;
   this.schema = schema;
   sw.addModels(models)
+    // /auth
     .addPost(this.authSignup(sw))
-    .addPost(this.authSignin(sw));
+    .addPost(this.authSignin(sw))
+    // /account
+    .addGet(this.getAccount(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -27,9 +31,9 @@ function FlatApi(sw, schema) {
   ));
 }
 
-FlatApi.prototype.jsonResponse = function(res, sw, httpCode, body) {
+FlatApi.prototype.jsonResponse = function(res, sw, body, httpCode) {
   sw.setHeaders(res);
-  res.send(httpCode, 'for(;;);' + JSON.stringify(body));
+  res.send(httpCode || 200, 'for(;;);' + JSON.stringify(body));
 };
 
 FlatApi.prototype.errorResponse = function (res, sw, body, errorCode) {
@@ -106,8 +110,36 @@ FlatApi.prototype.authSignin = function(sw) {
         }
 
         req.session.user = user;
-        res.send(200);
+
+        if ('development' === _this.app.get('env')) {
+          return _this.jsonResponse(res, sw, { devel_api_key: req.sessionID });
+        }
+        return res.send(200);
       })(req);
+    }
+  };
+};
+
+FlatApi.prototype.getAccount = function(sw) {
+  var _this = this;
+
+  return {
+    'spec': {
+      'summary': 'User account',
+      'path': '/account.{format}',
+      'method': 'GET',
+      'nickname': 'getAccount'
+    },
+    'action': function (req, res) {
+      if (!req.session || !req.session.user) {
+        return res.send(403);
+      }
+
+      return _this.jsonResponse(res, sw, {
+        email: req.session.user.email,
+        username: req.session.user.username
+      });
+      res.send(200);
     }
   };
 };

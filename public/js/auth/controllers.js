@@ -19,6 +19,8 @@ function SigninCtrl($scope, Auth) {
   };
 }
 
+SigninCtrl.$inject = ['$scope', 'Auth'];
+
 function SignupCtrl($scope, Auth) {
   $scope.signup = function() {
     if (!$scope.email || !$scope.username || !$scope.password) {
@@ -47,6 +49,8 @@ function SignupCtrl($scope, Auth) {
     return true;
   };
 }
+
+SignupCtrl.$inject = ['$scope', 'Auth'];
 
 function LogoutCtrl() {
 }

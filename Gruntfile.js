@@ -66,7 +66,7 @@ module.exports = function(grunt) {
         stripBanners: true,
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
         '<%= grunt.template.today() %> */\n',
-        mangle: false
+        // mangle: false
       },
       dist: {
         files: {
