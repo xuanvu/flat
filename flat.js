@@ -87,7 +87,7 @@ app.use('/api', appApi);
 appApi.use(expressValidator);
 appApi.use(function(req, res, next) {
   if ('OPTIONS' === req.method) {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'http://dev.flat.io');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.send(200);
@@ -96,6 +96,13 @@ appApi.use(function(req, res, next) {
     next();
   }
 });
+
+swagger.setHeaders = function setHeaders(res) {
+  res.header('Access-Control-Allow-Origin', 'http://dev.flat.io');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Content-Type', 'application/json; charset=utf-8');
+};
 
 if ('development' === app.get('env')) {
   appApi.use(function(req, res, next) {
@@ -115,7 +122,7 @@ if ('development' === app.get('env')) {
 }
 
 swagger.setAppHandler(appApi);
-var flatApi = new api.api(swagger, schema);
+var flatApi = new api.api(app, swagger, schema);
 
 if ('development' === app.get('env')) {
   swagger.configure('http://' + app.get('host') + ':' + app.get('port') + '/api', '0.1');
