@@ -82,12 +82,12 @@ if ('mongodb' === app.get('db')) {
   console.log('[+] Uses mongodb');
   schema = new Schema('mongodb', { url: 'mongo://localhost/flat' });
 }
-else if ('postgres' === app.get('db')) {
-  console.log('[+] Uses postgres');
-  schema = new Schema('postgres', {
-    database: 'myapp_test',
-    username: 'postgres',
-    password: process.env.DB_PASSWORD
+else if ('mysql' === app.get('db')) {
+  console.log('[+] Uses mysql');
+  schema = new Schema('mysql', {
+    database: 'flat',
+    username: 'root',
+    password: process.env.DB_PASSWORD || ''
   });
 }
 else {
