@@ -15,7 +15,7 @@
     "jugglingdb": "0.2.x",
     "jugglingdb-mongodb": "latest",
     "jugglingdb-nano": "latest",
-    "gierschv-jugglingdb-mysql": "latest",
+    "jugglingdb-mysql-gierschv": "latest",
     "bcrypt": "*",
     "passport": "0.1.x",
     "passport-local":  "0.1.x"

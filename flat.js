@@ -84,7 +84,7 @@ if ('mongodb' === app.get('db')) {
 }
 else if ('mysql' === app.get('db')) {
   console.log('[+] Uses mysql');
-  schema = new Schema('mysql', {
+  schema = new Schema('mysql-gierschv', {
     database: 'flat',
     username: 'root',
     password: process.env.DB_PASSWORD || ''
