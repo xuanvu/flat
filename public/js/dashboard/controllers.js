@@ -1,4 +1,7 @@
 'use strict';
 
-function HomeCtrl($scope) {
+function HomeCtrl($rootScope, $scope, Account) {
+    // console.log(Account);
 }
+
+HomeCtrl.$inject = ['$rootScope', '$scope', 'Account'];

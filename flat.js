@@ -10,15 +10,18 @@ var http = require('http'),
     express = require('express'),
     swagger = require('swagger-node-express'),
     expressValidator = require('express-validator'),
+    signature = require('cookie-signature'),
     passport = require('passport'),
     Schema = require('jugglingdb').Schema,
     schemas = require('./schemas'),
     routes = require('./routes'),
-    api = require('./routes/api');
+    api = require('./routes/api'),
+    config = require('./config').config;
 
 var app = express(), appApi = express();
 app.set('port', process.env.PORT || 3000);
 app.set('host', process.env.HOST || '127.0.0.1');
+app.set('db', process.env.DB || 'couchdb');
 
 // views
 app.set('views', __dirname + '/views');
@@ -44,8 +47,8 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 
 // Todo: storage sessions prod
-app.use(express.cookieParser());
-app.use(express.session({cookie: { path: '/' }, secret: 'PtCgjrVSUAccvMyrFuSeaFG40pSYYa8J1VJmGb3bcipzC4RCfoJofADtw4C1' }));
+app.use(express.cookieParser(config.cookieSecret));
+app.use(express.session(config.session));
 
 if ('development' !== app.get('env')) {
   app.use(express.csrf());
@@ -74,7 +77,24 @@ if ('development' === app.get('env')) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // DB
-var schema = new Schema('nano', { url: 'http://localhost:5984/flat' });
+var schema
+if ('mongodb' === app.get('db')) {
+  console.log('[+] Uses mongodb');
+  schema = new Schema('nano', { url: 'mongo://localhost:27017/flat' });
+}
+else if ('postgres' === app.get('db')) {
+  console.log('[+] Uses postgres');
+  schema = new Schema('postgres', {
+    database: 'myapp_test',
+    username: 'postgres',
+    password: process.env.DB_PASSWORD
+  });
+}
+else {
+  console.log('[+] Uses couchdb');
+  schema = new Schema('nano', { url: 'http://localhost:5984/flat' });
+}
+
 schemas.getSchemas(schema);
 
 // Front
@@ -104,22 +124,40 @@ swagger.setHeaders = function setHeaders(res) {
   res.header('Content-Type', 'application/json; charset=utf-8');
 };
 
-if ('development' === app.get('env')) {
-  appApi.use(function(req, res, next) {
-    var session_id = (req.body && req.body.api_key) || (req.query && req.query.api_key);
-    if (session_id && req.sessionStore) {
-      req.sessionStore.get(session_id, function(err, session) {
-        if (session) {
-          req.sessionStore.createSession(req, session);
-        }
-        return next();
-      });
+appApi.use(function(req, res, next) {
+  var access_token = (req.body && req.body.access_token) || (req.query && req.query.access_token);
+  if (access_token && req.sessionStore) {
+    if (access_token.indexOf('s:') === 0) {
+      access_token = access_token.slice(2);
     }
-    else {
+
+    access_token = signature.unsign(access_token, config.session.secret);
+    if (!access_token) {
       return next();
     }
-  });
-}
+
+    req.sessionStore.get(access_token, function(err, session) {
+      if (session) {
+        req.sessionStore.createSession(req, session);
+      }
+
+      return next();
+    });
+  }
+  else {
+    return next();
+  }
+});
+
+swagger.addValidator(
+  function validate(req, path, httpMethod) {
+    if (path.indexOf('/auth/') === 0) {
+      return true;
+    }
+
+    return typeof(req.session.user) !== 'undefined';
+  }
+);
 
 swagger.setAppHandler(appApi);
 var flatApi = new api.api(app, swagger, schema);

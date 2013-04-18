@@ -1,8 +1,11 @@
 'use strict';
 
 var models = require('./models'),
+    config = require('../../config').config,
     bcrypt = require('bcrypt'),
     passport = require('passport'),
+    signature = require('cookie-signature'),
+    crypto = require('crypto'),
     LocalStrategy = require('passport-local').Strategy;
 
 function FlatApi(app, sw, schema) {
@@ -33,7 +36,7 @@ function FlatApi(app, sw, schema) {
 
 FlatApi.prototype.jsonResponse = function(res, sw, body, httpCode) {
   sw.setHeaders(res);
-  res.send(httpCode || 200, 'for(;;);' + JSON.stringify(body));
+  res.send(httpCode || 200, JSON.stringify(body));
 };
 
 FlatApi.prototype.errorResponse = function (res, sw, body, errorCode) {
@@ -112,7 +115,7 @@ FlatApi.prototype.authSignin = function(sw) {
         req.session.user = user;
 
         if ('development' === _this.app.get('env')) {
-          return _this.jsonResponse(res, sw, { devel_api_key: req.sessionID });
+          return _this.jsonResponse(res, sw, { access_token: signature.sign(req.sessionID, config.session.secret) });
         }
         return res.send(200);
       })(req);
@@ -137,6 +140,7 @@ FlatApi.prototype.getAccount = function(sw) {
 
       return _this.jsonResponse(res, sw, {
         email: req.session.user.email,
+        email_md5: crypto.createHash('md5').update(req.session.user.email).digest('hex'),
         username: req.session.user.username
       });
       res.send(200);

@@ -46,6 +46,7 @@ module.exports = function(grunt) {
       js_deps: {
         src: [
           'public/js/deps/jquery-1.8.2.min.js',
+          'public/js/deps/jquery.cookie.min.js',
           'public/js/deps/angular.min.js',
           'public/js/deps/angular-resource.min.js'
         ],
