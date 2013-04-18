@@ -80,7 +80,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var schema
 if ('mongodb' === app.get('db')) {
   console.log('[+] Uses mongodb');
-  schema = new Schema('nano', { url: 'mongo://localhost:28017/flat' });
+  schema = new Schema('mongodb', { url: 'mongo://localhost/flat' });
 }
 else if ('postgres' === app.get('db')) {
   console.log('[+] Uses postgres');
