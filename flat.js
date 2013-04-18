@@ -77,7 +77,7 @@ if ('development' === app.get('env')) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // DB
-var schema
+var schema;
 if ('mongodb' === app.get('db')) {
   console.log('[+] Uses mongodb');
   schema = new Schema('mongodb', { url: 'mongo://localhost/flat' });
