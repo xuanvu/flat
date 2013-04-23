@@ -25,6 +25,7 @@
                 img {
                     border-radius: 3px;
                     box-shadow: 0 1px 0 #fff;
+                    margin-left: 20px;
                 }
             }
         }
@@ -89,6 +90,24 @@
     h1 {
         font-weight: 300;
         font-size: 28pt;
+    }
+
+    h1.small {
+        font-size: @font-size-base * 1.25;
+        margin-top: 0;
+    }
+
+    .empty-fermata {
+        background: url('/img/bg-empty-fermata.png') no-repeat center top;
+        min-height: 100px;
+        padding-top: 110px;
+        margin: 75px auto 0 auto;
+        width: 300px;
+        text-align: center;
+
+        a {
+            display: block;
+        }
     }
 
     .footer {
