@@ -8,13 +8,13 @@
   <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{error}}</li></ul>
   <span ng-show="errors.length == 1">{{errors[0]}}</span>
 </div>
-<div class="content row">
-  <div class="span6 federated">
+<div class="content">
+  <div class="federated">
     <a class="btn btn-google"><i class="icon-federated-google"></i>Sign up with Google</a>
     <a class="btn btn-facebook"><i class="icon-federated-facebook"></i>Sign up with Facebook</a>
     <a class="btn btn-twitter"><i class="icon-federated-twitter"></i>Sign up with Twitter</a>
   </div>
-  <div class="span6 form">
+  <div class="form">
     <div class="row">
       <form ng-submit="signup()">
         <input type="email" placeholder="Email address" class="span12 form-inline" ng-model="email" name="email" required />
