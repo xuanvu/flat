@@ -20,7 +20,7 @@
 
             // Header Right
             .account {
-                padding: 15px 0;
+                padding: 6px 0;
 
                 img {
                     border-radius: 3px;
@@ -30,7 +30,7 @@
         }
     }
 
-    // Content
+    /* Content */
     .content-wrapper {
         margin: 140px auto auto auto;
     }
@@ -43,6 +43,46 @@
         h1 {
             text-align: center;
             margin: 0 auto 20px auto;
+        }
+    }
+
+    .content {
+        .make-row();
+
+        .content-left {
+            .make-column(4);
+            padding-left: 0;
+
+            .new-score a {
+            }
+        }
+
+        .content-main {
+            .make-column(8);
+        }
+    }
+
+    /* _myscores.html */
+    .panel.new-score {
+        .panel-heading {
+            font-weight: 300;
+
+            .pull-right {
+                margin: -3px;
+            }
+        }
+
+        li.score {
+            padding-right: 15px;
+
+            a { 
+                display: block;
+                i { color: #aaa; }
+            }
+        }
+
+        li.more-score {
+            background: @gray-lighter;
         }
     }
 
@@ -82,7 +122,10 @@
 }
 
 .flat-signup {
+    margin: 0 auto;
+
     .wrapper {
+        width: 600px;
         min-width: 550px;
     }
 
@@ -95,7 +138,11 @@
     }
 
     .content {
+        .make-row();
+
         .federated {
+            .make-column(6);
+
             a.btn {
                 margin: 0 0 15px 0;
                 padding: 10px 0 10px 15px;
@@ -118,6 +165,7 @@
         }
 
         .form {
+            .make-column(6);
             border-left: 1px solid #fff;
 
             .row {
@@ -145,6 +193,7 @@
         }
 
         .other-action {
+            .make-column(12);
             text-align: center;
             margin: 10px 0 0 0;
         }

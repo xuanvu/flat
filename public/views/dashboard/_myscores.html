@@ -1,0 +1,26 @@
+<div class="new-score panel">
+    <div class="panel-heading">
+        My scores
+        <div class="pull-right">
+            <a class="btn btn-small btn-primary"><i class="glyphicon glyphicon-plus"></i> Create</a>
+            <!-- <a href="" class="btn btn-small btn-primary"><i class="glyphicon glyphicon-upload"></i></a> -->
+        </div>
+    </div>
+
+    <div class="input-group">
+        <input type="text" placeholder="Search in my scores" class="input-small">
+        <span class="input-group-btn">
+            <button class="btn btn-small" type="button"><i class="glyphicon glyphicon-search"></i></button>
+        </span>
+    </div>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item score" ng-repeat="n in [1,2,3,4,5]">
+            <a>
+                My Score {{n}}
+                <div class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+            </a>
+        </li>
+        <li class="list-group-item more-score"><a>See all my scores...</a></li>
+    </ul>
+</div>
