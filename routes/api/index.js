@@ -1,7 +1,7 @@
 'use strict';
 
 var models = require('./models'),
-    config = require('../../config').config,
+    config = require('config'),
     bcrypt = require('bcrypt'),
     passport = require('passport'),
     signature = require('cookie-signature'),
