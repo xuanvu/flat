@@ -9,12 +9,14 @@ app:
   host: '127.0.0.1'
 dbs:
   db_nano: &db_nano
-    type: 'nano' # couchdb
+    type: 'nano-gierschv' # couchdb
     settings:
       url: 'http://localhost:5984/flat'
   db_mysql: &db_mysql
     type: 'mysql-gierschv'
     settings:
+      host: 'localhost'
+#      port: 8889
       database: 'flat'
       username: 'root'
       password: ''

@@ -16,7 +16,7 @@
     "less-middleware": "latest",
     "jugglingdb": "0.2.x",
     "jugglingdb-mongodb": "latest",
-    "jugglingdb-nano": "latest",
+    "jugglingdb-nano-gierschv": "latest",
     "jugglingdb-mysql-gierschv": "latest",
     "bcrypt": "latest",
     "passport": "0.1.x",
