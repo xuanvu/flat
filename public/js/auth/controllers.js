@@ -52,5 +52,12 @@ function SignupCtrl($scope, Auth) {
 
 SignupCtrl.$inject = ['$scope', 'Auth'];
 
-function LogoutCtrl() {
+function LogoutCtrl($location, Auth) {
+  console.log('LogoutCtrl');
+  Auth.logout(function() {
+    console.log('Auth.logout');
+    $location.path("/route");
+  });
 }
+
+LogoutCtrl.$inject = ['$location', 'Auth'];

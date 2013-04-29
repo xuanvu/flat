@@ -15,6 +15,7 @@ function FlatApi(app, sw, schema) {
     // /auth
     .addPost(this.authSignup(sw))
     .addPost(this.authSignin(sw))
+    .addPost(this.authLogout(sw))
     // /account
     .addGet(this.getAccount(sw));
 
@@ -119,6 +120,22 @@ FlatApi.prototype.authSignin = function(sw) {
         }
         return res.send(200);
       })(req);
+    }
+  };
+};
+
+FlatApi.prototype.authLogout = function(sw) {
+  var _this = this;
+  return {
+    'spec': {
+      'summary': 'Logout',
+      'path': '/auth.{format}/logout',
+      'method': 'POST',
+      'nickname': 'logout'
+    },
+    'action': function (req, res) {
+      delete req.session.user;
+      return res.send(200);
     }
   };
 };
