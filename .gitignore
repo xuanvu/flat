@@ -5,6 +5,8 @@
 
 #Temorary files
 npm-debug.log
+/config/runtime.json
+.DS_Store
 *~
 \#*#
 .#*

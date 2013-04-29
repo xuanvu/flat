@@ -7,6 +7,7 @@
 var http = require('http'),
     path = require('path'),
     fs = require('fs'),
+    config = require('config'),
     express = require('express'),
     swagger = require('swagger-node-express'),
     expressValidator = require('express-validator'),
@@ -15,13 +16,13 @@ var http = require('http'),
     Schema = require('jugglingdb').Schema,
     schemas = require('./schemas'),
     routes = require('./routes'),
-    api = require('./routes/api'),
-    config = require('./config').config;
+    api = require('./routes/api');
+    // utils = require('./common/utils');
 
 var app = express(), appApi = express();
-app.set('port', process.env.PORT || 3000);
-app.set('host', process.env.HOST || '127.0.0.1');
-app.set('db', process.env.DB || 'couchdb');
+app.set('port', process.env.PORT || config.app.port || 3000);
+app.set('host', process.env.HOST || config.app.host || '127.0.0.1');
+app.set('db', process.env.DB || config.db.type || 'couchdb');
 
 // views
 app.set('views', __dirname + '/views');
@@ -47,8 +48,12 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 
 // Todo: storage sessions prod
-app.use(express.cookieParser(config.cookieSecret));
-app.use(express.session(config.session));
+app.use(express.cookieParser(config.cookie.secret));
+app.use(express.session({
+  key: config.session.key,
+  path: config.cookie.path,
+  httpOnly: false
+}));
 
 if ('development' !== app.get('env')) {
   app.use(express.csrf());
@@ -77,24 +82,13 @@ if ('development' === app.get('env')) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // DB
-var schema;
-if ('mongodb' === app.get('db')) {
-  console.log('[+] Uses mongodb');
-  schema = new Schema('mongodb', { url: 'mongo://localhost/flat' });
-}
-else if ('mysql' === app.get('db')) {
-  console.log('[+] Uses mysql');
-  schema = new Schema('mysql-gierschv', {
-    database: 'flat',
-    username: 'root',
-    password: process.env.DB_PASSWORD || ''
-  });
-}
-else {
-  console.log('[+] Uses couchdb');
-  schema = new Schema('nano', { url: 'http://localhost:5984/flat' });
-}
-
+console.log('[+] Uses DB type =', config.db.type);
+var schema = new Schema(config.db.type, {
+  url: config.db.settings.url,
+  database: config.db.settings.database,
+  username: config.db.settings.username,
+  password: config.db.settings.password,
+});
 schemas.getSchemas(schema);
 
 // Front
