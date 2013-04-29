@@ -85,6 +85,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 console.log('[+] Uses DB type =', config.db.type);
 var schema = new Schema(config.db.type, {
   url: config.db.settings.url,
+  host: config.db.settings.host,
+  port: config.db.settings.port,
   database: config.db.settings.database,
   username: config.db.settings.username,
   password: config.db.settings.password,
