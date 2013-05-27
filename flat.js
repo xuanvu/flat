@@ -23,6 +23,7 @@ var app = express(), appApi = express();
 app.set('port', process.env.PORT || config.app.port || 3000);
 app.set('host', process.env.HOST || config.app.host || '127.0.0.1');
 app.set('db', process.env.DB || config.db.type || 'couchdb');
+app.set('session_store', process.env.SESS_STORE || config.session.store.type || null);
 
 // views
 app.set('views', __dirname + '/views');
@@ -42,17 +43,29 @@ app.engine('html', function (path, options, fn) {
 });
 
 // app
-app.use(express.favicon());
+// app.use(express.favicon());
 app.use(express.logger('dev'));
+
+// session
+// - redis
+console.log('[+] Uses session DB type =', config.session.store.type);
+var sessionStore;
+if ('redis' === app.get('session_store')) {
+  var redisStore = new require('connect-redis')(express);
+  sessionStore = new redisStore({
+    host: config.session.store.settings.host,
+    port: config.session.store.settings.port
+  });
+}
+
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-
-// Todo: storage sessions prod
 app.use(express.cookieParser(config.cookie.secret));
 app.use(express.session({
   key: config.session.key,
   path: config.cookie.path,
-  httpOnly: false
+  httpOnly: false,
+  store: sessionStore
 }));
 
 if ('development' !== app.get('env')) {

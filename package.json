@@ -20,7 +20,8 @@
     "jugglingdb-mysql-gierschv": "latest",
     "bcrypt": "latest",
     "passport": "0.1.x",
-    "passport-local":  "0.1.x"
+    "passport-local": "0.1.x",
+    "connect-redis": "1.4.5"
   },
   "devDependencies": {
     "jshint": "*",
