@@ -8,10 +8,12 @@
 
     <div class="navbar navbar-fixed-top header">
       <div class="container">
-        <div class="pull-left logo"><img src="/img/logo-header.png" alt="Flat, compose everywhere" /></div>
+        <div class="pull-left logo">
+          <a href="#/"><img src="/img/logo-header.png" alt="Flat, compose everywhere" /></a>
+        </div>
         <div class="pull-right account">
           <span>{{account.username}}</span>
-          <img src="https://secure.gravatar.com/avatar/bbd55fb25025ef973c45e587103a1007?s=50" />
+          <img src="https://secure.gravatar.com/avatar/{{account.email_md5}}?s=50" />
           <!-- <a href="#" ><a class="btn btn-primary">Button</a></div> -->
         </div>
       </div>
