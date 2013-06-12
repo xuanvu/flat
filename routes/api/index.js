@@ -18,6 +18,7 @@ function FlatApi(app, sw, schema) {
     .addPost(this.authLogout(sw))
     // /account
     .addGet(this.getAccount(sw));
+    // /scores
 
   passport.use(new LocalStrategy(
     function(username, password, done) {

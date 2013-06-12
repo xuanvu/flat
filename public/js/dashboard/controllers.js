@@ -5,3 +5,9 @@ function HomeCtrl($rootScope, $scope, Account) {
 }
 
 HomeCtrl.$inject = ['$rootScope', '$scope', 'Account'];
+
+function NewScoreCtrl() {
+
+}
+
+NewScoreCtrl.$inject = [];
