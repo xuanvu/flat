@@ -1,21 +1,30 @@
 <h1 class="small">New score</h1>
 <div class="newscore-properties">
     <form class="form-horizontal">
+        <!-- Title -->
         <label for="score-title">Title</label>
         <input type="text" />
-        
+        <!-- /Title -->
+
         <hr />
 
+        <!-- Instruments -->
         <div class="pull-right">
             <a data-toggle="modal" href="#modalAddInstrument" class="btn btn-small">Add an instrument</a>
         </div>
-        <label>Intruments</label>
-        <ul ui-sortable ng-model="scoreInstruments" class="list-unstyled list-instruments">
+        <label>Instruments</label>
+        <ul ui-sortable ng-model="scoreInstruments" class="list-unstyled list-instruments" ng-show="scoreInstruments.length">
             <li ng-repeat="i in scoreInstruments">
                 {{ instruments[i.group][i.instrument].description }}
                 <button type="button" class="close" data-dismiss="modal" ng-click="removeInstrument($index)">&times;</button>
             </li>
         </ul>
+        <!-- /Instruments -->
+
+         <hr />
+        <!-- Key Signature -->
+        <label>Key Signature</label>
+
     </form>
 </div>
 
