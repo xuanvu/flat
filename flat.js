@@ -63,9 +63,11 @@ app.use(express.methodOverride());
 app.use(express.cookieParser(config.cookie.secret));
 app.use(express.session({
   key: config.session.key,
-  path: config.cookie.path,
-  httpOnly: false,
-  store: sessionStore
+  cookie: {
+    path: config.cookie.path,
+    httpOnly: false,
+    store: sessionStore
+  }
 }));
 
 if ('development' !== app.get('env')) {
