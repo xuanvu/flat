@@ -32,9 +32,9 @@ function SignupCtrl($scope, Auth) {
         username: $scope.username,
         password: $scope.password,
         _csrf: _csrf
-      }, function(response) {
+      }, function (response) {
         window.location = '/dashboard';
-      }, function(response) {
+      }, function (response) {
         $scope.errors = [];
         if (typeof(response.data.description) === 'string') {
           $scope.errors.push(response.data.description);

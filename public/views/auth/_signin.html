@@ -3,7 +3,7 @@
   <span>Sign in</span>
 </h1>
 
-<div class="alert alert-error" ng-show="errors">
+<div class="alert alert-danger" ng-show="errors">
   <a class="close" data-dismiss="alert" ng-click="errors = false">&times;</a>
   <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{error}}</li></ul>
   <span ng-show="errors.length == 1">{{errors[0]}}</span>

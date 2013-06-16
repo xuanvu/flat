@@ -17,8 +17,9 @@ function FlatApi(app, sw, schema) {
     .addPost(this.authSignin(sw))
     .addPost(this.authLogout(sw))
     // /account
-    .addGet(this.getAccount(sw));
+    .addGet(this.getAccount(sw))
     // /scores
+    .addPut(this.putScore(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -46,7 +47,6 @@ FlatApi.prototype.errorResponse = function (res, sw, body, errorCode) {
 };
 
 FlatApi.prototype.authSignup = function(sw) {
-  var _this = this;
   return {
     'spec': {
       'summary': 'Create a flat account',
@@ -64,33 +64,32 @@ FlatApi.prototype.authSignup = function(sw) {
 
       var errors = req.validationErrors(true);
       if (errors) {
-        return _this.errorResponse(res, sw, errors);
+        return this.errorResponse(res, sw, errors);
       }
 
       bcrypt.hash(req.body.password, 10, function(err, password) {
         if (err) {
           console.error('Bcrypt', err);
-          return _this.errorResponse(res, sw, null, 500);
+          return this.errorResponse(res, sw, null, 500);
         }
 
-        var user = new _this.schema.models.User();
+        var user = new this.schema.models.User();
         user.username = req.body.username;
         user.email = req.body.email;
         user.password = password;
         user.save(function(err, user) {
           if (err) {
-            return _this.errorResponse(res, sw, 'Your username or e-mail is already used.', err.statusCode);
+            return this.errorResponse(res, sw, 'Your username or e-mail is already used.', err.statusCode);
           }
           req.session.user = user;
           res.send(200);
-        });
-      });
-    }
+        }.bind(this));
+      }.bind(this));
+    }.bind(this)
   };
 };
 
 FlatApi.prototype.authSignin = function(sw) {
-  var _this = this;
   return {
     'spec': {
       'summary': 'Signin to Flat',
@@ -106,27 +105,26 @@ FlatApi.prototype.authSignin = function(sw) {
 
       var errors = req.validationErrors(true);
       if (errors) {
-        return _this.errorResponse(res, sw, errors);
+        return this.errorResponse(res, sw, errors);
       }
 
       passport.authenticate('local', function(err, user, info) {
         if (err || !user) {
-          return _this.errorResponse(res, sw, 'Error when authenticating, check your credentials.');
+          return this.errorResponse(res, sw, 'Error when authenticating, check your credentials.');
         }
 
         req.session.user = user;
 
-        if ('development' === _this.app.get('env')) {
-          return _this.jsonResponse(res, sw, { access_token: signature.sign(req.sessionID, config.session.secret) });
+        if ('development' === this.app.get('env')) {
+          return this.jsonResponse(res, sw, { access_token: signature.sign(req.sessionID, config.session.secret) });
         }
         return res.send(200);
-      })(req);
-    }
+      }.bind(this))(req);
+    }.bind(this)
   };
 };
 
 FlatApi.prototype.authLogout = function(sw) {
-  var _this = this;
   return {
     'spec': {
       'summary': 'Logout',
@@ -142,8 +140,6 @@ FlatApi.prototype.authLogout = function(sw) {
 };
 
 FlatApi.prototype.getAccount = function(sw) {
-  var _this = this;
-
   return {
     'spec': {
       'summary': 'User account',
@@ -156,13 +152,48 @@ FlatApi.prototype.getAccount = function(sw) {
         return res.send(403);
       }
 
-      return _this.jsonResponse(res, sw, {
+      return this.jsonResponse(res, sw, {
         email: req.session.user.email,
         email_md5: crypto.createHash('md5').update(req.session.user.email).digest('hex'),
         username: req.session.user.username
       });
       res.send(200);
-    }
+    }.bind(this)
+  };
+};
+
+FlatApi.prototype.putScore = function(sw) {
+  return {
+    'spec': {
+      'summary': 'Create a new score',
+      'path': '/score.{format}',
+      'method': 'PUT',
+      'nickname': 'createScore',
+      'params': [sw.params.post('ScoreCreation', 'The created score')],
+      'errorResponses' : [sw.errors.invalid('ScoreCreation')]
+    },
+    'action': function (req, res) {
+      req.assert('title', 'A title for your score is required.').notEmpty();
+      req.assert('instruments', 'Please add at least one instrument.').len(1);
+      req.assert('fifths', 'A valid key signature (fifths) is required.').isNumeric();
+      req.assert('beats', 'A valid beats is required.').isNumeric();
+      req.assert('beatType', 'A valid beatType is required.').isNumeric();
+
+      var errors = req.validationErrors(true);
+      if (errors) {
+        return this.errorResponse(res, sw, errors);
+      }
+
+      // Enforce validation
+      if (req.body.fifths < -7 || req.body.fifths > 7) {
+        return this.errorResponse(res, sw, 'A valid key signature (fifths) is required.');
+      }
+
+      // Todo check instruments
+      // Todo sanity + process
+
+      res.send(200);
+    }.bind(this)
   };
 };
 

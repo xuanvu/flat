@@ -47,4 +47,10 @@ angular.module('flatDashboardServices', ['ngResource']).
   }]).
   factory('Instruments', ['$resource', function($resource) {
     return $resource('/fixtures/instruments.min.json');
+  }]).
+  factory('Score', ['$resource', 'TokenHandler', function($resource, TokenHandler) {
+    var resource =  $resource('/api/score.json', {}, {
+      create: { method: 'PUT' }
+    });
+    return TokenHandler.wrapActions(resource, ['put']);
   }]);
