@@ -1,10 +1,8 @@
 'use strict';
 
-function HomeCtrl($rootScope, $scope, Account) {
-  // console.log(Account);
-}
+function HomeCtrl() {}
 
-HomeCtrl.$inject = ['$rootScope', '$scope', 'Account'];
+HomeCtrl.$inject = [];
 
 function NewScoreCtrl($scope, Instruments) {
   $scope.scoreInstruments = [];
