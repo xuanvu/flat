@@ -147,7 +147,7 @@
         }
 
         .spriteKeySignature (@i, @kstype) when (@i > 0) {
-            (~".keysignicon-@{i}-@{kstype}") {
+            .keysignicon-@{i}-@{kstype} {
                 height: ~"@{keysign-@{i}@{kstype}-height}";
                 width: ~"@{keysign-@{i}@{kstype}-width}";
                 @sprite-offset-x: ~"@{keysign-@{i}@{kstype}-offset-x}";
@@ -158,8 +158,8 @@
             .spriteKeySignature(@i - 1, @kstype);
         }
 
-        .spriteKeySignature(7, "b");
-        .spriteKeySignature(7, "s");
+        .spriteKeySignature(7, b);
+        .spriteKeySignature(7, s);
 
         .timesign {
             label {
@@ -277,15 +277,15 @@
             }
 
             a.btn-google {
-                .btn-pseudo-states(#dd4b39, #dd4b39, #dd4b39);
+                .btn-pseudo-states(#fff, #dd4b39, #dd4b39);
             }
 
             a.btn-facebook {
-                .btn-pseudo-states(#536A97, #536A97, #536A97);
+                .btn-pseudo-states(#fff, #536A97, #536A97);
             }
 
             a.btn-twitter {
-                .btn-pseudo-states(#5EAADC, #5EAADC, #5EAADC);
+                .btn-pseudo-states(#fff, #5EAADC, #5EAADC);
             }
         }
 
