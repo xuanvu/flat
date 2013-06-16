@@ -1,0 +1,31 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">Choose an instrument</h4>
+    </div>
+    <div class="modal-body accordion" id="add-instrument-accordion">
+      <div class="accordion-group" ng-repeat="(group, ginstruments) in instruments">
+        <div class="accordion-heading">
+          <a class="accordion-toggle"data-toggle="collapse"
+             data-parent="add-instrument-accordion" href="#collapse-instru-{{ group }}">
+             {{ ginstruments.$name }}
+          </a>
+        </div>
+
+        <div class="accordion-body collapse out" id="collapse-instru-{{ group }}">
+          <div class="accordion-inner">
+            <ul>
+              <li ng-repeat="(iid, instrument) in ginstruments">
+                <a href="" ng-click="addInstrument(group, iid)">{{ instrument.description }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn">Cancel</a>
+    </div>
+  </div>
+</div>

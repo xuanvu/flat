@@ -44,4 +44,7 @@ angular.module('flatDashboardServices', ['ngResource']).
   factory('Account', ['$resource', 'TokenHandler', function($resource, TokenHandler) {
     var resource =  $resource('/api/account.json');
     return TokenHandler.wrapActions(resource, ['get']);
+  }]).
+  factory('Instruments', ['$resource', function($resource) {
+    return $resource('/fixtures/instruments.min.json');
   }]);

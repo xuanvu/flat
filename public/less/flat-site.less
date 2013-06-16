@@ -93,6 +93,22 @@
         .make-column(6);
         margin: auto;
         float: none!important;
+
+        ul.list-instruments {
+            .user-select(none);
+            padding: 5px 0;
+
+            li {
+                border: 1px solid @gray-lighter;
+                margin: 10px 0;
+                padding: 6px 10px;
+                cursor: move;
+            }
+
+            .close {
+                line-height: 16px;
+            }
+        }
     }
 
     hr {

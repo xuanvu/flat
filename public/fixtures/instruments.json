@@ -1,6 +1,7 @@
 {
     "instruments": {
         "brass": {
+            "$name": "Brass", 
             "E\u266d-tuba": {
                 "$id": "E\u266d-tuba", 
                 "apitchrange": "26-64", 
@@ -1771,6 +1772,7 @@
             }
         }, 
         "electronic-instruments": {
+            "$name": "Electronic Instruments", 
             "atmosphere-synth": {
                 "$id": "atmosphere-synth", 
                 "apitchrange": "36-96", 
@@ -2505,6 +2507,7 @@
             }
         }, 
         "free-reed": {
+            "$name": "Free Reed", 
             "accordion": {
                 "$id": "accordion", 
                 "apitchrange": "36-93", 
@@ -2970,6 +2973,7 @@
             }
         }, 
         "keyboards": {
+            "$name": "Keyboards", 
             "celesta": {
                 "$id": "celesta", 
                 "apitchrange": "48-113", 
@@ -4418,6 +4422,7 @@
             }
         }, 
         "pitched-percussion": {
+            "$name": "Pitched Percussion", 
             "almglocken": {
                 "$id": "almglocken", 
                 "apitchrange": "60-105", 
@@ -5134,6 +5139,7 @@
             }
         }, 
         "plucked-strings": {
+            "$name": "Plucked Strings", 
             "11-string-alto-guitar": {
                 "$id": "11-string-alto-guitar", 
                 "apitchrange": "34-86", 
@@ -6069,6 +6075,7 @@
             }
         }, 
         "strings": {
+            "$name": "Strings", 
             "alto-viol": {
                 "$id": "alto-viol", 
                 "apitchrange": "45-81", 
@@ -6382,6 +6389,7 @@
             }
         }, 
         "unpitched-percussion": {
+            "$name": "Unpitched Percussion", 
             "anvil": {
                 "$id": "anvil", 
                 "barlinespan": "1", 
@@ -8448,6 +8456,7 @@
             }
         }, 
         "vocals": {
+            "$name": "Vocals", 
             "alto": {
                 "$id": "alto", 
                 "apitchrange": "55-74", 
@@ -8631,6 +8640,7 @@
             }
         }, 
         "woodwinds": {
+            "$name": "Woodwind", 
             "a-bass-duduk": {
                 "$id": "a-bass-duduk", 
                 "apitchrange": "54-69", 

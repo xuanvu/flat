@@ -6,6 +6,17 @@
         
         <hr />
 
+        <div class="pull-right">
+            <a data-toggle="modal" href="#modalAddInstrument" class="btn btn-small">Add an instrument</a>
+        </div>
         <label>Intruments</label>
+        <ul ui-sortable ng-model="scoreInstruments" class="list-unstyled list-instruments">
+            <li ng-repeat="i in scoreInstruments">
+                {{ instruments[i.group][i.instrument].description }}
+                <button type="button" class="close" data-dismiss="modal" ng-click="removeInstrument($index)">&times;</button>
+            </li>
+        </ul>
     </form>
 </div>
+
+<div class="modal fade" id="modalAddInstrument" ng-include src="'views/dashboard/score/_modal_instruments.html'"></div>

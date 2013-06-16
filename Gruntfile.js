@@ -45,12 +45,16 @@ module.exports = function(grunt) {
     concat: {
       js_deps: {
         src: [
-          'public/js/deps/jquery-1.8.2.min.js',
+          'public/js/deps/jquery-2.0.2.min.js',
           'public/js/deps/jquery.cookie.min.js',
+          'public/js/deps/jquery-ui-1.10.3.custom.min.js',
           'public/js/deps/angular.min.js',
-          'public/js/deps/angular-resource.min.js'
+          'public/js/deps/angular-resource.min.js',
+          'public/js/deps/angular-sortable.js',
+          'public/js/deps/bootstrap/modal.js',
+          'public/js/deps/bootstrap/collapse.js'
         ],
-        dest: 'public/dist/js/common.min.js'
+        dest: 'public/dist/js/common.js'
       },
       js_auth: {
         src: [
@@ -71,7 +75,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'public/dist/js/flat-auth.min.js': '<%= concat.js_auth.dest %>'
+          'public/dist/js/flat-auth.min.js': '<%= concat.js_auth.dest %>',
+          'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>'
         }
       },
     }
