@@ -7,7 +7,8 @@ function HomeCtrl($rootScope, $scope, Account) {
 HomeCtrl.$inject = ['$rootScope', '$scope', 'Account'];
 
 function NewScoreCtrl($scope, Instruments) {
-  $scope.scoreInstruments = [{"group":"strings","instrument":"violoncello"}, {"group":"strings","instrument":"violin"}];
+  $scope.scoreInstruments = [];
+  $scope.keySignature = 0;
 
   Instruments.get(function(instruments) {
     $scope.instruments = instruments.instruments;
@@ -20,6 +21,16 @@ function NewScoreCtrl($scope, Instruments) {
 
   $scope.removeInstrument = function(idx) {
     $scope.scoreInstruments.splice(idx, 1);
+  };
+
+  $scope.setKeySignature = function(n, type) {
+    $('.keysign-container').removeClass('keysign-selected');
+    $('.keysignicon-' + n + (typeof(type) != 'undefined' ? '-' + type : '')).parent().parent().addClass('keysign-selected');
+
+    $scope.keySignature = n;
+    if (type === 'b') {
+      $scope.keySignature *= -1;
+    }
   };
 }
 

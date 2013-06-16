@@ -9,6 +9,15 @@ module.exports = function(grunt) {
     clean: {
       src: ['public/dist']
     },
+    sprite: {
+      keySignatures: {
+        src: ['public/img/key-signatures/*.png'],
+        destImg: 'public/img/sprite-key-signatures.png',
+        destCSS: 'public/less/sprite-key-signatures.less',
+        imgPath: '../../img/sprite-key-signatures.png',
+        cssFormat: 'less'
+      }
+    },
     less: {
       compile: {
         options: {
@@ -83,11 +92,12 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-spritesmith');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', ['clean', 'less', 'htmlmin', 'ngtemplates', 'concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'sprite', 'less', 'htmlmin', 'ngtemplates', 'concat', 'uglify']);
 };

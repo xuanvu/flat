@@ -1,9 +1,15 @@
 @import "bootstrap.less";
+@import "sprite-key-signatures.less";
 
 /*!
  * Flat - Dashboard
  * Copyright 2013 - Flat.io
  */
+
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
 
 .flat-dashboard {
     // Header
@@ -109,6 +115,60 @@
                 line-height: 16px;
             }
         }
+
+        .keysigns {
+            clear: both;
+            max-width: 490px;
+            margin: auto;
+
+            .keysigns-clear {
+                .clearfix();
+            }
+        }
+
+        .keysign-container {
+            float: left;
+            padding: 0 8px;
+            border: 2px solid transparent;
+        }
+
+        .keysign-selected {
+            border: 2px solid @flat-blue;
+        }
+
+        [class^="keysignicon-"] {
+            .sprite-image(@keysign-0);
+        }
+
+        .keysignicon-0 {
+            .sprite-position(@keysign-0);
+            .sprite-width(@keysign-0);
+            .sprite-height(@keysign-0);
+        }
+
+        .spriteKeySignature (@i, @kstype) when (@i > 0) {
+            (~".keysignicon-@{i}-@{kstype}") {
+                height: ~"@{keysign-@{i}@{kstype}-height}";
+                width: ~"@{keysign-@{i}@{kstype}-width}";
+                @sprite-offset-x: ~"@{keysign-@{i}@{kstype}-offset-x}";
+                @sprite-offset-y: ~"@{keysign-@{i}@{kstype}-offset-y}";
+                background-position: @sprite-offset-x  @sprite-offset-y;
+            }
+
+            .spriteKeySignature(@i - 1, @kstype);
+        }
+
+        .spriteKeySignature(7, "b");
+        .spriteKeySignature(7, "s");
+
+        .timesign {
+            label {
+                margin-right: 20px;
+            }
+            input {
+                width: 70px;
+            }
+        }
     }
 
     hr {
@@ -118,7 +178,7 @@
         overflow: hidden;
         border: none;
         background: transparent;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid @gray-lighter;
     }
 
     h1 {
@@ -129,6 +189,10 @@
     h1.small {
         font-size: @font-size-base * 1.25;
         margin-top: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+        margin-left: 10px;
     }
 
     .empty-fermata {
@@ -213,15 +277,15 @@
             }
 
             a.btn-google {
-                .btn-pseudo-states(#dd4b39, #dd4b39);
+                .btn-pseudo-states(#dd4b39, #dd4b39, #dd4b39);
             }
 
             a.btn-facebook {
-                .btn-pseudo-states(#536A97, #536A97);
+                .btn-pseudo-states(#536A97, #536A97, #536A97);
             }
 
             a.btn-twitter {
-                .btn-pseudo-states(#5EAADC, #5EAADC);
+                .btn-pseudo-states(#5EAADC, #5EAADC, #5EAADC);
             }
         }
 

@@ -1,16 +1,18 @@
 <h1 class="small">New score</h1>
 <div class="newscore-properties">
-    <form class="form-horizontal">
+    <form>
         <!-- Title -->
-        <label for="score-title">Title</label>
-        <input type="text" />
+        <div  class="form-horizontal">
+            <label for="score-title">Title</label>
+            <input type="text" />
+        </div>
         <!-- /Title -->
 
         <hr />
 
         <!-- Instruments -->
         <div class="pull-right">
-            <a data-toggle="modal" href="#modalAddInstrument" class="btn btn-small">Add an instrument</a>
+            <a data-toggle="modal" href="#modalAddInstrument" class="btn btn-default btn-small">Add an instrument</a>
         </div>
         <label>Instruments</label>
         <ul ui-sortable ng-model="scoreInstruments" class="list-unstyled list-instruments" ng-show="scoreInstruments.length">
@@ -21,10 +23,34 @@
         </ul>
         <!-- /Instruments -->
 
-         <hr />
-        <!-- Key Signature -->
-        <label>Key Signature</label>
+        <hr />
 
+        <!-- Key Signature -->
+        <label>Key signature</label>
+        <div class="keysigns">
+            <div ng-repeat="k in [1,2,3,4,5,6,7]" class="keysign-container">
+                <a href="" ng-click="setKeySignature(k, 's')" ><div class="keysignicon-{{k}}-s"></div></a>
+            </div>
+            <div ng-click="setKeySignature(k, 'b')" ng-repeat="k in [7,6,5,4,3,2,1]" class="keysign-container">
+                <a href="" ng-click="setKeySignature(k, 'b')" ><div class="keysignicon-{{k}}-b"></div></a>
+            </div>
+            <div ng-click="setKeySignature(0)" class="keysign-container keysign-selected">
+                <a href="" ng-click="setKeySignature(0)" ><div class="keysignicon-0"></div></a>
+            </div>
+            <div class="keysigns-clear"></div>
+        </div>
+        <!-- /Key Signature -->
+
+        <hr />
+
+        <!-- Time Signature -->
+        <div class="form-inline timesign">
+            <label>Time signature</label>
+            <input type="number" min="1" value="2" /> / <input type="number" min="1" value="4" />
+        </div>
+        <!-- /Time Signature -->
+
+        <div class="pull-right"><input type="submit" value="Create" class="btn btn-primary" /></div>
     </form>
 </div>
 
