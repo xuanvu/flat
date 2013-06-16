@@ -37,7 +37,12 @@ module.exports = function(grunt) {
         },
         files: {
           'public/dist/views/auth/_signup.html': 'public/views/auth/_signup.html',
-          'public/dist/views/auth/_signin.html': 'public/views/auth/_signin.html'
+          'public/dist/views/auth/_signin.html': 'public/views/auth/_signin.html',
+          'public/dist/views/dashboard/_home.html': 'public/views/dashboard/_home.html',
+          'public/dist/views/dashboard/_myscores.html': 'public/views/dashboard/_myscores.html',
+          'public/dist/views/dashboard/_newsfeed.html': 'public/views/dashboard/_newsfeed.html',
+          'public/dist/views/dashboard/score/_new.html': 'public/views/dashboard/score/_new.html',
+          'public/dist/views/dashboard/score/_modal_instruments.html': 'public/views/dashboard/score/_modal_instruments.html',
         }
       }
     },
@@ -49,6 +54,17 @@ module.exports = function(grunt) {
         },
         src:        [ 'public/dist/views/auth/**.html' ],
         dest:       'public/dist/js/auth-templates.js'
+      },
+      flatDashboard: {
+        options:    {
+          base:     'public/dist/views',
+          prepend:  '/views/'
+        },
+        src:        [ 
+          'public/dist/views/dashboard/**.html',
+          'public/dist/views/dashboard/score/**.html'
+        ],
+        dest:       'public/dist/js/dashboard-templates.js'
       },
     },
     concat: {
@@ -73,6 +89,15 @@ module.exports = function(grunt) {
           'public/js/auth/services.js'
         ],
         dest: 'public/dist/js/flat-auth.js'
+      },
+      js_dashboard: {
+        src: [
+          'public/js/dashboard/app.js',
+          '<%= ngtemplates.flatDashboard.dest %>',
+          'public/js/dashboard/controllers.js',
+          'public/js/dashboard/services.js'
+        ],
+        dest: 'public/dist/js/flat-dashboard.js'
       }
     },
     uglify: {
@@ -85,6 +110,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'public/dist/js/flat-auth.min.js': '<%= concat.js_auth.dest %>',
+          'public/dist/js/flat-dashboard.min.js': '<%= concat.js_dashboard.dest %>',
           'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>'
         }
       },
