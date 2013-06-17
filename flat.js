@@ -166,7 +166,7 @@ swagger.addValidator(
       return true;
     }
 
-    return typeof(req.session.user) !== 'undefined';
+    return typeof(req.session) != 'undefined' && typeof(req.session.user) != 'undefined';
   }
 );
 
