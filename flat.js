@@ -62,11 +62,11 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser(config.cookie.secret));
 app.use(express.session({
+  store: sessionStore,
   key: config.session.key,
   cookie: {
     path: config.cookie.path,
-    httpOnly: false,
-    store: sessionStore
+    httpOnly: false
   }
 }));
 

@@ -169,7 +169,7 @@ FlatApi.prototype.putScore = function(sw) {
       'path': '/score.{format}',
       'method': 'PUT',
       'nickname': 'createScore',
-      'params': [sw.params.post('ScoreCreation', 'The created score')],
+      'params': [sw.params.post('score', 'The created score', 'ScoreCreation')],
       'errorResponses' : [sw.errors.invalid('ScoreCreation')]
     },
     'action': function (req, res) {
