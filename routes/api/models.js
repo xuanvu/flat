@@ -27,7 +27,7 @@ exports.models = {
         description: 'The title of the score'
       },
       instruments: {
-        type: 'List',
+        type: 'Array',
         description: 'The instruments parts of the score',
         items: {
           $ref: 'ScoreInstrument'

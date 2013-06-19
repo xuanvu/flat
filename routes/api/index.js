@@ -6,7 +6,8 @@ var models = require('./models'),
     passport = require('passport'),
     signature = require('cookie-signature'),
     crypto = require('crypto'),
-    LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy,
+    dataInstruments = require('../../public/fixtures/instruments').instruments;
 
 function FlatApi(app, sw, schema) {
   this.app = app;
@@ -19,7 +20,7 @@ function FlatApi(app, sw, schema) {
     // /account
     .addGet(this.getAccount(sw))
     // /scores
-    .addPut(this.putScore(sw));
+    .addPost(this.putScore(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -54,7 +55,7 @@ FlatApi.prototype.authSignup = function(sw) {
       'method': 'POST',
       'nickname': 'signup',
       'params': [sw.params.post('AuthSignup', 'Signup details')],
-      'errorResponses' : [sw.errors.invalid('AuthSignup')]
+      '' : [sw.errors.invalid('AuthSignup')]
     },
     'action': function (req, res) {
       req.assert('username', 'Required').notEmpty();
@@ -167,9 +168,9 @@ FlatApi.prototype.putScore = function(sw) {
     'spec': {
       'summary': 'Create a new score',
       'path': '/score.{format}',
-      'method': 'PUT',
+      'method': 'POST',
       'nickname': 'createScore',
-      'params': [sw.params.post('score', 'The created score', 'ScoreCreation')],
+      'params': [sw.params.post('ScoreCreation', 'The created score', 'score')],
       'errorResponses' : [sw.errors.invalid('ScoreCreation')]
     },
     'action': function (req, res) {
@@ -189,8 +190,20 @@ FlatApi.prototype.putScore = function(sw) {
         return this.errorResponse(res, sw, 'A valid key signature (fifths) is required.');
       }
 
-      // Todo check instruments
-      // Todo sanity + process
+      for (var i = 0 ; i < req.body.instruments.length ; ++i) {
+        if (typeof(req.body.instruments[i].group) == 'undefined' ||
+            typeof(req.body.instruments[i].instrument) == 'undefined' ||
+            typeof(dataInstruments[req.body.instruments[i].group]) == 'undefined' ||
+            typeof(dataInstruments[req.body.instruments[i].group][req.body.instruments[i].instrument]) == 'undefined') {
+          return this.errorResponse(res, sw, 'The instrument list is invalid.');
+        }
+      }
+
+      // Clean
+      req.body.title = req.sanitize('title').trim();
+      req.body.title = req.sanitize('title').entityEncode();
+
+      
 
       res.send(200);
     }.bind(this)

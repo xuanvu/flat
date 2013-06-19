@@ -2,11 +2,11 @@ app:
   port: 3000
   host: '127.0.0.1'
 dbs:
-  db_nano: &db_nano
+  db_nano-gierschv: &db_nano-gierschv
     type: 'nano-gierschv' # couchdb
     settings:
       url: 'http://localhost:5984/flat'
-  db_mysql: &db_mysql
+  db_mysql-gierschv: &db_mysql-gierschv
     type: 'mysql-gierschv'
     settings:
       host: 'localhost'
@@ -18,6 +18,10 @@ dbs:
     type: 'mongodb'
     settings:
       url: 'mongo://localhost/flat'
+  db_sqlite3: &db_sqlite3
+    type: 'sqlite3'
+    settings:
+      database: ':memory:'
   # Sessions only
   db_redis: &db_redis
     type: 'redis'
@@ -26,7 +30,7 @@ dbs:
       port: 6379
   db_none: &db_memory
     type: 'memory'
-db: *db_nano
+db: *db_nano-gierschv
 
 cookie:
   secret: '352IbRsD71eur0y4RUj39xmDvnP1QXAnSPT9cySrQCs5iaAfy3D9cSgsX4f7XTi2LoDduDFC03xpgCCNp4V1Lm52JQuDJSPQBEQDCVjXGE0iWmbz3pinzN8YmPbFdpLg'
@@ -35,3 +39,5 @@ session:
   key: 'flat.sid'
   secret: 'qGNhmR73fr6Wv6bmBD6a9v0XSE2QBgPWNQ1FpsogEiXIGMa8hRK9KKzD2dzKa0dsby8DrJs8hA6q7ixAeVbeW4RLgiRfm43LE2GBqGXP2oF1MchFGrx3wEPiGwvJ5FId'
   store: *db_redis
+flat:
+  score_storage: './data/scores'

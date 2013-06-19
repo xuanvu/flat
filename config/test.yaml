@@ -1,0 +1,16 @@
+dbs:
+  db_nano-gierschv: &db_nano-gierschv
+    type: 'nano-gierschv' # couchdb
+    settings:
+      url: 'http://localhost:5984/flat-test'
+  db_none: &db_memory
+    type: 'memory'
+db: *db_nano-gierschv
+
+cookie:
+  secret: 'flat-test'
+  path: '/'
+session:
+  key: 'flat.sid'
+  secret: 'flat.sid-test'
+  store: *db_memory

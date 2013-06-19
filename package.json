@@ -21,7 +21,9 @@
     "bcrypt": "latest",
     "passport": "0.1.x",
     "passport-local": "0.1.x",
-    "connect-redis": "1.4.5"
+    "connect-redis": "1.4.5",
+    "git": "0.1.4",
+    "node-uuid": "1.4.0"
   },
   "devDependencies": {
     "jshint": "latest",
@@ -32,7 +34,9 @@
     "grunt-contrib-less": "latest",
     "grunt-angular-templates": "latest",
     "grunt-contrib-htmlmin": "latest",
-    "grunt-spritesmith": "latest"
+    "grunt-spritesmith": "latest",
+    "mocha": "latest",
+    "supertest": "latest"
   },
   "scripts": {
     "start": "node flat.js"
