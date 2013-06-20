@@ -26,7 +26,15 @@ describe('API /auth', function () {
         .post('/api/auth.json/signup')
         .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
         .expect(200)
-        .end(done);
+        .end(function (err, res) {
+          if (err) throw err;
+          schema.models.User.findOne({ where: { username: 'myUsername' } }, function (err, user) {
+            if (err) throw err;
+            assert.equal(user.username, 'myUsername');
+            assert.equal(user.email, 'user@domain.fr');
+            done();
+          });
+        });
     });
 
     it('should return a bad request', function (done) {
