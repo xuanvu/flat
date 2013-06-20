@@ -58,7 +58,6 @@ FlatApi.prototype.authSignup = function(sw) {
       '' : [sw.errors.invalid('AuthSignup')]
     },
     'action': function (req, res) {
-      req.assert('username', 'Required').notEmpty();
       req.assert('username', 'Use only alphanumeric characters').is(/^[A-Za-z0-9-_]+$/);
       req.assert('email', 'Valid email is required').isEmail();
       req.assert('password', '6 to 50 characters required').len(6, 50);
@@ -116,7 +115,7 @@ FlatApi.prototype.authSignin = function(sw) {
 
         req.session.user = user;
 
-        if ('development' === this.app.get('env')) {
+        if ('production' !== this.app.get('env')) {
           return this.jsonResponse(res, sw, { access_token: signature.sign(req.sessionID, config.session.secret) });
         }
         return res.send(200);
