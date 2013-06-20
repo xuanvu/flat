@@ -39,6 +39,7 @@
     "supertest": "latest"
   },
   "scripts": {
-    "start": "node flat.js"
+    "start": "node flat.js",
+    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 300ms tests"
   }
 }
