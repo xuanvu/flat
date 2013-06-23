@@ -7,7 +7,7 @@ var assert = require('assert'),
     fse = require('fs-extra'),
     git = require('git-gierschv'),
     async = require('async'),
-    Score = require('../../lib/score').Score;
+    Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
 
 describe('lib/score', function () {
   after(function (done) {

@@ -6,9 +6,7 @@ var assert = require('assert'),
     request = require('supertest'),
     fse = require('fs-extra'),
     flat = require('../../common/app'),
-    utils = require('../../common/utils'),
-    api = require('../../routes/api');
-
+    utils = require('../../common/utils');
 
 describe('API /score', function () {
   var schema, app, cookies;
@@ -57,6 +55,61 @@ describe('API /score', function () {
         .expect(200)
         .end(function (err, res) {
           assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
+          done();
+        });
+    });
+
+    it('should return return a bad params errors', function (done) {
+      var rq = request(app).post('/api/score.json');
+      rq.cookies = cookies;
+      rq.send({})
+        .expect(400)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description.title.msg, 'A title for your score is required.');
+          assert.equal(res.body.description.instruments.msg, 'Please add at least one instrument.');
+          assert.equal(res.body.description.fifths.msg, 'A valid key signature (fifths) is required.');
+          assert.equal(res.body.description.beats.msg, 'A valid beats is required.');
+          assert.equal(res.body.description.beatType.msg, 'A valid beatType is required.');
+          done();
+        });
+    });
+
+    it('should return return an error because of invalid fifths', function (done) {
+      var rq = request(app).post('/api/score.json');
+      rq.cookies = cookies;
+      rq.send({
+          title: 'Für Elise',
+          instruments: [{ group: 'keyboards', instrument: 'piano' }],
+          fifths: 42,
+          beats: 3,
+          beatType: 8
+        })
+        .expect(400)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, 'A valid key signature (fifths) is required.');
+          done();
+        });
+    });
+
+    it('should return return an error because of invalid instruments', function (done) {
+      var rq = request(app).post('/api/score.json');
+      rq.cookies = cookies;
+      rq.send({
+          title: 'Für Elise',
+          instruments: [
+            { group: 'keyboards', instrument: 'piano' },
+            { group: 'keyboard', instrument: 'piano' }
+          ],
+          fifths: 0,
+          beats: 3,
+          beatType: 8
+        })
+        .expect(400)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, 'The instrument list is invalid.');
           done();
         });
     });

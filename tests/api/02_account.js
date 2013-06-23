@@ -5,8 +5,7 @@ var assert = require('assert'),
     config = require('config'),
     request = require('supertest'),
     flat = require('../../common/app'),
-    utils = require('../../common/utils'),
-    api = require('../../routes/api');
+    utils = require('../../common/utils');
 
 
 describe('API /account', function () {

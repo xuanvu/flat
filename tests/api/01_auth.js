@@ -5,8 +5,7 @@ var assert = require('assert'),
     config = require('config'),
     request = require('supertest'),
     flat = require('../../common/app'),
-    utils = require('../../common/utils'),
-    api = require('../../routes/api');
+    utils = require('../../common/utils');
 
 describe('API /auth', function () {
   var schema, app;
@@ -72,12 +71,48 @@ describe('API /auth', function () {
     it('should return a bad email', function (done) {
       request(app)
         .post('/api/auth.json/signup')
-        .send({ username: '.', password: 'myPassword', email: 'user@@domain.fr' })
+        .send({ username: 'myUsername', password: 'myPassword', email: 'user@@domain.fr' })
         .expect(400)
         .end(function (err, res) {
           assert.ifError(err);
           assert.equal(res.body.description.email.msg, 'Valid email is required');
           done();
+        });
+    });
+
+    it('should return already used email', function (done) {
+      request(app)
+        .post('/api/auth.json/signup')
+        .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
+        .expect(200)
+        .end(function (err, res) {
+          request(app)
+            .post('/api/auth.json/signup')
+            .send({ username: 'myUsername2', password: 'myPassword', email: 'user@domain.fr' })
+            .expect(400)
+            .end(function (err, res) {
+              assert.ifError(err);
+              assert.equal(res.body.description, 'Your username or e-mail is already used.');
+              done();
+            });
+        });
+    });
+
+    it('should return already used username', function (done) {
+      request(app)
+        .post('/api/auth.json/signup')
+        .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
+        .expect(200)
+        .end(function (err, res) {
+          request(app)
+            .post('/api/auth.json/signup')
+            .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.com' })
+            .expect(400)
+            .end(function (err, res) {
+              assert.ifError(err);
+              assert.equal(res.body.description, 'Your username or e-mail is already used.');
+              done();
+            });
         });
     });
   });
