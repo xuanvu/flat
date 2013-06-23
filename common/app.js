@@ -9,7 +9,7 @@ var path = require('path'),
     signature = require('cookie-signature'),
     passport = require('passport'),
     routes = require('../routes'),
-    api = require('../routes/api'),
+    api = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/api'),
     utils = require('./utils');
 
 exports.getApp = function (schema) {

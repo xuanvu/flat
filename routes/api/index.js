@@ -6,10 +6,11 @@ var models = require('./models'),
     passport = require('passport'),
     signature = require('cookie-signature'),
     crypto = require('crypto'),
+    fs = require('fs'),
     fse = require('fs-extra'),
     LocalStrategy = require('passport-local').Strategy,
     dataInstruments = require('../../public/fixtures/instruments').instruments,
-    score = require('../../lib/score').Score;
+    score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
 
 function FlatApi(app, sw, schema) {
   this.app = app;
@@ -150,16 +151,11 @@ FlatApi.prototype.getAccount = function(sw) {
       'nickname': 'getAccount'
     },
     'action': function (req, res) {
-      if (!req.session || !req.session.user) {
-        return res.send(403);
-      }
-
       return this.jsonResponse(res, sw, {
         email: req.session.user.email,
         email_md5: crypto.createHash('md5').update(req.session.user.email).digest('hex'),
         username: req.session.user.username
       });
-      res.send(200);
     }.bind(this)
   };
 };
@@ -210,8 +206,11 @@ FlatApi.prototype.createScore = function(sw) {
         req.body.title, req.body.instruments,
         req.body.fifths, req.body.beats, req.body.beatType,
         function (err, sid) {
-          res.send(err ? 500 : JSON.stringify({ sid: sid }));
-        }
+          if (err) {
+            return this.errorResponse(res, sw, 'Error while creating the new score.', 500);
+          }
+          return this.jsonResponse(res, sw, { sid: sid });
+        }.bind(this)
       );
     }.bind(this)
   };
