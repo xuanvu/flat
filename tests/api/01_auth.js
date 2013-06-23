@@ -4,9 +4,9 @@ process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     config = require('config'),
     request = require('supertest'),
-    flat = require('../common/app'),
-    utils = require('../common/utils'),
-    api = require('../routes/api');
+    flat = require('../../common/app'),
+    utils = require('../../common/utils'),
+    api = require('../../routes/api');
 
 describe('API /auth', function () {
   var schema, app;

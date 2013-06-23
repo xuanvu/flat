@@ -6,8 +6,10 @@ var models = require('./models'),
     passport = require('passport'),
     signature = require('cookie-signature'),
     crypto = require('crypto'),
+    fse = require('fs-extra'),
     LocalStrategy = require('passport-local').Strategy,
-    dataInstruments = require('../../public/fixtures/instruments').instruments;
+    dataInstruments = require('../../public/fixtures/instruments').instruments,
+    score = require('../../lib/score').Score;
 
 function FlatApi(app, sw, schema) {
   this.app = app;
@@ -20,7 +22,7 @@ function FlatApi(app, sw, schema) {
     // /account
     .addGet(this.getAccount(sw))
     // /scores
-    .addPost(this.putScore(sw));
+    .addPost(this.createScore(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -162,7 +164,7 @@ FlatApi.prototype.getAccount = function(sw) {
   };
 };
 
-FlatApi.prototype.putScore = function(sw) {
+FlatApi.prototype.createScore = function(sw) {
   return {
     'spec': {
       'summary': 'Create a new score',
@@ -202,9 +204,15 @@ FlatApi.prototype.putScore = function(sw) {
       req.body.title = req.sanitize('title').trim();
       req.body.title = req.sanitize('title').entityEncode();
 
-      
-
-      res.send(200);
+      // Create the new score
+      var s = new score();
+      s.create(
+        req.body.title, req.body.instruments,
+        req.body.fifths, req.body.beats, req.body.beatType,
+        function (err, sid) {
+          res.send(err ? 500 : JSON.stringify({ sid: sid }));
+        }
+      );
     }.bind(this)
   };
 };

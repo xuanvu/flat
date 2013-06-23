@@ -4,20 +4,18 @@ process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     config = require('config'),
     request = require('supertest'),
-    flat = require('../common/app'),
-    utils = require('../common/utils'),
-    api = require('../routes/api');
+    fse = require('fs-extra'),
+    flat = require('../../common/app'),
+    utils = require('../../common/utils'),
+    api = require('../../routes/api');
 
 
-describe('API /account', function () {
+describe('API /score', function () {
   var schema, app, cookies;
 
-  before(function () {
+  before(function (done) {
     schema = utils.getSchema(config.db);
     app = flat.getApp(schema);
-  });
-
-  beforeEach(function (done) {
     schema.models.User.destroyAll(function (err, res) {
       if (err) throw err;
       request(app)
@@ -37,15 +35,28 @@ describe('API /account', function () {
     });
   });
 
-  describe('GET /account.{format}', function () {
+  beforeEach(function (done) {
+    schema.models.Score.destroyAll(done);
+  });
+
+  // after(function (done) {
+  //   fse.remove(config.flat.score_storage, done);
+  // });
+
+  describe('POST /score.{format}', function () {
     it('should return account details', function (done) {
-      var rq = request(app).get('/api/account.json');
+      var rq = request(app).post('/api/score.json');
       rq.cookies = cookies;
-      rq.expect(200)
+      rq.send({
+          title: 'Für Elise',
+          instruments: [{ group: 'keyboards', instrument: 'piano' }],
+          fifths: 0,
+          beats: 3,
+          beatType: 8
+        })
+        .expect(200)
         .end(function (err, res) {
-          assert.equal(res.body.email, 'user@domain.fr');
-          assert.equal(res.body.email_md5, '1eac591a9df93e178ed48f5a2c65fcf3');
-          assert.equal(res.body.username, 'myUsername');
+          assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
           done();
         });
     });

@@ -6,6 +6,7 @@
     "start": "node flat.js"
   },
   "dependencies": {
+    "flat-fermata": "git+ssh://git@git.vincent.sh:flat/fermata.git#master",
     "js-yaml": "latest",
     "config": "0.4.26",
     "express": "3.1.1",
@@ -22,7 +23,10 @@
     "passport": "0.1.x",
     "passport-local": "0.1.x",
     "connect-redis": "1.4.5",
-    "node-uuid": "1.4.0"
+    "node-uuid": "1.4.0",
+    "fs-extra": "0.6.1",
+    "git-gierschv": "0.1.x",
+    "async": "0.2.9"
   },
   "devDependencies": {
     "jshint": "latest",
@@ -39,6 +43,6 @@
   },
   "scripts": {
     "start": "node flat.js",
-    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 300ms tests"
+    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 300ms tests/*"
   }
 }
