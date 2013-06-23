@@ -44,7 +44,7 @@ describe('API /score', function () {
   // });
 
   describe('POST /score.{format}', function () {
-    it('should return account details', function (done) {
+    it('should create a score', function (done) {
       var rq = request(app).post('/api/score.json');
       rq.cookies = cookies;
       rq.send({
