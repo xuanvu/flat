@@ -1,5 +1,27 @@
 {
     "about": "À propos de Flat",
     "privacy": "Vie privée",
-    "tos": "Conditions d'utilisation"
+    "tos": "Conditions d'utilisation",
+    "score": {
+        "create": "Créer",
+        "my-scores": "Mes partitions",
+        "see-all": "Voir toutes mes partitions...",
+        "search-my": "Chercher dans mes partitions",
+        "instrument-add": "Ajouter un instrument",
+        "instruments": "Instruments",
+        "key-signature": "Armure",
+        "new": "Nouvelle partition",
+        "time-signature": "Chiffrage de la mesure",
+        "title": "Titre",
+        "private": "Privée",
+        "public": "Publique",
+        "private-help": "Vous choisissez qui peut voir et travailler sur votre partition.",
+        "public-help": "N'importe qui peut voir cette partition. Vous choisissez qui peut travailler sur votre partition."
+    },
+    "feed": {
+        "news-discover": "Découvrez les tendances des utilisateurs de Flat.",
+        "title": "Flux d'actualités",
+        "news-no-right-now": "Aucune actualité pour le moment...",
+        "created": "%(user)s a crée une nouvelle partition %(title)"
+    }
 }

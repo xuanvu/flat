@@ -2,7 +2,7 @@
 
 angular.module('jm.i18next').config(function ($i18nextProvider) {
   $i18nextProvider.options = {
-    ns: { namespaces: ['flat', 'scores'] },
+    ns: { namespaces: ['flat'] },
     useLocalStorage: false,
     fallbackLng: 'default',
     resGetPath: 'locales/__lng__/__ns__.json',

@@ -1,5 +1,27 @@
 {
     "about": "About Flat",
     "tos": "Terms of Service",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "score": {
+        "create": "Create",
+        "my-scores": "My scores",
+        "see-all": "See all my scores...",
+        "search-my": "Search in my scores",
+        "new": "New score",
+        "title": "Title",
+        "instrument-add": "Add an instrument",
+        "instruments": "Instruments",
+        "key-signature": "Key signature",
+        "time-signature": "Time signature",
+        "public": "Public",
+        "private": "Private",
+        "public-help": "Anyone can see this score. You choose who can work on your score.",
+        "private-help": "You choose who see and work on your score."
+    },
+    "feed": {
+        "title": "News feed",
+        "news-no-right-now": "No news right now...",
+        "news-discover": "Discover trending scores and people.",
+        "created": "%(user)s created score %(title)"
+    }
 }
