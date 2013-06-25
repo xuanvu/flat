@@ -13,12 +13,14 @@ exports.getSchemas = function (schema) {
   User.validatesUniquenessOf('username');
 
   var Score = schema.define('Score', {
-    name: { type: String, limit: 50, index: true },
-    public: { type: Boolean }
+    sid: { type: String, limit: 35, index: true },
+    title: { type: String, limit: 50, index: true },
+    public: { type: Boolean },
   });
 
-  User.hasMany(Score, { as: 'score' });
+  Score.validatesUniquenessOf('sid');
   Score.belongsTo(User, { as: 'user' });
+  User.hasMany(Score, { as: 'score' });
 
   var ScoreCollaborators = schema.define('ScoreCollaborators', {
     aclWrite: { type: Boolean }

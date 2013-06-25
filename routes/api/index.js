@@ -9,8 +9,9 @@ var models = require('./models'),
     fs = require('fs'),
     fse = require('fs-extra'),
     LocalStrategy = require('passport-local').Strategy,
+    utils = require('../../common/utils'),
     dataInstruments = require('../../public/fixtures/instruments').instruments,
-    score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
+    Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
 
 function FlatApi(app, sw, schema) {
   this.app = app;
@@ -23,7 +24,10 @@ function FlatApi(app, sw, schema) {
     // /account
     .addGet(this.getAccount(sw))
     // /scores
-    .addPost(this.createScore(sw));
+    .addPost(this.createScore(sw))
+    .addGet(this.getScores(sw))
+    .addGet(this.getScore(sw))
+    .addGet(this.getScoreRevision(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -41,16 +45,22 @@ function FlatApi(app, sw, schema) {
   ));
 }
 
-FlatApi.prototype.jsonResponse = function(res, sw, body, httpCode) {
+FlatApi.prototype.jsonResponse = function (res, sw, body, httpCode) {
   sw.setHeaders(res);
   res.send(httpCode || 200, JSON.stringify(body));
 };
+
+FlatApi.prototype.stringResponse = function (res, sw, body, httpCode) {
+  sw.setHeaders(res);
+  res.send(httpCode || 200, body);
+};
+
 
 FlatApi.prototype.errorResponse = function (res, sw, body, errorCode) {
   sw.stopWithError(res, {'description': body || 'Bad request', 'code': errorCode || 400});
 };
 
-FlatApi.prototype.authSignup = function(sw) {
+FlatApi.prototype.authSignup = function (sw) {
   return {
     'spec': {
       'summary': 'Create a flat account',
@@ -58,7 +68,7 @@ FlatApi.prototype.authSignup = function(sw) {
       'method': 'POST',
       'nickname': 'signup',
       'params': [sw.params.post('AuthSignup', 'Signup details')],
-      '' : [sw.errors.invalid('AuthSignup')]
+      'errorResponses' : [sw.errors.invalid('AuthSignup')]
     },
     'action': function (req, res) {
       req.assert('username', 'Use only alphanumeric characters').is(/^[A-Za-z0-9-_]+$/);
@@ -72,7 +82,7 @@ FlatApi.prototype.authSignup = function(sw) {
 
       bcrypt.hash(req.body.password, 10, function(err, password) {
         if (err) {
-          console.error('Bcrypt', err);
+          console.error('[FlatApi.prototype.authSignup] Bcrypt: ', err);
           return this.errorResponse(res, sw, null, 500);
         }
 
@@ -85,14 +95,14 @@ FlatApi.prototype.authSignup = function(sw) {
             return this.errorResponse(res, sw, 'Your username or e-mail is already used.', err.statusCode);
           }
           req.session.user = user;
-          res.send(200);
+          return this.jsonResponse(res, sw, user);
         }.bind(this));
       }.bind(this));
     }.bind(this)
   };
 };
 
-FlatApi.prototype.authSignin = function(sw) {
+FlatApi.prototype.authSignin = function (sw) {
   return {
     'spec': {
       'summary': 'Signin to Flat',
@@ -121,13 +131,15 @@ FlatApi.prototype.authSignin = function(sw) {
         if ('production' !== this.app.get('env')) {
           return this.jsonResponse(res, sw, { access_token: signature.sign(req.sessionID, config.session.secret) });
         }
-        return res.send(200);
+        else {
+          return res.send(200);
+        }
       }.bind(this))(req);
     }.bind(this)
   };
 };
 
-FlatApi.prototype.authLogout = function(sw) {
+FlatApi.prototype.authLogout = function (sw) {
   return {
     'spec': {
       'summary': 'Logout',
@@ -142,7 +154,7 @@ FlatApi.prototype.authLogout = function(sw) {
   };
 };
 
-FlatApi.prototype.getAccount = function(sw) {
+FlatApi.prototype.getAccount = function (sw) {
   return {
     'spec': {
       'summary': 'User account',
@@ -160,7 +172,7 @@ FlatApi.prototype.getAccount = function(sw) {
   };
 };
 
-FlatApi.prototype.createScore = function(sw) {
+FlatApi.prototype.createScore = function (sw) {
   return {
     'spec': {
       'summary': 'Create a new score',
@@ -201,17 +213,126 @@ FlatApi.prototype.createScore = function(sw) {
       req.body.title = req.sanitize('title').entityEncode();
 
       // Create the new score
-      var s = new score();
+      var s = new Score();
       s.create(
         req.body.title, req.body.instruments,
         req.body.fifths, req.body.beats, req.body.beatType,
         function (err, sid) {
           if (err) {
+            console.error('[FlatApi.prototype.createScore]', err);
             return this.errorResponse(res, sw, 'Error while creating the new score.', 500);
           }
-          return this.jsonResponse(res, sw, { sid: sid });
+
+          var scoredb = new this.schema.models.Score();
+          scoredb.sid = sid;
+          scoredb.title = req.body.title;
+          scoredb.public = false;
+          scoredb.user(req.session.user.id);
+          scoredb.save(function(err, scoredb) {
+            if (err) {
+              // Todo delete git
+              return this.errorResponse(res, sw, 'Error while creating the new score.', err.statusCode);
+            }
+
+            return this.jsonResponse(res, sw, scoredb);
+          }.bind(this));
         }.bind(this)
       );
+    }.bind(this)
+  };
+};
+
+FlatApi.prototype.getScores = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get the scores',
+      'path': '/score.{format}',
+      'method': 'GET',
+      'nickname': 'getScores',
+      'responseClass': 'List[ScoreDb]'
+    },
+    'action': function (req, res) {
+      this.schema.models.Score.all({ where: { userId: req.session.user.id }}, function (err, scores) {
+        return this.jsonResponse(res, sw, scores);
+      }.bind(this));
+    }.bind(this)
+  };
+};
+
+FlatApi.prototype.getScore = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get a score',
+      'path': '/score.{format}/{id}',
+      'method': 'GET',
+      'nickname': 'getScore',
+      'params': [sw.params.path('id', 'Id of the score', 'string')],
+      'errorResponses' : [sw.errors.notFound('score')],
+      'responseClass': 'ScoreDetails'
+    },
+    'action': function (req, res) {
+      this.schema.models.Score.find(req.params.id, function (err, scoredb) {
+        if (err || (!scoredb.public && scoredb.userId != req.session.user.id)) {
+          return this.errorResponse(res, sw, 'Score not found.', 404);
+        }
+
+        var s = new Score(scoredb.sid);
+        s.getRevisions(function (err, _revisions) {
+          if (err) {
+            console.error('[FlatApi.prototype.getScore]', err);
+            return this.errorResponse(res, sw, 'Error while fetching the score.', 500);
+          }
+
+          var revisions = [];
+          for (var i = 0 ; i < _revisions.length ; ++i) {
+            revisions.push({
+              id: _revisions[i].id,
+              author: _revisions[i].author,
+              message: _revisions[i].message,
+              short_message: _revisions[i].short_message
+            });
+          }
+
+          return this.jsonResponse(res, sw, {
+            properties: scoredb,
+            revisions: revisions
+          });
+        }.bind(this));
+      }.bind(this));
+    }.bind(this)
+  };
+};
+
+FlatApi.prototype.getScoreRevision = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get a score content at a revision',
+      'path': '/score.{format}/{id}/{revision}',
+      'method': 'GET',
+      'nickname': 'getScore',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string'),
+        sw.params.path('revision', 'Id of the revision', 'string')
+      ],
+      'errorResponses' : [sw.errors.notFound('score')],
+      'responseClass': 'ScoreDetails'
+    },
+    'action': function (req, res) {
+      this.schema.models.Score.find(req.params.id, function (err, scoredb) {
+        if (err || (!scoredb.public && scoredb.userId != req.session.user.id)) {
+          return this.errorResponse(res, sw, 'Score not found.', 404);
+        }
+
+        var s = new Score(scoredb.sid);
+        s.getScore(req.params.revision, function (err, score) {
+          if (err) {
+            console.error('[FlatApi.prototype.getScoreRevision]', err);
+            return this.errorResponse(res, sw, 'Error while fetching the score.', 500);
+          }
+
+          return this.stringResponse(res, sw, score);
+        }.bind(this));
+      }.bind(this));
     }.bind(this)
   };
 };

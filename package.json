@@ -12,7 +12,7 @@
     "express": "3.1.1",
     "cookie-signature": "1.0.1",
     "swagger-node-express": "1.2.3",
-    "validator": "0.5.0",
+    "validator": "1.2.1",
     "express-validator": "0.3.2",
     "less-middleware": "latest",
     "jugglingdb": "0.2.x",
@@ -43,6 +43,6 @@
   },
   "scripts": {
     "start": "node flat.js",
-    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 300ms tests/*"
+    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 5000ms tests/*"
   }
 }

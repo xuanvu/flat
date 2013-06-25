@@ -18,17 +18,17 @@ describe('API /account', function () {
 
   beforeEach(function (done) {
     schema.models.User.destroyAll(function (err, res) {
-      if (err) throw err;
+      assert.ifError(err);
       request(app)
         .post('/api/auth.json/signup')
         .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
         .end(function (err, res) {
-          if (err) throw err;
+          assert.ifError(err);
           request(app)
             .post('/api/auth.json/signin')
             .send({ username: 'myUsername', password: 'myPassword' })
             .end(function (err, res) {
-              if (err) throw err;
+              assert.ifError(err);
               cookies = res.headers['set-cookie'][0].split(';')[0];
               done();
             });

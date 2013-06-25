@@ -26,9 +26,9 @@ describe('API /auth', function () {
         .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
         .expect(200)
         .end(function (err, res) {
-          if (err) throw err;
+          assert.ifError(err);
           schema.models.User.findOne({ where: { username: 'myUsername' } }, function (err, user) {
-            if (err) throw err;
+            assert.ifError(err);
             assert.equal(user.username, 'myUsername');
             assert.equal(user.email, 'user@domain.fr');
             done();
