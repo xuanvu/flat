@@ -76,7 +76,24 @@ describe('API /score', function () {
         });
     });
 
-    it('should return return a bad params errors', function (done) {
+    it('should return an error since the title is duplicate', function (done) {
+      var rq = request(app).post('/api/score.json');
+      rq.cookies = cookies;
+      rq.send({
+          title: 'Für Elise',
+          instruments: [{ group: 'keyboards', instrument: 'piano' }],
+          fifths: 0,
+          beats: 3,
+          beatType: 8
+        })
+        .expect(400)
+        .end(function (err, res) {
+          assert.equal(res.body.description, 'You already have a score with the same title.');
+          done();
+        });
+    });
+
+    it('should return a bad params errors', function (done) {
       var rq = request(app).post('/api/score.json');
       rq.cookies = cookies;
       rq.send({})

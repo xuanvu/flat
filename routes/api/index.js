@@ -212,32 +212,44 @@ FlatApi.prototype.createScore = function (sw) {
       req.body.title = req.sanitize('title').trim();
       req.body.title = req.sanitize('title').entityEncode();
 
-      // Create the new score
-      var s = new Score();
-      s.create(
-        req.body.title, req.body.instruments,
-        req.body.fifths, req.body.beats, req.body.beatType,
-        function (err, sid) {
-          if (err) {
-            console.error('[FlatApi.prototype.createScore]', err);
-            return this.errorResponse(res, sw, 'Error while creating the new score.', 500);
-          }
+      // Check if user has already the same score name
+      this.schema.models.Score.count({ userId: req.session.user.id, title: req.body.title }, function (err, n) {
+        if (err) {
+          console.error('[FlatApi.prototype.createScore/count]', err);
+          return this.errorResponse(res, sw, 'Error while creating the new score.', 500);
+        }
 
-          var scoredb = new this.schema.models.Score();
-          scoredb.sid = sid;
-          scoredb.title = req.body.title;
-          scoredb.public = false;
-          scoredb.user(req.session.user.id);
-          scoredb.save(function(err, scoredb) {
+        if (n > 0) {
+          return this.errorResponse(res, sw, 'You already have a score with the same title.', 400);
+        }
+
+        // Create the new score
+        var s = new Score();
+        s.create(
+          req.body.title, req.body.instruments,
+          req.body.fifths, req.body.beats, req.body.beatType,
+          function (err, sid) {
             if (err) {
-              // Todo delete git
-              return this.errorResponse(res, sw, 'Error while creating the new score.', err.statusCode);
+              console.error('[FlatApi.prototype.createScore/score]', err);
+              return this.errorResponse(res, sw, 'Error while creating the new score.', 500);
             }
 
-            return this.jsonResponse(res, sw, scoredb);
-          }.bind(this));
-        }.bind(this)
-      );
+            var scoredb = new this.schema.models.Score();
+            scoredb.sid = sid;
+            scoredb.title = req.body.title;
+            scoredb.public = false;
+            scoredb.user(req.session.user.id);
+            scoredb.save(function(err, scoredb) {
+              if (err) {
+                // Todo delete git
+                return this.errorResponse(res, sw, 'Error while creating the new score.', err.statusCode);
+              }
+
+              return this.jsonResponse(res, sw, scoredb);
+            }.bind(this));
+          }.bind(this)
+        );
+      }.bind(this));
     }.bind(this)
   };
 };
