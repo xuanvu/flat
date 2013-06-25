@@ -7,30 +7,31 @@ var assert = require('assert'),
     fse = require('fs-extra'),
     git = require('git-gierschv'),
     async = require('async'),
+    check = require('validator').check,
     Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
 
 describe('lib/score', function () {
+  var sid, commitSha;
   after(function (done) {
     fse.remove(config.flat.score_storage, done);
   });
 
   it('should create a score', function (done) {
     var s = new Score();
-    s = s.create('Fur Elise', [{ group: 'keyboards', instrument: 'piano' }], 0, 3, 8, function (err, sid) {
-      assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(sid));
-      assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid));
-      assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid + '/.git'));
-      assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid + '/score.json'));
+    s = s.create('Fur Elise', [{ group: 'keyboards', instrument: 'piano' }], 0, 3, 8, function (err, _sid) {
+      sid = _sid;
 
-      var scoreData = JSON.parse(fs.readFileSync(config.flat.score_storage + '/' + sid + '/score.json'));
-      assert.equal(scoreData['score-partwise'].$version, '3.0');
+      assert.ifError(err);
+      assert.ok(check(sid).isUUID(), 'Bad returned value');
+      assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid));
+      assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid + '/objects'));
 
       // TODO: check props
 
       var repo;
       async.waterfall([
         function (callback) {
-          new git.Repo(config.flat.score_storage + '/' + sid + '/.git', {}, callback);
+          new git.Repo(config.flat.score_storage + '/' + sid, { is_bare: true }, callback);
         },
         function (_repo, callback) {
           repo = _repo;
@@ -44,6 +45,54 @@ describe('lib/score', function () {
           callback(null)
         }
       ], done);
+    });
+  });
+
+  it('should return the commit list', function (done) {
+    var s = new Score(sid);
+    s.getRevisions(function (err, revisions) {
+      assert.ifError(err);
+      assert.equal(revisions.length, 1);
+      assert.equal(revisions[0].message, 'New score: Fur Elise');
+      commitSha = revisions[0].sha;
+      done();
+    });
+  });
+
+  it('should return the commit of the created score using sha1', function (done) {
+    var s = new Score(sid);
+    s.getScore(commitSha, function (err, score) {
+      assert.ifError(err);
+      score = JSON.parse(score);
+      assert.equal(score['score-partwise'].$version, '3.0');
+      done();
+    });
+  });
+
+  it('should return the commit of the created score using master', function (done) {
+    var s = new Score(sid);
+    s.getScore(null, function (err, score) {
+      assert.ifError(err);
+      score = JSON.parse(score);
+      assert.equal(score['score-partwise'].$version, '3.0');
+      done();
+    });
+  });
+
+  it('should throw because of the bad commit format', function () {
+    var s = new Score(sid);
+    assert.throws(function () {
+        s.getScore('42z42', null);
+      },
+      /ValidatorError/
+    );
+  });
+
+  it('should throw because of the unkown commit sha1', function (done) {
+    var s = new Score(sid);
+    s.getScore('34973274ccef6ab4dfaaf86599792fa9c3fe4689', function (err, score) {
+      assert.equal(err, 'no such sha found');
+      done();
     });
   });
 });
