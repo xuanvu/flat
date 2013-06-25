@@ -61,6 +61,7 @@ describe('API /score', function () {
       rq.cookies = cookies;
       rq.send({
           title: 'Für Elise',
+          public: false,
           instruments: [{ group: 'keyboards', instrument: 'piano' }],
           fifths: 0,
           beats: 3,
@@ -81,6 +82,7 @@ describe('API /score', function () {
       rq.cookies = cookies;
       rq.send({
           title: 'Für Elise',
+          public: false,
           instruments: [{ group: 'keyboards', instrument: 'piano' }],
           fifths: 0,
           beats: 3,
@@ -114,6 +116,7 @@ describe('API /score', function () {
       rq.cookies = cookies;
       rq.send({
           title: 'Für Elise',
+          public: false,
           instruments: [{ group: 'keyboards', instrument: 'piano' }],
           fifths: 42,
           beats: 3,
@@ -132,6 +135,7 @@ describe('API /score', function () {
       rq.cookies = cookies;
       rq.send({
           title: 'Für Elise',
+          public: false,
           instruments: [
             { group: 'keyboards', instrument: 'piano' },
             { group: 'keyboard', instrument: 'piano' }

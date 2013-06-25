@@ -26,6 +26,10 @@ exports.models = {
         type: 'string',
         description: 'The title of the score'
       },
+      'public': {
+        type: 'boolean',
+        description: 'True if the score is public'
+      },
       instruments: {
         type: 'Array',
         description: 'The instruments parts of the score',

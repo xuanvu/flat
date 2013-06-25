@@ -4,6 +4,7 @@
 /public/dist
 
 #Temorary files
+/tests/tmp
 /data
 /assets
 npm-debug.log

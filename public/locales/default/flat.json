@@ -16,7 +16,8 @@
         "public": "Public",
         "private": "Private",
         "public-help": "Anyone can see this score. You choose who can work on your score.",
-        "private-help": "You choose who see and work on your score."
+        "private-help": "You choose who see and work on your score.",
+        "intrument-choose": "Choose an instrument"
     },
     "feed": {
         "title": "News feed",

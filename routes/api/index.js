@@ -184,6 +184,7 @@ FlatApi.prototype.createScore = function (sw) {
     },
     'action': function (req, res) {
       req.assert('title', 'A title for your score is required.').notEmpty();
+      req.sanitize('public').toBoolean();
       req.assert('instruments', 'Please add at least one instrument.').len(1);
       req.assert('fifths', 'A valid key signature (fifths) is required.').isNumeric();
       req.assert('beats', 'A valid beats is required.').isNumeric();
@@ -237,7 +238,7 @@ FlatApi.prototype.createScore = function (sw) {
             var scoredb = new this.schema.models.Score();
             scoredb.sid = sid;
             scoredb.title = req.body.title;
-            scoredb.public = false;
+            scoredb.public = req.body.public;
             scoredb.user(req.session.user.id);
             scoredb.save(function(err, scoredb) {
               if (err) {

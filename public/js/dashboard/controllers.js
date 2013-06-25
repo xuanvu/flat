@@ -8,6 +8,7 @@ HomeCtrl.$inject = ['$scope', 'Score'];
 
 function NewScoreCtrl($scope, $location, Instruments, Score) {
   $scope.scoreInstruments = [];
+  $scope.public = true;
   $scope.keySignature = 0;
   $scope.beats = 2;
   $scope.beatType = 4;
@@ -48,6 +49,7 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
 
     Score.create({
       title: $scope.title,
+      public: $scope.public,
       instruments: $scope.scoreInstruments,
       fifths: $scope.keySignature,
       beats: $scope.beats,

@@ -1,25 +1,46 @@
-<h1 class="small">New score</h1>
+<h1 class="small" ng-i18next="flat:score.new">New score</h1>
 <div class="newscore-properties">
     <div class="alert alert-danger" ng-show="errors.length">
       <a class="close" data-dismiss="alert" ng-click="errors = false">&times;</a>
-      <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{error}}</li></ul>
-      <span ng-show="errors.length == 1">{{errors[0]}}</span>
+        <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{(error || 'error.unknown') | i18next}}</li></ul>
+        <span ng-show="errors.length == 1">{{(errors[0] || 'error.unknown') | i18next}}</span>
     </div>
     <form ng-submit="create()">
         <!-- Title -->
         <div  class="form-horizontal">
-            <label for="score-title">Title</label>
+            <label for="score-title" ng-i18next="flat:score.title">Title</label>
             <input type="text" ng-model="title" />
         </div>
         <!-- /Title -->
 
         <hr />
 
+        <!-- Privacy -->
+        <div class="radio">
+            <input type="radio" name="public" ng-model="public" id="repo-public" value="1"> 
+            <label for="repo-public">
+                <i class="glyphicon glyphicon-globe"></i>
+                <span ng-i18next="flat:score.public">Public</span>
+            </label>
+            <span class="help-block" ng-i18next="flat:score.public-help">Anyone can see this score. You choose who can work on your score.</span>
+        </div>
+        <div class="radio">
+            <input type="radio" name="public" ng-model="public" id="repo-private" value="0">
+            <label for="repo-private">
+                <i class="glyphicon glyphicon-lock"></i>
+                <span ng-i18next="flat:score.private">Private</span>
+            </label>
+            <span class="help-block" ng-i18next="flat:score.private-help">You choose who see and work on your score.</span>
+        </div>
+        <!-- /Privacy -->
+
+        <hr />
+
         <!-- Instruments -->
         <div class="pull-right">
-            <a data-toggle="modal" href="#modalAddInstrument" class="btn btn-default btn-small">Add an instrument</a>
+            <a data-toggle="modal" href="#modalAddInstrument" class="btn btn-default btn-small" ng-i18next="flat:score.instrument-add">Add an instrument</a>
         </div>
-        <label>Instruments</label>
+        <label ng-i18next="flat:score.instruments">Instruments</label>
         <ul ui-sortable ng-model="scoreInstruments" class="list-unstyled list-instruments" ng-show="scoreInstruments.length">
             <li ng-repeat="i in scoreInstruments">
                 {{ instruments[i.group][i.instrument].description }}
@@ -31,7 +52,7 @@
         <hr />
 
         <!-- Key Signature -->
-        <label>Key signature</label>
+        <label ng-i18next="flat:score.key-signature">Key signature</label>
         <div class="keysigns">
             <div ng-repeat="k in [1,2,3,4,5,6,7]" class="keysign-container">
                 <a href="" ng-click="setKeySignature(k, 's')" ><div class="keysignicon-{{k}}-s"></div></a>
@@ -50,12 +71,12 @@
 
         <!-- Time Signature -->
         <div class="form-inline timesign">
-            <label>Time signature</label>
+            <label ng-i18next="flat:score.time-signature">Time signature</label>
             <input type="number" min="1" ng-model="beats" /> / <input type="number" min="1" ng-model="beatType" />
         </div>
         <!-- /Time Signature -->
 
-        <div class="pull-right"><input type="submit" value="Create" class="btn btn-primary" /></div>
+        <div class="pull-right"><input type="submit" value="{{ 'flat:score.create' | i18next }}" class="btn btn-primary" /></div>
     </form>
 </div>
 

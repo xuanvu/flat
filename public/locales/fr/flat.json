@@ -16,7 +16,8 @@
         "private": "Privée",
         "public": "Publique",
         "private-help": "Vous choisissez qui peut voir et travailler sur votre partition.",
-        "public-help": "N'importe qui peut voir cette partition. Vous choisissez qui peut travailler sur votre partition."
+        "public-help": "N'importe qui peut voir cette partition. Vous choisissez qui peut travailler sur votre partition.",
+        "intrument-choose": "Choisissez un instrument"
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",
