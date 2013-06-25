@@ -43,7 +43,8 @@ angular.module('flatDashboardServices', ['ngResource']).
   }).
   factory('Account', ['$resource', 'TokenHandler', function($resource, TokenHandler) {
     var resource =  $resource('/api/account.json');
-    return TokenHandler.wrapActions(resource, ['get']);
+    return resource;
+    // return TokenHandler.wrapActions(resource, ['get']);
   }]).
   factory('Instruments', ['$resource', function($resource) {
     return $resource('/fixtures/instruments.min.json');
@@ -53,5 +54,6 @@ angular.module('flatDashboardServices', ['ngResource']).
       create: { method: 'POST' },
       query: { method: 'GET', isArray: true }
     });
-    return TokenHandler.wrapActions(resource, ['post', 'query']);
+    return resource;
+    // return TokenHandler.wrapActions(resource, ['post', 'query']);
   }]);
