@@ -70,12 +70,14 @@ module.exports = function(grunt) {
     concat: {
       js_deps: {
         src: [
+          'public/js/deps/i18next-1.6.3.js',
           'public/js/deps/jquery-2.0.2.min.js',
           'public/js/deps/jquery.cookie.min.js',
           'public/js/deps/jquery-ui-1.10.3.custom.min.js',
           'public/js/deps/angular.min.js',
           'public/js/deps/angular-resource.min.js',
           'public/js/deps/angular-sortable.js',
+          'public/js/deps/ng-i18next.bc83dbb649c907c1f7284d240b75f28c6ad83508.js',
           'public/js/deps/bootstrap/modal.js',
           'public/js/deps/bootstrap/collapse.js',
           'public/js/deps/bootstrap/tooltip.js'

@@ -1,13 +1,13 @@
 <div class="my-score panel">
     <div class="panel-heading">
-        My scores
+        <span ng-i18next="scores:my-scores">My scores</span>
         <div class="pull-right">
-            <a href="#/score/new" class="btn btn-small btn-primary"><i class="glyphicon glyphicon-plus"></i> Create</a>
+            <a href="#/score/new" class="btn btn-small btn-primary"><i class="glyphicon glyphicon-plus"></i> <span ng-i18next="scores:create">Create</span></a>
             <!-- <a href="" class="btn btn-small btn-primary"><i class="glyphicon glyphicon-upload"></i></a> -->
         </div>
     </div>
 
-    <input type="text" placeholder="Search in my scores" class="input-small" ng-model="query">
+    <input type="text" placeholder="{{ 'scores:search-my' | i18next }}" class="input-small" ng-model="query">
 <!--<div class="input-group">
         <span class="input-group-btn">
             <button class="btn btn-small" type="button"><i class="glyphicon glyphicon-search"></i></button>
@@ -24,6 +24,6 @@
                 <div class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
             </a>
         </li>
-        <li class="list-group-item more-score"><a>See all my scores...</a></li>
+        <li class="list-group-item more-score"><a ng-i18next="scores:see-all">See all my scores:..</a></li>
     </ul>
 </div>

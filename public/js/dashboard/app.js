@@ -1,6 +1,15 @@
 'use strict';
 
-var app = angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable']).
+angular.module('jm.i18next').config(function ($i18nextProvider) {
+  $i18nextProvider.options = {
+    ns: { namespaces: ['flat', 'scores'] },
+    useLocalStorage: false,
+    fallbackLng: 'default',
+    resGetPath: 'locales/__lng__/__ns__.json',
+  };
+});
+
+var app = angular.module('flatDashboard', ['jm.i18next', 'flatDashboardServices', 'ui.sortable']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', { templateUrl: '/views/dashboard/_home.html', controller: HomeCtrl }).
@@ -14,4 +23,4 @@ app.run(['$rootScope', 'TokenHandler', 'Account',
     $rootScope.account = Account.get({}, function() {}, function() {
       window.location = '/auth';
     });
-  }]);
+}]);

@@ -1,35 +1,39 @@
 <h1>
   <img src="/img/logo-200.png" alt="Flat, compose everywhere">
-  <span>Sign up</span>
+ <span ng-i18next="auth:signup">Sign up</span>
 </h1>
 
 <div class="alert alert-danger" ng-show="errors">
   <a class="close" data-dismiss="alert" ng-click="errors = false">&times;</a>
-  <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{error}}</li></ul>
-  <span ng-show="errors.length == 1">{{errors[0]}}</span>
+  <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{(error || 'error.unknown') | i18next}}</li></ul>
+  <span ng-show="errors.length == 1">{{(errors[0] || 'error.unknown') | i18next}}</span>
 </div>
 <div class="content">
   <div class="federated">
-    <a class="btn btn-google"><i class="icon-federated-google"></i>Sign up with Google</a>
-    <a class="btn btn-facebook"><i class="icon-federated-facebook"></i>Sign up with Facebook</a>
-    <a class="btn btn-twitter"><i class="icon-federated-twitter"></i>Sign up with Twitter</a>
+    <a class="btn btn-google"><i class="icon-federated-google"></i><span ng-i18next="auth:signup-google">Sign up with Google</span></a>
+    <a class="btn btn-facebook"><i class="icon-federated-facebook"></i><span ng-i18next="auth:signup-facebook">Sign up with Facebook</span></a>
+    <a class="btn btn-twitter"><i class="icon-federated-twitter"></i><span ng-i18next="auth:signup-twitter">Sign up with Twitter</span></a>
   </div>
   <div class="form">
     <div class="row">
       <form ng-submit="signup()">
-        <input type="email" placeholder="Email address" class="span12 form-inline" ng-model="email" name="email" required />
-        <input type="text" placeholder="Username" class="span12 form-inline" ng-model="username" name="username" required />
-        <input type="password" placeholder="Password" class="span12 form-inline" ng-model="password" name="password" required />
+        <input type="email" placeholder="{{ 'auth:email' | i18next }}" class="span12 form-inline" ng-model="email" name="email" required />
+        <input type="text" placeholder="{{ 'auth:username' | i18next }}" class="span12 form-inline" ng-model="username" name="username" required />
+        <input type="password" placeholder="{{ 'auth:password' | i18next }}" class="span12 form-inline" ng-model="password" name="password" required />
         <p class="pull-right submit">
-          <input type="submit" value="Signup" class="btn btn-primary" />
+          <input type="submit" value="{{ 'auth:signup' | i18next }}" class="btn btn-primary" />
         </p>
       </form>
       <p class="tos">
-        By registering you agree to Flat's Terms of Service.
+        <span ng-i18next="auth:tos">By registering you agree to Flat's Terms of Service.</span>
       </p>
     </div>
   </div>
   <div class="span12 other-action">
-    You already have an account?&nbsp;<a href="#/signin">Sign in</a>
+    <div class="flags pull-right">
+      <a href="?setLng=fr-FR#/signup"><img src="/img/flags/fr.png" alt="Français" /></a>
+      <a href="?setLng=en-US#/signup"><img src="/img/flags/us.png" alt="English" /></a>
+    </div>
+    <span ng-i18next="auth:already-account">You already have an account?</span> <a href="#/signin" ng-i18next="auth:signin">Sign in</a>
   </div>
 </div>

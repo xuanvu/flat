@@ -1,31 +1,35 @@
 <h1>
   <img src="/img/logo-200.png" alt="Flat, compose everywhere">
-  <span>Sign in</span>
+  <span ng-i18next="auth:signin">Sign in</span>
 </h1>
 
 <div class="alert alert-danger" ng-show="errors">
   <a class="close" data-dismiss="alert" ng-click="errors = false">&times;</a>
-  <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{error}}</li></ul>
-  <span ng-show="errors.length == 1">{{errors[0]}}</span>
+  <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{(error || 'error.unknown') | i18next}}</li></ul>
+  <span ng-show="errors.length == 1">{{(errors[0] || 'error.unknown') | i18next}}</span>
 </div>
 <div class="content">
   <div class="federated">
-    <a class="btn btn-google"><i class="icon-federated-google"></i>Sign in with Google</a>
-    <a class="btn btn-facebook"><i class="icon-federated-facebook"></i>Sign in with Facebook</a>
-    <a class="btn btn-twitter"><i class="icon-federated-twitter"></i>Sign in with Twitter</a>
+    <a class="btn btn-google"><i class="icon-federated-google"></i><span ng-i18next="auth:signin-google">Sign in with Google</span></a>
+    <a class="btn btn-facebook"><i class="icon-federated-facebook"></i><span ng-i18next="auth:signin-facebook">Sign in with Facebook</span></a>
+    <a class="btn btn-twitter"><i class="icon-federated-twitter"></i><span ng-i18next="auth:signin-twitter">Sign in with Twitter</span></a>
   </div>
   <div class="form">
     <div class="row signin">
       <form ng-submit="signin()">
-        <input type="text" placeholder="Username" class="span12 form-inline" ng-model="username" name="username" required />
-        <input type="password" placeholder="Password" class="span12 form-inline" ng-model="password" name="password" required />
+        <input type="text" placeholder="{{ 'auth:username' | i18next }}" class="span12 form-inline" ng-model="username" name="username" required />
+        <input type="password" placeholder="{{ 'auth:password' | i18next }}" class="span12 form-inline" ng-model="password" name="password" required />
         <p class="pull-right submit">
-          <input type="submit" value="Sign in" class="btn btn-primary" />
+          <input type="submit" value="{{ 'auth:signin' | i18next }}" class="btn btn-primary" />
         </p>
       </form>
     </div>
   </div>
   <div class="other-action">
-    You need an account ?&nbsp;<a href="#/signup">Sign up</a>
+    <div class="flags pull-right">
+      <a href="?setLng=fr-FR#/signin"><img src="/img/flags/fr.png" alt="Français" /></a>
+      <a href="?setLng=en-US#/signin"><img src="/img/flags/us.png" alt="English" /></a>
+    </div>
+    <span ng-i18next="auth:need-account">You need an account ?</span> <a href="#/signup" ng-i18next="auth:signup">Sign up</a>
   </div>
 </div>
