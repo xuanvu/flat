@@ -7,17 +7,20 @@
         </div>
     </div>
 
-    <div class="input-group">
-        <input type="text" placeholder="Search in my scores" class="input-small">
+    <input type="text" placeholder="Search in my scores" class="input-small" ng-model="query">
+<!--<div class="input-group">
         <span class="input-group-btn">
             <button class="btn btn-small" type="button"><i class="glyphicon glyphicon-search"></i></button>
         </span>
-    </div>
+    </div> -->
 
     <ul class="list-group list-group-flush">
-        <li class="list-group-item score" ng-repeat="n in [1,2,3,4,5]">
-            <a>
-                My Score {{n}}
+        <li class="list-group-item score" ng-repeat="score in (scores | filter:query)">
+            <a href="/editor#?score={{ score.id }}">
+                <i class="glyphicon glyphicon-globe" ng-show="score.public"></i>
+                <i class="glyphicon glyphicon-lock" ng-show="!score.public"></i>
+
+                <span ng-bind-html-unsafe="score.title"></span>
                 <div class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
             </a>
         </li>

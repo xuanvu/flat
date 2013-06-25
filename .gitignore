@@ -4,6 +4,8 @@
 /public/dist
 
 #Temorary files
+/data
+/assets
 npm-debug.log
 /config/runtime.json
 .DS_Store

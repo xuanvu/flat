@@ -77,7 +77,8 @@ module.exports = function(grunt) {
           'public/js/deps/angular-resource.min.js',
           'public/js/deps/angular-sortable.js',
           'public/js/deps/bootstrap/modal.js',
-          'public/js/deps/bootstrap/collapse.js'
+          'public/js/deps/bootstrap/collapse.js',
+          'public/js/deps/bootstrap/tooltip.js'
         ],
         dest: 'public/dist/js/common.js'
       },

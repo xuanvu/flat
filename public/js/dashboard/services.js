@@ -50,7 +50,8 @@ angular.module('flatDashboardServices', ['ngResource']).
   }]).
   factory('Score', ['$resource', 'TokenHandler', function($resource, TokenHandler) {
     var resource =  $resource('/api/score.json', {}, {
-      create: { method: 'POST' }
+      create: { method: 'POST' },
+      query: { method: 'GET', isArray: true }
     });
-    return TokenHandler.wrapActions(resource, ['post']);
+    return TokenHandler.wrapActions(resource, ['post', 'query']);
   }]);

@@ -1,8 +1,10 @@
 'use strict';
 
-function HomeCtrl() {}
+function HomeCtrl($scope, Score) {
+  $scope.scores = Score.query();
+}
 
-HomeCtrl.$inject = [];
+HomeCtrl.$inject = ['$scope', 'Score'];
 
 function NewScoreCtrl($scope, Instruments, Score) {
   $scope.scoreInstruments = [];
