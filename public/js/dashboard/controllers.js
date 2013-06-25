@@ -6,7 +6,7 @@ function HomeCtrl($scope, Score) {
 
 HomeCtrl.$inject = ['$scope', 'Score'];
 
-function NewScoreCtrl($scope, Instruments, Score) {
+function NewScoreCtrl($scope, $location, Instruments, Score) {
   $scope.scoreInstruments = [];
   $scope.keySignature = 0;
   $scope.beats = 2;
@@ -53,7 +53,7 @@ function NewScoreCtrl($scope, Instruments, Score) {
       beats: $scope.beats,
       beatType: $scope.beatType
     }, function (response) {
-      // TODO
+      $location.path('/');
     }, function (response) {
       if (typeof(response.data.description) === 'string') {
         $scope.errors.push(response.data.description);
@@ -67,4 +67,4 @@ function NewScoreCtrl($scope, Instruments, Score) {
   };
 }
 
-NewScoreCtrl.$inject = ['$scope', 'Instruments', 'Score'];
+NewScoreCtrl.$inject = ['$scope', '$location', 'Instruments', 'Score'];
