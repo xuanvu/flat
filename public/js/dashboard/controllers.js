@@ -70,3 +70,9 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
 }
 
 NewScoreCtrl.$inject = ['$scope', '$location', 'Instruments', 'Score'];
+
+function UserCtrl($routeParams) {
+  console.log($routeParams);
+}
+
+UserCtrl.$inject = ['$routeParams'];

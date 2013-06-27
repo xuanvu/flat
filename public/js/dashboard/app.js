@@ -13,13 +13,13 @@ var app = angular.module('flatDashboard', ['jm.i18next', 'flatDashboardServices'
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', { templateUrl: '/views/dashboard/_home.html', controller: HomeCtrl }).
+    when('/u/:username', { templateUrl: '/views/dashboard/user/_index.html', controller: UserCtrl }).
     when('/score/new', { templateUrl: '/views/dashboard/score/_new.html', controller: NewScoreCtrl }).
     otherwise({redirectTo: '/'});
 }]);
 
-app.run(['$rootScope', 'TokenHandler', 'Account',
-  function($rootScope, TokenHandler, Account) {
-    TokenHandler.set($.cookie('flat.sid'));
+app.run(['$rootScope', 'Account',
+  function($rootScope, Account) {
     $rootScope.account = Account.get({}, function() {}, function() {
       window.location = '/auth';
     });
