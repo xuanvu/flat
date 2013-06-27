@@ -84,8 +84,8 @@ exports.getApp = function (schema) {
     // less
     var lessMiddleware = require('less-middleware');
     app.use(lessMiddleware({
-      src: path.join(__dirname, 'public/less'),
-      dest: path.join(__dirname, 'public/dist/css'),
+      src: path.join(__dirname, '../public/less'),
+      dest: path.join(__dirname, '../public/dist/css'),
       prefix: '/dist/css',
       force: true,
       compress: false
