@@ -14,6 +14,15 @@ exports.models = {
       password: { type: 'string' }
     }
   },
+  UserPublicDetails: {
+    id: 'UserPublicDetails',
+    properties: {
+      username: { type: 'string' },
+      email_md5: { type: 'string' },
+      registrationDate: { type: 'string' },
+      id: { type: 'string' }
+    }
+  },
   ScoreInstrument: {
     id: 'ScoreInstrument',
     group: { type: 'string' },

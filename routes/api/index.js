@@ -27,7 +27,9 @@ function FlatApi(app, sw, schema) {
     .addPost(this.createScore(sw))
     .addGet(this.getScores(sw))
     .addGet(this.getScore(sw))
-    .addGet(this.getScoreRevision(sw));
+    .addGet(this.getScoreRevision(sw))
+    // /user
+    .addGet(this.getUser(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -345,6 +347,44 @@ FlatApi.prototype.getScoreRevision = function (sw) {
 
           return this.stringResponse(res, sw, score);
         }.bind(this));
+      }.bind(this));
+    }.bind(this)
+  };
+};
+
+FlatApi.prototype.getUser = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get user public information',
+      'path': '/user.{format}/{id}',
+      'method': 'GET',
+      'nickname': 'getUser',
+      'responseClass': 'UserPublicDetails'
+    },
+    'action': function (req, res) {
+      req.assert('title', 'A user identifier is required.').notEmpty();
+
+      var returnPublicInfos = function (err, user) {
+        if (err || !user) {
+          this.errorResponse(res, sw, 'User not found.', 404);
+        }
+        else {
+          return this.jsonResponse(res, sw, {
+            id: user.id,
+            username: user.username,
+            registrationDate: user.registrationDate,
+            email_md5: crypto.createHash('md5').update(user.email).digest('hex'),
+          });
+        } 
+      }.bind(this);
+
+      this.schema.models.User.find(req.params.id, function (err, user) {
+        if (err || !user) {
+          this.schema.models.User.findOne({ where: { username: req.params.id }}, returnPublicInfos);
+        }
+        else {
+          returnPublicInfos(err, user);
+        }
       }.bind(this));
     }.bind(this)
   };

@@ -19,6 +19,10 @@ describe('API /auth', function () {
     schema.models.User.destroyAll(done);
   });
 
+  after(function (done) {
+    schema.models.User.destroyAll(done);
+  });
+
   describe('POST /api/auth.{format}/signup', function () {
     it('should create an account', function (done) {
       request(app)

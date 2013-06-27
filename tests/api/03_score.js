@@ -55,6 +55,10 @@ describe('API /score', function () {
     ], done);
   });
 
+  after(function (done) {
+    schema.models.User.destroyAll(done);
+  });
+
   describe('POST /score.{format}', function () {
     it('should create a score', function (done) {
       var rq = request(app).post('/api/score.json');
@@ -173,6 +177,13 @@ describe('API /score', function () {
           done();
         });
     });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/score.json')
+        .expect(403)
+        .end(done);
+    });
   });
 
   describe('GET /score.{format}/{id}', function () {
@@ -223,6 +234,13 @@ describe('API /score', function () {
           done();
         });
     });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/score.json/' + scoreId)
+        .expect(403)
+        .end(done);
+    });
   });
 
   describe('GET /score.{format}/{id}/{rev}', function () {
@@ -235,6 +253,23 @@ describe('API /score', function () {
           assert.equal(res.body['score-partwise'].$version, '3.0');
           done();
         });
+    });
+
+    it('should return not found (non public score)', function (done) {
+      var rq = request(app).get('/api/score.json/' + scoreId + '/' + score.revisions[0].id);
+      rq.cookies = cookies2;
+      rq.expect(404)
+        .end(function (err, res) {
+          assert.equal(res.body.description, 'Score not found.');
+          done();
+        });
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/score.json/' + scoreId + '/' + score.revisions[0].id)
+        .expect(403)
+        .end(done);
     });
   });
 });

@@ -16,6 +16,10 @@ describe('API /account', function () {
     app = flat.getApp(schema);
   });
 
+  after(function (done) {
+    schema.models.User.destroyAll(done);
+  });
+
   beforeEach(function (done) {
     schema.models.User.destroyAll(function (err, res) {
       assert.ifError(err);
