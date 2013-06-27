@@ -6,7 +6,6 @@
         "create": "Créer",
         "my-scores": "Mes partitions",
         "see-all": "Voir toutes mes partitions...",
-        "search-my": "Chercher dans mes partitions",
         "instrument-add": "Ajouter un instrument",
         "instruments": "Instruments",
         "key-signature": "Armure",
@@ -17,16 +16,22 @@
         "public": "Publique",
         "private-help": "Vous choisissez qui peut voir et travailler sur votre partition.",
         "public-help": "N'importe qui peut voir cette partition. Vous choisissez qui peut travailler sur votre partition.",
-        "intrument-choose": "Choisissez un instrument"
+        "intrument-choose": "Choisissez un instrument",
+        "scores": "Partitions",
+        "search": "Chercher dans les partitions..."
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",
         "title": "Flux d'actualités",
         "news-no-right-now": "Aucune actualité pour le moment...",
-        "created": "%(user)s a crée une nouvelle partition %(title)"
+        "created": "%(user)s a crée une nouvelle partition %(title)",
+        "recent-events": "Évènements récents"
     },
     "account": {
-        "my": "Mon compte"
+        "my": "Mon compte",
+        "member-since": "Membre depuis",
+        "profile": "Profil",
+        "edit": "Modifier mon profil"
     },
     "logout": "Déconnexion"
 }

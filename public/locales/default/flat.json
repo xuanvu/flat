@@ -6,7 +6,6 @@
         "create": "Create",
         "my-scores": "My scores",
         "see-all": "See all my scores...",
-        "search-my": "Search in my scores",
         "new": "New score",
         "title": "Title",
         "instrument-add": "Add an instrument",
@@ -17,16 +16,22 @@
         "private": "Private",
         "public-help": "Anyone can see this score. You choose who can work on your score.",
         "private-help": "You choose who see and work on your score.",
-        "intrument-choose": "Choose an instrument"
+        "intrument-choose": "Choose an instrument",
+        "scores": "Scores",
+        "search": "Search in the scores..."
     },
     "feed": {
         "title": "News feed",
         "news-no-right-now": "No news right now...",
         "news-discover": "Discover trending scores and people.",
-        "created": "%(user)s created score %(title)"
+        "created": "%(user)s created score %(title)",
+        "recent-events": "Recent events"
     },
     "account": {
-        "my": "My account"
+        "my": "My account",
+        "member-since": "Member since",
+        "profile": "Profile",
+        "edit": "Edit profile"
     },
     "logout": "Logout"
 }

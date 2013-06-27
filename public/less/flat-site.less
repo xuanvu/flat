@@ -11,6 +11,10 @@
     padding-bottom: 0;
 }
 
+.light {
+    color: @gray-light;
+}
+
 .flat-dashboard {
     // Header
     .navbar.header {
@@ -73,7 +77,7 @@
     .content {
         .make-row();
 
-        .content-left {
+        .content-small {
             .make-column(4);
             padding-left: 0;
 
@@ -86,11 +90,33 @@
         }
     }
 
+    /* user/_index.html */
+    .user {
+        .profile {
+            border-bottom: 1px solid @gray-lighter;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+
+            h1 {
+                font-weight: normal;
+            }
+
+            .avatar {
+                float: left;
+                margin-right: 15px;
+                border: 1px solid @gray-lighter;
+                padding: 1px;
+            }
+        }
+    }
+
+    .panel-heading {
+        font-weight: 300;
+    }
+
     /* _myscores.html */
     .panel.my-score {
         .panel-heading {
-            font-weight: 300;
-
             .pull-right {
                 margin: -3px;
             }
@@ -208,7 +234,7 @@
     }
 
     h1.small {
-        font-size: @font-size-base * 1.25;
+        font-size: @font-size-base * 1.5;
         margin-top: 0;
     }
 

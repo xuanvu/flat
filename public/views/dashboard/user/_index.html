@@ -1,0 +1,30 @@
+<div class="content user">
+    <div class="content-main">
+        <div class="profile">
+            <div class="pull-right" ng-show="user.id == account.id"><a href="" class="btn btn-default btn-small"><i class="glyphicon glyphicon-edit"></i> <span ng-i18next="flat:account.edit">Edit profile</span></a></div>
+            <div class="pull-left"><img src="https://secure.gravatar.com/avatar/{{user.email_md5}}?s=90" class="avatar"></div>
+            <h1 class="small">{{ user.name || user.username }}</h1>
+            <p class="light" ng-show="user.name">{{ user.username }}</small>
+            <p class="light"><span ng-i18next="flat:account.member-since">Member since</span> {{ user.registrationDate | date: longDate }}</p>
+            <!-- {{ user }} -->
+
+            <div class="clearfix"></div>
+        </div>
+
+        <h1 class="small" ng-i18next="flat:feed.recent-events">Recent events</h1>
+        TODO
+    </div>
+    <div class="content-small">
+        <div class="panel">
+            <div class="panel-heading">
+                <span ng-i18next="flat:account.profile">Profile</span>
+            </div>
+
+            <span class="light" ng-i18next="flat:account.member-since">Member since</span> <strong>{{ user.registrationDate | date: longDate }}</strong>
+
+            <!-- TODO -->
+        </div>
+
+        <div ng-include src="'views/dashboard/score/_panel_list.html'"></div>
+    </div>
+</div>

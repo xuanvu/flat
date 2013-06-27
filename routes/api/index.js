@@ -29,7 +29,8 @@ function FlatApi(app, sw, schema) {
     .addGet(this.getScore(sw))
     .addGet(this.getScoreRevision(sw))
     // /user
-    .addGet(this.getUser(sw));
+    .addGet(this.getUser(sw))
+    .addGet(this.getUserScores(sw));  
 
   passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -358,6 +359,7 @@ FlatApi.prototype.getUser = function (sw) {
     'spec': {
       'summary': 'Get user public information',
       'path': '/user.{format}/{id}',
+      'params': [sw.params.path('id', 'The user identifier or username', 'string')],
       'method': 'GET',
       'nickname': 'getUser',
       'responseClass': 'UserPublicDetails'
@@ -385,6 +387,37 @@ FlatApi.prototype.getUser = function (sw) {
         }
         else {
           returnPublicInfos(err, user);
+        }
+      }.bind(this));
+    }.bind(this)
+  };
+};
+
+FlatApi.prototype.getUserScores = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get user public scores',
+      'path': '/user.{format}/{id}/scores',
+      'params': [sw.params.path('id', 'The user identifier', 'string')],
+      'method': 'GET',
+      'nickname': 'getUser',
+      'responseClass': 'UserPublicDetails'
+    },
+    'action': function (req, res) {
+      req.assert('title', 'A user identifier is required.').notEmpty();
+      this.schema.models.User.find(req.params.id, function (err, user) {
+        if (err || !user) {
+          this.errorResponse(res, sw, 'User not found.', 404);
+        }
+        else {
+          this.schema.models.Score.all({ where: { userId: user.id, public: true }}, function (err, scores) {
+            if (err) {
+              this.errorResponse(res, sw, 'Unable to fetch the scores.', 500);
+            }
+            else {
+              return this.jsonResponse(res, sw, scores);
+            }
+          }.bind(this));
         }
       }.bind(this));
     }.bind(this)

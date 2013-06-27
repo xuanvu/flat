@@ -71,8 +71,16 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
 
 NewScoreCtrl.$inject = ['$scope', '$location', 'Instruments', 'Score'];
 
-function UserCtrl($routeParams) {
-  console.log($routeParams);
+function UserCtrl($rootScope, $scope, $routeParams, $location, User, UserScores) {
+  $scope.user = User.get({ userId: $routeParams.username },
+    function () {
+      $scope.is_me = $scope.user.id == $rootScope.account.id;
+      $scope.scores = UserScores.query({ userId: $scope.user.id });
+    },
+    function (err) {
+      // 404
+      $location.path('/');
+    });
 }
 
-UserCtrl.$inject = ['$routeParams'];
+UserCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location', 'User', 'UserScores'];

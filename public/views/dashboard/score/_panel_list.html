@@ -1,19 +1,14 @@
-<div class="my-score panel">
+<div class="my-score panel" ng-hide="!is_me && scores.length == 0">
     <div class="panel-heading">
-        <span ng-i18next="flat:score.my-scores">My scores</span>
-        <div class="pull-right">
+        <span ng-i18next="flat:score.my-scores" ng-show="is_me">My scores</span>
+        <span ng-i18next="flat:score.scores" ng-show="!is_me">Scores</span>
+        <div class="pull-right" ng-show="is_me">
             <a href="#/score/new" class="btn btn-small btn-primary"><i class="glyphicon glyphicon-plus"></i> <span ng-i18next="flat:score.create">Create</span></a>
             <!-- <a href="" class="btn btn-small btn-primary"><i class="glyphicon glyphicon-upload"></i></a> -->
         </div>
     </div>
 
-    <input type="text" placeholder="{{ 'flat:score.search-my' | i18next }}" class="input-small" ng-model="query">
-<!--<div class="input-group">
-        <span class="input-group-btn">
-            <button class="btn btn-small" type="button"><i class="glyphicon glyphicon-search"></i></button>
-        </span>
-    </div> -->
-
+    <input type="text" placeholder="{{ 'flat:score.search' | i18next }}" class="input-small" ng-model="query">
     <ul class="list-group list-group-flush">
         <li class="list-group-item score" ng-repeat="score in (scores | filter:query)">
             <a href="/editor#?score={{ score.id }}">
@@ -24,6 +19,6 @@
                 <div class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
             </a>
         </li>
-        <li class="list-group-item more-score"><a ng-i18next="flat:score.see-all">See all my flat:score...</a></li>
+        <li ng-show="is_me" class="list-group-item more-score"><a ng-i18next="flat:score.see-all">See all my flat:score...</a></li>
     </ul>
 </div>

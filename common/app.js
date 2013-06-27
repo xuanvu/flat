@@ -127,30 +127,32 @@ exports.getApp = function (schema) {
     res.header('Content-Type', 'application/json; charset=utf-8');
   };
 
-  appApi.use(function(req, res, next) {
-    var access_token = (req.body && req.body.access_token) || (req.query && req.query.access_token);
-    if (access_token && req.sessionStore) {
-      if (access_token.indexOf('s:') === 0) {
-        access_token = access_token.slice(2);
-      }
-
-      access_token = signature.unsign(access_token, config.session.secret);
-      if (!access_token) {
-        return next();
-      }
-
-      req.sessionStore.get(access_token, function(err, session) {
-        if (session) {
-          req.sessionStore.createSession(req, session);
+  if ('development' === app.get('env')) {
+    appApi.use(function(req, res, next) {
+      var access_token = (req.body && req.body.access_token) || (req.query && req.query.access_token);
+      if (access_token && req.sessionStore) {
+        if (access_token.indexOf('s:') === 0) {
+          access_token = access_token.slice(2);
         }
 
+        access_token = signature.unsign(access_token, config.session.secret);
+        if (!access_token) {
+          return next();
+        }
+
+        req.sessionStore.get(access_token, function(err, session) {
+          if (session) {
+            req.sessionStore.createSession(req, session);
+          }
+
+          return next();
+        });
+      }
+      else {
         return next();
-      });
-    }
-    else {
-      return next();
-    }
-  });
+      }
+    });
+  }
 
   swagger.addValidator(
     function validate(req, path, httpMethod) {

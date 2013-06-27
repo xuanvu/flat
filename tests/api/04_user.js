@@ -6,6 +6,7 @@ var assert = require('assert'),
     request = require('supertest'),
     async = require('async'),
     fse = require('fs-extra'),
+    uuid = require('node-uuid'),
     flat = require('../../common/app'),
     utils = require('../../common/utils');
 
@@ -50,13 +51,30 @@ describe('API /user', function () {
       },
       function (res, callback) {
         cookies2 = res.headers['set-cookie'][0].split(';')[0];
-        callback();
+        var scoredb = new schema.models.Score();
+        scoredb.sid = uuid.v4();
+        scoredb.title = 'My public score';
+        scoredb.public = true;
+        scoredb.user(uid2);
+        scoredb.save(callback);
+      },
+      function (res, callback) {
+        var scoredb = new schema.models.Score();
+        scoredb.sid = uuid.v4();
+        scoredb.title = 'My private score';
+        scoredb.public = false;
+        scoredb.user(uid2);
+        scoredb.save(callback);
       }
     ], done);
   });
 
   after(function (done) {
     schema.models.User.destroyAll(done);
+  });
+
+  after(function (done) {
+    schema.models.Score.destroyAll(done);
   });
 
   describe('GET /user.{format}/{id}', function () {
@@ -103,6 +121,45 @@ describe('API /user', function () {
     it('should return return a forbidden', function (done) {
       request(app)
         .get('/api/user.json/' + uid)
+        .expect(403)
+        .end(done);
+    });
+  });
+
+  describe('GET /user.{format}/{id}/scores', function () {
+    it('should return user public scores', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid2 + '/scores');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 1);
+          assert.ok(res.body[0].public);
+          done();
+        });
+    });
+
+    it('should return an empty array', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid + '/scores');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 0);
+          done();
+        });
+    });
+
+    it('should return a not found', function (done) {
+      var rq = request(app).get('/api/user.json/4242/scores');
+      rq.cookies = cookies;
+      rq.expect(404)
+        .end(done);
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/user.json/' + uid + '/scores')
         .expect(403)
         .end(done);
     });

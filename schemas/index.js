@@ -20,7 +20,7 @@ exports.getSchemas = function (schema) {
 
   Score.validatesUniquenessOf('sid');
   Score.belongsTo(User, { as: 'user' });
-  User.hasMany(Score, { as: 'score' });
+  User.hasMany(Score, { as: 'scores' });
 
   var ScoreCollaborators = schema.define('ScoreCollaborators', {
     aclWrite: { type: Boolean }

@@ -9,7 +9,12 @@ angular.module('flatDashboardServices', ['ngResource']).
   }]).
   factory('Score', ['$resource', function($resource) {
     return $resource('/api/score.json', {}, {
-      create: { method: 'POST' },
-      query: { method: 'GET', isArray: true }
+      create: { method: 'POST' }
     });
+  }]).
+  factory('User', ['$resource', function($resource) {
+    return $resource('/api/user.json/:userId', { userId: '@id' });
+  }]).
+  factory('UserScores', ['$resource', function($resource) {
+    return $resource('/api/user.json/:userId/scores', { userId: '@id' });
   }]);
