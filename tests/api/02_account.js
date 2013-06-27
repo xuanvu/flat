@@ -9,7 +9,7 @@ var assert = require('assert'),
 
 
 describe('API /account', function () {
-  var schema, app, cookies;
+  var schema, app, uid, cookies;
 
   before(function () {
     schema = utils.getSchema(config.db);
@@ -27,6 +27,7 @@ describe('API /account', function () {
         .post('/api/auth.json/signup')
         .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
         .end(function (err, res) {
+          uid = res.body.id;
           assert.ifError(err);
           request(app)
             .post('/api/auth.json/signin')
@@ -46,6 +47,7 @@ describe('API /account', function () {
       rq.cookies = cookies;
       rq.expect(200)
         .end(function (err, res) {
+          assert.equal(res.body.id, uid);
           assert.equal(res.body.email, 'user@domain.fr');
           assert.equal(res.body.email_md5, '1eac591a9df93e178ed48f5a2c65fcf3');
           assert.equal(res.body.username, 'myUsername');

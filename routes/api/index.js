@@ -166,6 +166,7 @@ FlatApi.prototype.getAccount = function (sw) {
     },
     'action': function (req, res) {
       return this.jsonResponse(res, sw, {
+        id: req.session.user.id,
         email: req.session.user.email,
         email_md5: crypto.createHash('md5').update(req.session.user.email).digest('hex'),
         username: req.session.user.username
