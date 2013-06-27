@@ -24,5 +24,9 @@
         "title": "Flux d'actualités",
         "news-no-right-now": "Aucune actualité pour le moment...",
         "created": "%(user)s a crée une nouvelle partition %(title)"
-    }
+    },
+    "account": {
+        "my": "Mon compte"
+    },
+    "logout": "Déconnexion"
 }

@@ -12,9 +12,13 @@
           <a href="#/"><img src="/img/logo-header.png" alt="Flat, compose everywhere" /></a>
         </div>
         <div class="pull-right account">
-          <span>{{account.username}}</span>
-          <img src="https://secure.gravatar.com/avatar/{{account.email_md5}}?s=50" />
+          <a href=""><img src="https://secure.gravatar.com/avatar/{{account.email_md5}}?s=30" /></a>
           <!-- <a href="#" ><a class="btn btn-primary">Button</a></div> -->
+        </div>
+        <div class="pull-right actions">
+          <a href="#/score/new" data-toggle="tooltip" title="{{'flat:score.new' | i18next}}"><i class="glyphicon glyphicon-plus"></i></a>
+          <a href="#/account" data-toggle="tooltip" title="{{'flat:account.my' | i18next}} ({{account.username}})"><i class="glyphicon glyphicon-user"></i></a>
+          <a href="/auth#/logout" data-toggle="tooltip" title="{{'flat:logout' | i18next}}"><i class="glyphicon glyphicon-off"></i></a>
         </div>
       </div>
     </div>

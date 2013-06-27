@@ -24,5 +24,9 @@
         "news-no-right-now": "No news right now...",
         "news-discover": "Discover trending scores and people.",
         "created": "%(user)s created score %(title)"
-    }
+    },
+    "account": {
+        "my": "My account"
+    },
+    "logout": "Logout"
 }

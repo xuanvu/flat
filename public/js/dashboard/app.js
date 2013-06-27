@@ -23,4 +23,6 @@ app.run(['$rootScope', 'TokenHandler', 'Account',
     $rootScope.account = Account.get({}, function() {}, function() {
       window.location = '/auth';
     });
+
+    $('.navbar a[data-toggle="tooltip"]').tooltip({ placement: 'bottom' });
 }]);

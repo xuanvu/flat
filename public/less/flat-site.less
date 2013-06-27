@@ -17,16 +17,18 @@
         border-bottom: 1px solid #dadada;
 
         .container {
-            height: 80px;
+            height: 50px;
             padding: 10px 0;
             text-shadow: 0 1px 0 #fff;
 
             // Logo
-            .logo {}
+            .logo img {
+                height: 30px;
+            }
 
             // Header Right
             .account {
-                padding: 6px 0;
+                padding: 0 0 10px 0;
 
                 img {
                     border-radius: 3px;
@@ -34,12 +36,27 @@
                     margin-left: 20px;
                 }
             }
+
+            .actions {
+                display: inline-block;
+                font-size: 115%;
+                padding: 6px 0 0 0;
+
+                a {
+                   padding: 0 5px;
+                    text-decoration: none;
+                }
+
+                .tooltip {
+                    text-shadow: none;
+                }
+            }
         }
     }
 
     /* Content */
     .content-wrapper {
-        margin: 120px auto auto auto;
+        margin: 90px auto auto auto;
     }
 
     .content-signup {
