@@ -19,8 +19,10 @@ exports.getSchemas = function (schema, cb) {
     }
   });
 
-  User.hasAndBelongsToMany(Follow, { as: 'follow', foreignKey: 'follower' });
-  User.hasAndBelongsToMany(Follow, { as: 'followers', foreignKey: 'followed' });
+  Follow.belongsTo(User, { as: 'follower', foreignKey: 'followed' });
+  User.hasMany(Follow, { as: 'followers', foreignKey: 'followed' });
+  Follow.belongsTo(User, { as: 'follow', foreignKey: 'follower' });
+  User.hasMany(Follow, { as: 'follows', foreignKey: 'follower' });
 
   var Score = schema.define('Score', {
     sid: { type: String, limit: 35, index: true },
