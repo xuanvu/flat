@@ -22,6 +22,9 @@ describe('API /score', function () {
         global.app = flat.getApp();
         schema.models.User.destroyAll(callback);
       },
+      function (callback) {
+        schema.models.Score.destroyAll(callback);
+      },
       /* Account 1 */
       function (callback) {
         request(app)
@@ -56,10 +59,6 @@ describe('API /score', function () {
         callback();
       }
     ], done);
-  });
-
-  after(function (done) {
-    schema.models.User.destroyAll(done);
   });
 
   describe('POST /score.{format}', function () {
