@@ -31,7 +31,9 @@
         "my": "My account",
         "member-since": "Member since",
         "profile": "Profile",
-        "edit": "Edit profile"
+        "edit": "Edit profile",
+        "follow": "Follow",
+        "unfollow": "Unfollow"
     },
     "logout": "Logout"
 }

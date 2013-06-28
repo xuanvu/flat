@@ -13,8 +13,14 @@ angular.module('flatDashboardServices', ['ngResource']).
     });
   }]).
   factory('User', ['$resource', function($resource) {
-    return $resource('/api/user.json/:userId', { userId: '@id' });
+    return $resource('/api/user.json/:userId');
   }]).
   factory('UserScores', ['$resource', function($resource) {
-    return $resource('/api/user.json/:userId/scores', { userId: '@id' });
+    return $resource('/api/user.json/:userId/scores');
+  }]).
+  factory('Follow', ['$resource', function($resource) {
+    return $resource('/api/user.json/:userId/follow', { userId: '@id' }, {
+      follow: { method: 'POST' },
+      unfollow: { method: 'DELETE' }
+    });
   }]);

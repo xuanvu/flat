@@ -53,7 +53,8 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
       instruments: $scope.scoreInstruments,
       fifths: $scope.keySignature,
       beats: $scope.beats,
-      beatType: $scope.beatType
+      beatType: $scope.beatType,
+      _csrf: _csrf
     }, function (response) {
       $location.path('/');
     }, function (response) {
@@ -71,16 +72,38 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
 
 NewScoreCtrl.$inject = ['$scope', '$location', 'Instruments', 'Score'];
 
-function UserCtrl($rootScope, $scope, $routeParams, $location, User, UserScores) {
+function UserCtrl($rootScope, $scope, $routeParams, $location,
+                  User, UserScores, Follow) {
   $scope.user = User.get({ userId: $routeParams.username },
     function () {
       $scope.is_me = $scope.user.id == $rootScope.account.id;
       $scope.scores = UserScores.query({ userId: $scope.user.id });
+      $scope.follow = Follow.get({ userId: $scope.user.id }, function (follow) {
+        $scope.follow = follow.follow;
+      });
     },
     function (err) {
       // 404
       $location.path('/');
-    });
+    }
+  );
+
+  $scope.doFollow = function(userId) {
+    console.log('Follow', userId);
+    Follow.follow({ id: userId, _csrf: _csrf }, function () {
+      $scope.follow = true;
+    })
+  };
+
+  $scope.doUnfollow = function(userId) {
+    console.log('UnFollow', userId);
+    Follow.unfollow({ userId: userId, _csrf: _csrf }, function () {
+      $scope.follow = false;
+    })
+  };
+
+  console.log($scope);
 }
 
-UserCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location', 'User', 'UserScores'];
+UserCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location',
+                    'User', 'UserScores', 'Follow'];
