@@ -9,11 +9,11 @@ var assert = require('assert'),
 
 
 describe('API /account', function () {
-  var schema, app, uid, cookies;
+  var uid, cookies;
 
   before(function () {
-    schema = utils.getSchema(config.db);
-    app = flat.getApp(schema);
+    global.schema = utils.getSchema(config.db);
+    global.app = flat.getApp();
   });
 
   after(function (done) {

@@ -12,8 +12,9 @@ var path = require('path'),
     api = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/api'),
     utils = require('./utils');
 
-exports.getApp = function (schema) {
-  var app = express(), appApi = express();
+exports.getApp = function () {
+  global.app = express();
+  var appApi = express();
 
   if ('test' !== app.get('env')) {
     app.set('port', process.env.PORT || config.app.port || 3000);
@@ -95,9 +96,9 @@ exports.getApp = function (schema) {
   app.use(express.static(path.join(__dirname, '/../public')));
 
   // DB
-  if (typeof(schema) == 'undefined') {
+  if (typeof(global.schema) == 'undefined') {
     console.log('[+] Uses DB type =', app.get('db'));
-    schema = utils.getSchema(config.dbs['db_' + app.get('db')]);
+    global.schema = utils.getSchema(config.dbs['db_' + app.get('db')]);
   }
 
   // Front
@@ -165,7 +166,7 @@ exports.getApp = function (schema) {
   );
 
   swagger.setAppHandler(appApi);
-  var flatApi = new api.api(app, swagger, schema);
+  var flatApi = new api.api(swagger);
 
   if ('development' === app.get('env')) {
     swagger.configure('http://' + app.get('host') + ':' + app.get('port') + '/api', '0.1');

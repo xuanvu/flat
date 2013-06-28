@@ -11,11 +11,11 @@ var assert = require('assert'),
     utils = require('../../common/utils');
 
 describe('API /user', function () {
-  var schema, app, cookies, cookies2, uid, uid2;
+  var cookies, cookies2, uid, uid2;
 
   before(function (done) {
-    schema = utils.getSchema(config.db);
-    app = flat.getApp(schema);
+    global.schema = utils.getSchema(config.db);
+    global.app = flat.getApp();
     async.waterfall([
       function (callback) {
         schema.models.User.destroyAll(callback);
