@@ -14,14 +14,10 @@ dbs:
       database: 'flat'
       username: 'root'
       password: ''
-  db_mongo: &db_mongo
-    type: 'mongodb'
-    settings:
-      url: 'mongo://localhost/flat'
-  db_sqlite3: &db_sqlite3
-    type: 'sqlite3'
-    settings:
-      database: ':memory:'
+#  db_mongo: &db_mongo
+#    type: 'mongodb'
+#    settings:
+#      url: 'mongo://localhost/flat'
   # Sessions only
   db_redis: &db_redis
     type: 'redis'
