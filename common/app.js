@@ -19,7 +19,13 @@ exports.getApp = function () {
   if ('test' !== app.get('env')) {
     app.set('port', process.env.PORT || config.app.port || 3000);
     app.set('host', process.env.HOST || config.app.host || '127.0.0.1');
-    app.use(express.logger('dev'));
+
+    if ('production' === app.get('env')) {
+      app.use(express.logger());
+    }
+    else {
+      app.use(express.logger('dev'));
+    }
   }
 
   app.set('db', process.env.DB || config.db.type || 'couchdb');
