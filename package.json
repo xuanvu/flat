@@ -15,7 +15,7 @@
     "validator": "1.2.1",
     "express-validator": "0.3.2",
     "less-middleware": "latest",
-    "jugglingdb": "0.2.x",
+    "jugglingdb-gierschv": ">= 0.2.0-35",
     "jugglingdb-mongodb": "latest",
     "jugglingdb-nano-gierschv": "latest",
     "jugglingdb-mysql-gierschv": "latest",

@@ -1,6 +1,6 @@
 'use strict';
 
-var Schema = require('jugglingdb').Schema,
+var Schema = require('jugglingdb-gierschv').Schema,
     schemas = require('../schemas');
 
 exports.merge = function (a, b) {
