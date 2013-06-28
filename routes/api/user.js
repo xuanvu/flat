@@ -82,7 +82,7 @@ exports.followUser = function (sw) {
     },
     'action': function (req, res) {
       req.assert('title', 'A user identifier is required.').notEmpty();
-      if (req.params.id === req.session.user.id) {
+      if (req.params.id == req.session.user.id) {
         return apiUtils.errorResponse(res, sw, 'You can not follow yourself.', 400);
       }
 
