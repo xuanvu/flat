@@ -15,7 +15,8 @@ describe('API /score', function () {
   before(function (done) {
     async.waterfall([
       function (callback) {
-        global.schema = utils.getSchema(config.db, callback);
+        var db = config.dbs['db_' + (process.env.DB || config.db.type || 'couchdb')];
+        global.schema = utils.getSchema(db, callback);
       },
       function (callback) {
         global.app = flat.getApp();

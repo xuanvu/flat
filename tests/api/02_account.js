@@ -12,7 +12,8 @@ describe('API /account', function () {
   var uid, cookies;
 
   before(function (done) {
-    global.schema = utils.getSchema(config.db, function() {
+    var db = config.dbs['db_' + (process.env.DB || config.db.type || 'couchdb')];
+    global.schema = utils.getSchema(db, function() {
       global.app = flat.getApp();
       done();
     });
