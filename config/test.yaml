@@ -3,6 +3,14 @@ dbs:
     type: 'nano-gierschv' # couchdb
     settings:
       url: 'http://localhost:5984/flat-test'
+  db_mysql-gierschv: &db_mysql-gierschv
+    type: 'mysql-gierschv'
+    settings:
+      host: 'localhost'
+      #port: 8889
+      database: 'flattest'
+      username: 'flat'
+      password: 'flat'
   db_none: &db_memory
     type: 'memory'
 db: *db_nano-gierschv
