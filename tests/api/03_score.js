@@ -13,10 +13,12 @@ describe('API /score', function () {
   var cookies, cookies2, uid, uid2, score, scoreId;
 
   before(function (done) {
-    global.schema = utils.getSchema(config.db);
-    global.app = flat.getApp();
     async.waterfall([
       function (callback) {
+        global.schema = utils.getSchema(config.db, callback);
+      },
+      function (callback) {
+        global.app = flat.getApp();
         schema.models.User.destroyAll(callback);
       },
       /* Account 1 */

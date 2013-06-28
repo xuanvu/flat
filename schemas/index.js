@@ -1,4 +1,4 @@
-exports.getSchemas = function (schema) {
+exports.getSchemas = function (schema, cb) {
   var User = schema.define('User', {
     username: { type: String, limit: 30, index: true },
     email: { type: String, limit: 50, index: true },
@@ -11,6 +11,16 @@ exports.getSchemas = function (schema) {
 
   User.validatesUniquenessOf('email');
   User.validatesUniquenessOf('username');
+
+  var Follow = schema.define('Follow', {
+    date: {
+        type: Date,
+        default: function () { return new Date; }
+    }
+  });
+
+  User.hasAndBelongsToMany(Follow, { as: 'follow', foreignKey: 'follower' });
+  User.hasAndBelongsToMany(Follow, { as: 'followers', foreignKey: 'followed' });
 
   var Score = schema.define('Score', {
     sid: { type: String, limit: 35, index: true },
@@ -33,7 +43,10 @@ exports.getSchemas = function (schema) {
 
   schema.isActual(function(err, actual) {
     if (!actual) {
-      schema.autoupdate();
+      schema.autoupdate(cb);
+    }
+    else if (cb) {
+      cb();
     }
   });
 

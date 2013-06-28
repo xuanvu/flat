@@ -27,7 +27,7 @@ exports.clone = function (obj) {
   return copy;
 };
 
-exports.getSchema = function (configDB) {
+exports.getSchema = function (configDB, cb) {
   var schema = new Schema(configDB.type, {
     url: configDB.settings.url,
     host: configDB.settings.host,
@@ -35,7 +35,8 @@ exports.getSchema = function (configDB) {
     database: configDB.settings.database,
     username: configDB.settings.username,
     password: configDB.settings.password,
+    // debug: true
   });
-  schemas.getSchemas(schema);
+  schemas.getSchemas(schema, cb);
   return schema;
 };

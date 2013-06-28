@@ -8,9 +8,11 @@ var assert = require('assert'),
     utils = require('../../common/utils');
 
 describe('API /auth', function () {
-  before(function () {
-    global.schema = utils.getSchema(config.db);
-    global.app = flat.getApp();
+  before(function (done) {
+    global.schema = utils.getSchema(config.db, function() {
+      global.app = flat.getApp();
+      done();
+    });
   });
 
   beforeEach(function (done) {

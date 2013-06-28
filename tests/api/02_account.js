@@ -12,8 +12,9 @@ describe('API /account', function () {
   var uid, cookies;
 
   before(function () {
-    global.schema = utils.getSchema(config.db);
-    global.app = flat.getApp();
+    global.schema = utils.getSchema(config.db, function() {
+      global.app = flat.getApp();
+    });
   });
 
   after(function (done) {
