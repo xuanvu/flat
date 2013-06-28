@@ -82,6 +82,10 @@ exports.followUser = function (sw) {
     },
     'action': function (req, res) {
       req.assert('title', 'A user identifier is required.').notEmpty();
+      if (req.params.id === req.session.user.id) {
+        return apiUtils.errorResponse(res, sw, 'You can not follow yourself.', 400);
+      }
+
       schema.models.User.find(req.params.id, function (err, user) {
         if (err || !user) {
           apiUtils.errorResponse(res, sw, 'User not found.', 404);
@@ -140,6 +144,31 @@ exports.unfollowUser = function (sw) {
             }
           });
         }
+      });
+    }
+  };
+};
+
+exports.followStatus = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get follow status',
+      'path': '/user.{format}/{id}/follow',
+      'params': [sw.params.path('id', 'The user identifier', 'string')],
+      'method': 'GET',
+      'nickname': 'followUser',
+      'responseClass': 'boolean'
+    },
+    'action': function (req, res) {
+      req.assert('title', 'A user identifier is required.').notEmpty();
+      var follow = { follower: req.session.user.id, followed: req.params.id };
+      schema.models.Follow.count(follow, function (err, n) {
+        if (err) {
+          console.error('[FlatAPI/followUser/count]', err);
+          return apiUtils.errorResponse(res, sw, 'Unable to retrieve the follow status', 500);
+        }
+
+        return apiUtils.jsonResponse(res, sw, { follow: n != 0 });
       });
     }
   };

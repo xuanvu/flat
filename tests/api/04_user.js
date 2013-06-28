@@ -191,8 +191,30 @@ describe('API /user', function () {
       rq.cookies = cookies;
       rq.expect(400)
         .end(function (err, res) {
-          assert.equal(res.body.description, 'You are already following this user.');
           assert.ifError(err);
+          assert.equal(res.body.description, 'You are already following this user.');
+          done();
+        });
+    });
+
+    it('should fail since the user tries to follow himself', function (done) {
+      var rq = request(app).post('/api/user.json/' + uid + '/follow');
+      rq.cookies = cookies;
+      rq.expect(400)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, 'You can not follow yourself.');
+          done();
+        });
+    });
+
+    it('should fail since the user does not exists.', function (done) {
+      var rq = request(app).post('/api/user.json/424242/follow');
+      rq.cookies = cookies;
+      rq.expect(404)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, 'User not found.');
           done();
         });
     });
@@ -209,7 +231,7 @@ describe('API /user', function () {
         });
     });
 
-    it('should retreive the followint', function (done) {
+    it('should retreive the following', function (done) {
       var rq = request(app).get('/api/user.json/' + uid + '/following');
       rq.cookies = cookies;
       rq.expect(200)
@@ -217,6 +239,17 @@ describe('API /user', function () {
           assert.ifError(err);
           assert.equal(res.body.length, 1);
           assert.equal(res.body[0], uid2);
+          done();
+        });
+    });
+
+    it('should return that user is followed', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid2 + '/follow');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.ok(res.body.follow);
           done();
         });
     });
@@ -260,6 +293,17 @@ describe('API /user', function () {
         .end(function (err, res) {
           assert.ifError(err);
           assert.equal(res.body.length, 0);
+          done();
+        });
+    });
+
+    it('should return that user is not followed', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid2 + '/follow');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.ok(!res.body.follow);
           done();
         });
     });

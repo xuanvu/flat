@@ -28,6 +28,7 @@ function FlatApi(sw) {
     // /user
     .addGet(user.getUser(sw))
     .addGet(user.getUserScores(sw))
+    .addGet(user.followStatus(sw))
     .addGet(user.getFollowers(sw))
     .addGet(user.getFollowing(sw))
     .addPost(user.followUser(sw))
