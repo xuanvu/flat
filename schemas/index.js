@@ -25,7 +25,7 @@ exports.getSchemas = function (schema, cb) {
   User.hasMany(Follow, { as: 'follows', foreignKey: 'follower' });
 
   var Score = schema.define('Score', {
-    sid: { type: String, limit: 35, index: true },
+    sid: { type: String, limit: 36, index: true },
     title: { type: String, limit: 50, index: true },
     public: { type: Boolean },
   });

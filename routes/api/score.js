@@ -116,7 +116,7 @@ exports.getScore = function (sw) {
     },
     'action': function (req, res) {
       schema.models.Score.find(req.params.id, function (err, scoredb) {
-        if (err || (!scoredb.public && scoredb.userId != req.session.user.id)) {
+        if (err || !scoredb || (!scoredb.public && scoredb.userId != req.session.user.id)) {
           return apiUtils.errorResponse(res, sw, 'Score not found.', 404);
         }
 
