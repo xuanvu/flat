@@ -115,7 +115,7 @@ exports.followUser = function (sw) {
 exports.unfollowUser = function (sw) {
   return {
     'spec': {
-      'summary': 'Follow a user',
+      'summary': 'Unfollow a user',
       'path': '/user.{format}/{id}/follow',
       'params': [sw.params.path('id', 'The user identifier', 'string')],
       'method': 'DELETE',

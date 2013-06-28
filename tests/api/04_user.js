@@ -53,7 +53,20 @@ describe('API /user', function () {
       },
       function (res, callback) {
         cookies2 = res.headers['set-cookie'][0].split(';')[0];
-        done();
+        var scoredb = new schema.models.Score();
+        scoredb.sid = uuid.v4();
+        scoredb.title = 'My public score';
+        scoredb.public = true;
+        scoredb.user(uid2);
+        scoredb.save(callback);
+      },
+      function (res, callback) {
+        var scoredb = new schema.models.Score();
+        scoredb.sid = uuid.v4();
+        scoredb.title = 'My private score';
+        scoredb.public = false;
+        scoredb.user(uid2);
+        scoredb.save(callback);
       }
     ], done);
   });
