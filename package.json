@@ -6,7 +6,7 @@
     "start": "node flat.js"
   },
   "dependencies": {
-    "flat-fermata": "git+ssh://git@git.vincent.sh:flat/fermata.git#master",
+    "flat-fermata": "https://vincent.sh/flat/fermata.tgz",
     "js-yaml": "latest",
     "config": "0.4.26",
     "express": "3.1.1",
