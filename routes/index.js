@@ -11,3 +11,7 @@ exports.auth = function (req, res) {
 exports.dashboard = function (req, res) {
   res.render('dashboard/layout.html', { _csrf: req.session._csrf });
 };
+
+exports.editor = function (req, res) {
+  res.render('editor/layout.html', { _csrf: req.session._csrf });
+};
