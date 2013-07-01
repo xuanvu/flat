@@ -111,6 +111,7 @@ exports.getApp = function () {
   app.get('/', routes.index);
   app.get('/auth', routes.auth);
   app.get('/dashboard', routes.dashboard);
+  app.get('/editor', routes.editor);
 
   // API
   app.use('/api', appApi);
