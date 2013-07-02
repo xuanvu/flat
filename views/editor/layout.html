@@ -13,62 +13,17 @@
       </div>
     </div>
 
-    <div class="flat-body">
-      <a class="feedback" id="single_image" href="RAS">Feeback</a>
-        <div class="tools-menu">
-          <div class="toolbar toolbar-transport">
-            <div class="menu-button">
-              <i class="play-button"></i>
-            </div><div class="menu-button">
-              <i class="stop-button"></i>
-            </div>  
-          </div>
-          <div class="toolbar toolbar-elements">
-            <ul class="navigation">
-              <li class="toggleSubMenu"><span></span>
-                <ul class="subMenu">
-                  <li><a href="#" title="tool description" class="add-tick"></a></li>
-                  <li><a href="#" title="tool description"></a></li>
-                  <li><a href="#" title="tool description"></a></li>
-                  <li><a href="#" title="tool description"></a></li>
-                  <li><a href="#" title="tool description"></a></li>
-                  <li><a href="#" title="tool description"></a></li>
-                </ul>
-              </li>
-              <li class="toggleSubMenu"><span></span>
-                <ul class="subMenu">
-                  
-                </ul>
-              </li>
-              <li class="toggleSubMenu"><span></span>
-                <ul class="subMenu">
-                
-                </ul>
-              </li>
-              <li class="toggleSubMenu"><span></span>
-                <ul class="subMenu">
-                  
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-    
-        <div id="canvas-score" class="canvas-score well"></div>
-        <div id="error"></div>
-      </div>
-      <div class="container footer">
-        <div class="pull-left">&copy; 2013 Flat</div>
-        <div class="pull-right">
-          <a ng-i18next="flat:about">About Flat</a> -
-          <a ng-i18next="flat:tos">Terms of Service</a> -
-          <a ng-i18next="flat:privacy">Privacy</a>
-        </div>
+    <div class="flat-body" ng-view>
+      
+    </div>
+    <div class="container footer">
+      <div class="pull-left">&copy; 2013 Flat</div>
+      <div class="pull-right">
+        <a ng-i18next="flat:about">About Flat</a> -
+        <a ng-i18next="flat:tos">Terms of Service</a> -
+        <a ng-i18next="flat:privacy">Privacy</a>
       </div>
     </div>
-
-    
-
     <script>var _csrf = '{_csrf}';</script>
     <script src="/dist/js/common.js"></script>
     <script src="/js/editor/app.js"></script>
