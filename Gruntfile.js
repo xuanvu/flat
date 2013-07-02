@@ -117,6 +117,18 @@ module.exports = function(grunt) {
           'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>'
         }
       },
+    },
+    copy: {
+      fermata: {
+        files: [
+          {
+            expand: true,
+            cwd: 'node_modules/flat-fermata/build/fermata',
+            src: ['fermata.js', 'ferama.min.js'],
+            dest: 'public/dist/js/'
+          }
+        ]
+      }
     }
   });
 
@@ -127,6 +139,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('default', ['clean', 'sprite', 'less', 'htmlmin', 'ngtemplates', 'concat', 'uglify']);
+  grunt.registerTask('default', [
+    'clean', 'sprite', 'less',
+    'htmlmin', 'ngtemplates',
+    'concat', 'uglify', 'copy'
+  ]);
 };
