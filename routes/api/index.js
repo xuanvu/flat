@@ -32,7 +32,8 @@ function FlatApi(sw) {
     .addGet(user.getFollowers(sw))
     .addGet(user.getFollowing(sw))
     .addPost(user.followUser(sw))
-    .addDelete(user.unfollowUser(sw));
+    .addDelete(user.unfollowUser(sw))
+    .addGet(user.getUserNews(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {

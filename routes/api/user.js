@@ -1,5 +1,6 @@
 var crypto = require('crypto'),
-    apiUtils = require('./utils');
+    apiUtils = require('./utils'),
+    newsfeed = require('../../lib/newsfeed');
 
 exports.getUser = function (sw) {
   return {
@@ -229,6 +230,25 @@ exports.getFollowing = function (sw) {
 
           return apiUtils.jsonResponse(res, sw, result);
         }
+      });
+    }
+  };
+};
+
+exports.getUserNews = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get the user news',
+      'path': '/user.{format}/{id}/news',
+      'params': [sw.params.path('id', 'The user identifier', 'string')],
+      'method': 'GET',
+      'nickname': 'getUserNews',
+      'responseClass': 'List[News]'
+    },
+    'action': function (req, res) {
+      req.assert('title', 'A user identifier is required.').notEmpty();
+      newsfeed.getUserNews(req.params.id, function (err, news) {
+        return apiUtils.jsonResponse(res, sw, news);
       });
     }
   };

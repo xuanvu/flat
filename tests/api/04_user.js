@@ -68,16 +68,29 @@ describe('API /user', function () {
         scoredb.public = false;
         scoredb.user(uid2);
         scoredb.save(callback);
+      },
+      function (res, callback) {
+        var news = new schema.models.News();
+        news.userId = uid;
+        news.event = 'feed.created';
+        news.parameters = '{"title":"42"}';
+        news.save(callback);
       }
     ], done);
   });
 
   after(function (done) {
-    schema.models.User.destroyAll(done);
-  });
-
-  after(function (done) {
-    schema.models.Follow.destroyAll(done);
+    async.waterfall([
+      function (callback) {
+        schema.models.Follow.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.User.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.News.destroyAll(callback);
+      }
+    ], done);
   });
 
   describe('GET /user.{format}/{id}', function () {
@@ -332,6 +345,51 @@ describe('API /user', function () {
     it('should return return a forbidden', function (done) {
       request(app)
         .get('/api/user.json/' + uid + '/followers')
+        .expect(403)
+        .end(done);
+    });
+  });
+
+    describe('GET /user.{format}/{id}/news', function () {
+    it('should return user news', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid + '/news');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 1);
+          assert.equal(res.body[0].userId, uid);
+          assert.equal(res.body[0].event, 'feed.created');
+          assert.equal(res.body[0].parameters, '{"title":"42"}');
+          done();
+        });
+    });
+
+    it('should return an empty array', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid2 + '/news');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 0);
+          done();
+        });
+    });
+
+    it('should return an empty array', function (done) {
+      var rq = request(app).get('/api/user.json/4242/news');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body, 0);
+          done();
+        });
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/user.json/' + uid + '/scores')
         .expect(403)
         .end(done);
     });

@@ -96,5 +96,15 @@ exports.models = {
       properties: { type: 'ScoreDb', description: 'The score properties' },
       revisions: { type: 'ScoreRevision', description: 'The score revisions' }
     }
+  },
+  News: {
+    id: 'News',
+    properties: {
+      id: { type: 'string', description: 'The news identifier' },
+      event: { type: 'String', description: 'The event text' },
+      parameters: { type: 'String', description: 'A JSON containing the event parameters' },
+      date: { type: 'Date', description: 'The publication date' },
+      userId: { type: 'string', description: 'The news owner' }
+    }
   }
 };

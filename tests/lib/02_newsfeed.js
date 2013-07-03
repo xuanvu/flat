@@ -73,6 +73,19 @@ describe('lib/newsfeed', function () {
     ], done);
   });
 
+  it('should fetch the user news', function (done) {
+    async.waterfall([
+      async.apply(newsfeed.getUserNews, uid1),
+      function (news, callback) {
+        assert.equal(news.length, 1);
+        assert.equal(news[0].userId, uid1);
+        assert.equal(news[0].event, 'feed.created');
+        assert.equal(news[0].parameters, '{"title":"42"}');
+        schema.models.NewsFeed.findOne({ where: { userId: uid2 }}, callback);
+      }
+    ], done);
+  });
+
   it('should fetch the newsfeed and the news', function (done) {
     async.waterfall([
       async.apply(newsfeed.getNewsFeed, uid2, {}),
