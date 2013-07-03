@@ -73,7 +73,7 @@ describe('API /user', function () {
         var news = new schema.models.News();
         news.userId = uid;
         news.event = 'feed.created';
-        news.parameters = '{"title":"42"}';
+        news.parameters = '{"title":{"type":"score","id":"4242","text":"42"}}';
         news.save(callback);
       }
     ], done);
@@ -360,7 +360,8 @@ describe('API /user', function () {
           assert.equal(res.body.length, 1);
           assert.equal(res.body[0].userId, uid);
           assert.equal(res.body[0].event, 'feed.created');
-          assert.equal(res.body[0].parameters, '{"title":"42"}');
+          assert.equal(res.body[0].parameters,
+            '{"title":{"type":"score","id":"4242","text":"42"}}');
           done();
         });
     });

@@ -10,7 +10,8 @@ var models = require('./models'),
 var auth = require('./auth'),
     account = require('./account'),
     score = require('./score'),
-    user = require('./user');
+    user = require('./user'),
+    newsfeed = require('./newsfeed');
 
 function FlatApi(sw) {
   sw.addModels(models)
@@ -33,7 +34,9 @@ function FlatApi(sw) {
     .addGet(user.getFollowing(sw))
     .addPost(user.followUser(sw))
     .addDelete(user.unfollowUser(sw))
-    .addGet(user.getUserNews(sw));
+    .addGet(user.getUserNews(sw))
+    // /newsfeed
+    .addGet(newsfeed.getNewsFeed(sw));
 
   passport.use(new LocalStrategy(
     function(username, password, done) {

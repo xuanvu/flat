@@ -57,13 +57,15 @@ describe('lib/newsfeed', function () {
 
   it('should add an event', function (done) {
     async.waterfall([
-      async.apply(newsfeed.addNews, uid1, 'feed.created', { title: '42'}),
+      async.apply(newsfeed.addNews, uid1, 'feed.created',
+        {"title":{"type":"score","id": "4242", "text": "42"}}),
       function (_news, callback) {
         news = _news;
         assert.notEqual(news.id, null);
         assert.equal(news.userId, uid1);
         assert.equal(news.event, 'feed.created');
-        assert.equal(news.parameters, '{"title":"42"}');
+        assert.equal(news.parameters,
+          '{"title":{"type":"score","id":"4242","text":"42"}}');
         schema.models.NewsFeed.findOne({ where: { userId: uid2 }}, callback);
       }, function (newsfeed, callback) {
         assert.equal(newsfeed.userId, uid2);
@@ -80,7 +82,8 @@ describe('lib/newsfeed', function () {
         assert.equal(news.length, 1);
         assert.equal(news[0].userId, uid1);
         assert.equal(news[0].event, 'feed.created');
-        assert.equal(news[0].parameters, '{"title":"42"}');
+        assert.equal(news[0].parameters,
+          '{"title":{"type":"score","id":"4242","text":"42"}}');
         schema.models.NewsFeed.findOne({ where: { userId: uid2 }}, callback);
       }
     ], done);
@@ -98,7 +101,8 @@ describe('lib/newsfeed', function () {
         assert.notEqual(news.id, null);
         assert.equal(news.userId, uid1);
         assert.equal(news.event, 'feed.created');
-        assert.equal(news.parameters, '{"title":"42"}');
+        assert.equal(news.parameters,
+          '{"title":{"type":"score","id":"4242","text":"42"}}');
         callback();
       }
     ], done);
