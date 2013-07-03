@@ -12,7 +12,7 @@
           <a href="#/"><img src="/img/logo-header.png" alt="Flat, compose everywhere" /></a>
         </div>
         <div class="pull-right account">
-          <a href=""><img src="https://secure.gravatar.com/avatar/{{account.email_md5}}?s=30" /></a>
+          <a href=""><img class="rd-avatar" src="https://secure.gravatar.com/avatar/{{account.email_md5}}?s=30&amp;d=mm" /></a>
           <!-- <a href="#" ><a class="btn btn-primary">Button</a></div> -->
         </div>
         <div class="pull-right actions">
@@ -36,6 +36,8 @@
 
     <script>var _csrf = '{_csrf}';</script>
     <script src="/dist/js/common.js"></script>
+    <script src="/js/modules/flat.js"></script>
+    <script src="/js/modules/flat-news.js"></script>
     <script src="/js/dashboard/app.js"></script>
     <script src="/js/dashboard/controllers.js"></script>
     <script src="/js/dashboard/services.js"></script>

@@ -70,6 +70,8 @@ module.exports = function(grunt) {
     concat: {
       js_deps: {
         src: [
+          'public/js/deps/moment/moment.js',
+          'public/js/deps/moment/fr.js',
           'public/js/deps/i18next-1.6.3.js',
           'public/js/deps/jquery-2.0.2.min.js',
           'public/js/deps/jquery.cookie.min.js',
