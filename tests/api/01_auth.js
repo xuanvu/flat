@@ -2,10 +2,12 @@
 
 process.env.NODE_ENV = 'test';
 var assert = require('assert'),
+    async = require('async'),
     config = require('config'),
     request = require('supertest'),
     flat = require('../../common/app'),
-    utils = require('../../common/utils');
+    utils = require('../../common/utils'),
+    newsfeed = require('../../lib/newsfeed');
 
 describe('API /auth', function () {
   before(function (done) {
@@ -26,19 +28,28 @@ describe('API /auth', function () {
 
   describe('POST /api/auth.{format}/signup', function () {
     it('should create an account', function (done) {
-      request(app)
-        .post('/api/auth.json/signup')
-        .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
-        .expect(200)
-        .end(function (err, res) {
-          assert.ifError(err);
-          schema.models.User.findOne({ where: { username: 'myUsername' } }, function (err, user) {
-            assert.ifError(err);
-            assert.equal(user.username, 'myUsername');
-            assert.equal(user.email, 'user@domain.fr');
-            done();
-          });
-        });
+      async.waterfall([
+        function (callback) {
+          request(app)
+            .post('/api/auth.json/signup')
+            .send({ username: 'myUsername', password: 'myPassword', email: 'user@domain.fr' })
+            .expect(200)
+            .end(callback);
+        },
+        function (res, callback) {
+          schema.models.User.findOne({ where: { username: 'myUsername' } }, callback);
+        },
+        function (user, callback) {
+          assert.equal(user.username, 'myUsername');
+          assert.equal(user.email, 'user@domain.fr');
+          newsfeed.getUserNews(user.id, callback);
+        },
+        function (news, callback) {
+          assert.equal(news.length, 1);
+          assert.equal(news[0].event, 'feed.joined');
+          callback();
+        }
+      ], done);
     });
 
     it('should return a bad request', function (done) {

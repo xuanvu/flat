@@ -357,7 +357,7 @@ describe('API /user', function () {
       rq.expect(200)
         .end(function (err, res) {
           assert.ifError(err);
-          assert.equal(res.body.length, 1);
+          assert.equal(res.body.length, 2); // Contains joined event
           assert.equal(res.body[0].userId, uid);
           assert.equal(res.body[0].event, 'feed.created');
           assert.equal(res.body[0].parameters,
@@ -372,7 +372,7 @@ describe('API /user', function () {
       rq.expect(200)
         .end(function (err, res) {
           assert.ifError(err);
-          assert.equal(res.body.length, 0);
+          assert.equal(res.body.length, 1); // Contains joined event
           done();
         });
     });

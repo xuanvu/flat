@@ -1,8 +1,10 @@
-var bcrypt = require('bcrypt'),
+var async = require('async'),
+    bcrypt = require('bcrypt'),
     config = require('config'),
     passport = require('passport'),
     signature = require('cookie-signature'),
-    apiUtils = require('./utils');
+    apiUtils = require('./utils'),
+    newsfeed = require('../../lib/newsfeed');
 
 exports.authSignup = function (sw) {
   return {
@@ -24,23 +26,33 @@ exports.authSignup = function (sw) {
         return apiUtils.errorResponse(res, sw, errors);
       }
 
-      bcrypt.hash(req.body.password, 10, function(err, password) {
+      var user;
+      async.waterfall([
+        async.apply(bcrypt.hash, req.body.password, 10),
+        function (password, callback) {
+          var user = new schema.models.User();
+          user.username = req.body.username;
+          user.email = req.body.email;
+          user.password = password;
+          user.save(callback);
+        },
+        function (_user, callback) {
+          req.session.user = user = _user;
+          newsfeed.addNews(user.id, 'feed.joined', {}, callback);
+        }
+      ], function (err, news) {
         if (err) {
-          console.error('[exports..authSignup] Bcrypt: ', err);
+          if (err.statusCode === 400) {
+            return apiUtils.errorResponse(
+              res, sw, 'Your username or e-mail is already used.', 400
+            );
+          }
+
+          console.error('[FlatAPI/authSignup] ', err);
           return apiUtils.errorResponse(res, sw, null, 500);
         }
 
-        var user = new schema.models.User();
-        user.username = req.body.username;
-        user.email = req.body.email;
-        user.password = password;
-        user.save(function(err, user) {
-          if (err) {
-            return apiUtils.errorResponse(res, sw, 'Your username or e-mail is already used.', err.statusCode);
-          }
-          req.session.user = user;
-          return apiUtils.jsonResponse(res, sw, user);
-        });
+        return apiUtils.jsonResponse(res, sw, user);
       });
     }
   };

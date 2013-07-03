@@ -25,7 +25,8 @@
         "title": "Flux d'actualités",
         "news-no-right-now": "Aucune actualité pour le moment...",
         "created": "%(user)s a crée une nouvelle partition %(title)",
-        "recent-events": "Évènements récents"
+        "recent-events": "Évènements récents",
+        "joined": "%(user)s a rejoint Flat."
     },
     "account": {
         "my": "Mon compte",
