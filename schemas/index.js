@@ -43,6 +43,26 @@ exports.getSchemas = function (schema, cb) {
   User.hasMany(ScoreCollaborators, { as: 'collaborator' });
   ScoreCollaborators.belongsTo(User, { as: 'user' });
 
+  var News = schema.define('News', {
+    event: { type: String, limit: 50, index: true },
+    parameters: { type: String, limit: 500 },
+    date: {
+        type: Date,
+        default: function () { return new Date; }
+    }
+  });
+
+  User.hasMany(News, { as: 'event' });
+  News.belongsTo(User, { as: 'user' });
+
+  var NewsFeed = schema.define('NewsFeed', {});
+  NewsFeed.belongsTo(User, { as: 'user' });
+  User.hasMany(NewsFeed, { as: 'newsfeed' });
+
+  NewsFeed.belongsTo(News, { as: 'news' });
+  News.hasMany(NewsFeed, { as: 'newsfeed' });
+  
+
   schema.isActual(function(err, actual) {
     if (!actual) {
       schema.autoupdate(cb);
