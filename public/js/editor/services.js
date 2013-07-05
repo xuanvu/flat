@@ -8,9 +8,10 @@ angular.module('flatEditorServices', ['ngResource']).
     return $resource('/fixtures/instruments.min.json');
   }]).
   factory('Score', ['$resource', function($resource) {
-    return $resource('/api/score.json', {}, {
-      create: { method: 'POST' }
-    });
+    return $resource('/api/score.json/:id', {id: '1'}, {});
+  }]).
+  factory('Revision', ['$resource', function($resource) {
+    return $resource('/api/score.json/:id/:revision', {id: '1', revision: '0'}, {});
   }]).
   factory('User', ['$resource', function($resource) {
     return $resource('/api/user.json/:userId', { userId: '@id' });
