@@ -17,9 +17,12 @@ angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']
     when('/score/new', { templateUrl: '/views/dashboard/score/_new.html', controller: NewScoreCtrl }).
     otherwise({redirectTo: '/'});
 }]).
-run(['$rootScope', 'Account',
-  function ($rootScope, Account) {
-    moment.lang(i18n.lng());
+run(['$rootScope', '$i18next', 'Account',
+  function ($rootScope, $i18next, Account) {
+    $rootScope.$watch(window.i18n.options.lng, function() {
+      moment.lang(window.i18n.lng() || 'en');
+    });
+
     $rootScope.account = Account.get({}, function () {}, function () {
       window.location = '/auth';
     });
