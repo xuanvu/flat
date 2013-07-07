@@ -17,8 +17,8 @@ angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']
     when('/score/new', { templateUrl: '/views/dashboard/score/_new.html', controller: NewScoreCtrl }).
     otherwise({redirectTo: '/'});
 }]).
-run(['$rootScope', '$i18next', 'Account',
-  function ($rootScope, $i18next, Account) {
+run(['$rootScope', 'Account',
+  function ($rootScope, Account) {
     $rootScope.$watch(window.i18n.options.lng, function() {
       moment.lang(window.i18n.options.lng ? window.i18n.options.lng.split('-')[0] : 'en');
     });
