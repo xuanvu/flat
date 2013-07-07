@@ -74,14 +74,16 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
 NewScoreCtrl.$inject = ['$scope', '$location', 'Instruments', 'Score'];
 
 function UserCtrl($rootScope, $scope, $routeParams, $location,
-                  User, UserScores, UserNews, Follow) {
+                  User, UserScores, UserNews, Follow, FollowStatus) {
   $scope.user = User.get({ userId: $routeParams.username },
     function () {
       $scope.is_me = $scope.user.id == $rootScope.account.id;
       $scope.scores = UserScores.query({ userId: $scope.user.id });
       $scope.news = UserNews.query({ userId: $scope.user.id });
-      $scope.follow = Follow.get({ userId: $scope.user.id }, function (follow) {
-        $scope.follow = follow.follow;
+      $scope.follow = FollowStatus.get({ userId: $rootScope.account.id, targetId: $scope.user.id }, function (follow) {
+        $scope.follow = true;
+      }, function () {
+        $scope.follow = false;
       });
     },
     function (err) {
@@ -104,4 +106,4 @@ function UserCtrl($rootScope, $scope, $routeParams, $location,
 }
 
 UserCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location',
-                    'User', 'UserScores', 'UserNews', 'Follow'];
+                    'User', 'UserScores', 'UserNews', 'Follow', 'FollowStatus'];

@@ -25,13 +25,13 @@ function FlatApi(sw) {
     .addGet(score.getScoreRevision(sw))
     // /user
     .addGet(user.getAuthenticatedUser(sw))
+    .addPost(user.followUser(sw))
+    .addDelete(user.unfollowUser(sw))
     .addGet(user.getUser(sw))
     .addGet(user.getUserScores(sw))
     .addGet(user.followStatus(sw))
     .addGet(user.getFollowers(sw))
     .addGet(user.getFollowing(sw))
-    .addPost(user.followUser(sw))
-    .addDelete(user.unfollowUser(sw))
     .addGet(user.getUserNews(sw))
     // /newsfeed
     .addGet(newsfeed.getNewsFeed(sw));

@@ -27,8 +27,14 @@ angular.module('flatDashboardServices', ['ngResource']).
     return $resource('/api/newsfeed.json');
   }]).
   factory('Follow', ['$resource', function ($resource) {
-    return $resource('/api/user.json/:userId/follow', { userId: '@id' }, {
+    return $resource('/api/user.json/follow/:userId', { userId: '@id' }, {
       follow: { method: 'POST' },
       unfollow: { method: 'DELETE' }
     });
-  }]);
+  }]).
+  factory('FollowStatus', ['$resource', function ($resource) {
+    return $resource('/api/user.json/:userId/follow/:targetId', { userId: '@id' }, {
+      follow: { method: 'POST' },
+      unfollow: { method: 'DELETE' }
+    });
+  }]);;

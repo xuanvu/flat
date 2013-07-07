@@ -32,7 +32,7 @@ exports.getUser = function (sw) {
       'responseClass': 'UserPublicDetails'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
+      req.assert('id', 'A user identifier is required.').notEmpty();
 
       var returnPublicInfos = function (err, user) {
         if (err || !user) {
@@ -71,7 +71,7 @@ exports.getUserScores = function (sw) {
       'responseClass': 'UserPublicDetails'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
+      req.assert('id', 'A user identifier is required.').notEmpty();
       schema.models.User.find(req.params.id, function (err, user) {
         if (err || !user) {
           apiUtils.errorResponse(res, sw, 'User not found.', 404);
@@ -95,23 +95,23 @@ exports.followUser = function (sw) {
   return {
     'spec': {
       'summary': 'Follow a user',
-      'path': '/user.{format}/{id}/follow',
-      'params': [sw.params.path('id', 'The user identifier', 'string')],
+      'path': '/user.{format}/follow/{target_id}',
+      'params': [sw.params.path('target_id', 'The user identifier', 'string')],
       'method': 'POST',
       'nickname': 'followUser'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
-      if (req.params.id == req.session.user.id) {
+      req.assert('target_id', 'A user identifier is required.').notEmpty();
+      if (req.params.target_id == req.session.user.id) {
         return apiUtils.errorResponse(res, sw, 'You can not follow yourself.', 400);
       }
 
-      schema.models.User.find(req.params.id, function (err, user) {
+      schema.models.User.find(req.params.target_id, function (err, user) {
         if (err || !user) {
           apiUtils.errorResponse(res, sw, 'User not found.', 404);
         }
         else {
-          var follow = { follower: req.session.user.id, followed: req.params.id };
+          var follow = { follower: req.session.user.id, followed: req.params.target_id };
           schema.models.Follow.count(follow, function (err, n) {
             if (err || n > 0) {
               apiUtils.errorResponse(res, sw, 'You are already following this user.', 400);
@@ -140,14 +140,14 @@ exports.unfollowUser = function (sw) {
   return {
     'spec': {
       'summary': 'Unfollow a user',
-      'path': '/user.{format}/{id}/follow',
-      'params': [sw.params.path('id', 'The user identifier', 'string')],
+      'path': '/user.{format}/follow/{target_id}',
+      'params': [sw.params.path('target_id', 'The user identifier', 'string')],
       'method': 'DELETE',
       'nickname': 'followUser'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
-      var follow = { follower: req.session.user.id, followed: req.params.id };
+      req.assert('target_id', 'A user identifier is required.').notEmpty();
+      var follow = { follower: req.session.user.id, followed: req.params.target_id };
       schema.models.Follow.findOne(follow, function (err, follow) {
         if (err || !follow) {
           apiUtils.errorResponse(res, sw, 'You were not following the user.', 404);
@@ -173,22 +173,26 @@ exports.followStatus = function (sw) {
   return {
     'spec': {
       'summary': 'Get follow status',
-      'path': '/user.{format}/{id}/follow',
-      'params': [sw.params.path('id', 'The user identifier', 'string')],
+      'path': '/user.{format}/{id}/follow/{target_id}',
+      'params': [
+        sw.params.path('id', 'The user identifier', 'string'),
+        sw.params.path('target_id', 'The followed identifier', 'string')
+      ],
       'method': 'GET',
-      'nickname': 'followUser',
-      'responseClass': 'boolean'
+      'nickname': 'followStatus',
+      'errorResponses' : [sw.errors.notFound('target_id')],
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
-      var follow = { follower: req.session.user.id, followed: req.params.id };
+      req.assert('id', 'A user identifier is required.').notEmpty();
+      req.assert('target_id', 'A target user identifier is required.').notEmpty();
+      var follow = { follower: req.params.id, followed: req.params.target_id };
       schema.models.Follow.count(follow, function (err, n) {
         if (err) {
           console.error('[FlatAPI/followUser/count]', err);
           return apiUtils.errorResponse(res, sw, 'Unable to retrieve the follow status', 500);
         }
 
-        return apiUtils.jsonResponse(res, sw, { follow: n != 0 });
+        return res.send(n != 0 ? 204 : 404);
       });
     }
   };
@@ -205,7 +209,7 @@ exports.getFollowers = function (sw) {
       'responseClass': 'List[String]'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
+      req.assert('id', 'A user identifier is required.').notEmpty();
       schema.models.Follow.all({ followed: req.params.id }, function (err, follow) {
         if (err) {
           apiUtils.errorResponse(res, sw, 'Unable to retrieve the followers.', 500);
@@ -235,7 +239,7 @@ exports.getFollowing = function (sw) {
       'responseClass': 'List[String]'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
+      req.assert('id', 'A user identifier is required.').notEmpty();
       schema.models.Follow.all({ follower: req.params.id }, function (err, follow) {
         if (err) {
           apiUtils.errorResponse(res, sw, 'Unable to retrieve the following.', 500);
@@ -265,7 +269,7 @@ exports.getUserNews = function (sw) {
       'responseClass': 'List[News]'
     },
     'action': function (req, res) {
-      req.assert('title', 'A user identifier is required.').notEmpty();
+      req.assert('id', 'A user identifier is required.').notEmpty();
       newsfeed.getUserNews(req.params.id, function (err, news) {
         return apiUtils.jsonResponse(res, sw, news);
       });
