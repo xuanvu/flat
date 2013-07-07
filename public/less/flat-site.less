@@ -25,12 +25,15 @@
     .rd-avatar {
         border-radius: 3px;
         box-shadow: 0 1px 0 #fff;
-        margin-left: 20px;
     }
 
     // Header
     .navbar.header {
         border-bottom: 1px solid #dadada;
+
+        .rd-avatar {
+            margin-left: 20px;
+        }
 
         .container {
             height: 50px;
@@ -100,11 +103,15 @@
         .event-item {
             display: block;
             border-bottom: 1px solid @gray-lighter;
-            padding: 16px 5px;
+            padding: 16px 0;
         }
 
         .event-avatar, .event-title {
             display: inline-block;
+        }
+
+        .event-avatar {
+            margin-right: 10px;
         }
     }
 
