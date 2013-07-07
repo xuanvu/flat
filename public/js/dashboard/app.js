@@ -20,7 +20,7 @@ angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']
 run(['$rootScope', '$i18next', 'Account',
   function ($rootScope, $i18next, Account) {
     $rootScope.$watch(window.i18n.options.lng, function() {
-      moment.lang(window.i18n.lng() || 'en');
+      moment.lang(window.i18n.options.lng ? window.i18n.options.lng.split('-')[0] : 'en');
     });
 
     $rootScope.account = Account.get({}, function () {}, function () {
