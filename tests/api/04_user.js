@@ -95,6 +95,28 @@ describe('API /user', function () {
     ], done);
   });
 
+  describe('GET /user.{format}', function () {
+    it('should return account details', function (done) {
+      var rq = request(app).get('/api/user.json');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.equal(res.body.id, uid);
+          assert.equal(res.body.email, 'user@domain.fr');
+          assert.equal(res.body.email_md5, '1eac591a9df93e178ed48f5a2c65fcf3');
+          assert.equal(res.body.username, 'myUsername');
+          done();
+        });
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/user.json')
+        .expect(403)
+        .end(done);
+    });
+  });
+
   describe('GET /user.{format}/{id}', function () {
     it('should return user public details using uid', function (done) {
       var rq = request(app).get('/api/user.json/' + uid);

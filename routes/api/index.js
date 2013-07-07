@@ -8,7 +8,6 @@ var models = require('./models'),
     utils = require('../../common/utils');
 
 var auth = require('./auth'),
-    account = require('./account'),
     score = require('./score'),
     user = require('./user'),
     newsfeed = require('./newsfeed');
@@ -19,14 +18,13 @@ function FlatApi(sw) {
     .addPost(auth.authSignup(sw))
     .addPost(auth.authSignin(sw))
     .addPost(auth.authLogout(sw))
-    // /account
-    .addGet(account.getAccount(sw))
     // /scores
     .addPost(score.createScore(sw))
     .addGet(score.getScores(sw))
     .addGet(score.getScore(sw))
     .addGet(score.getScoreRevision(sw))
     // /user
+    .addGet(user.getAuthenticatedUser(sw))
     .addGet(user.getUser(sw))
     .addGet(user.getUserScores(sw))
     .addGet(user.followStatus(sw))
