@@ -75,7 +75,7 @@ describe('API /user', function () {
         news.event = 'feed.created';
         news.parameters = '{"title":{"type":"score","id":"4242","text":"42"}}';
         news.save(function () {
-          setTimeout(callback, 1000);
+          setTimeout(callback, 1100);
         });
       }
     ], done);
