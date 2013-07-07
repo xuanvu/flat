@@ -7,7 +7,8 @@ var assert = require('assert'),
     async = require('async'),
     fse = require('fs-extra'),
     flat = require('../../common/app'),
-    utils = require('../../common/utils');
+    utils = require('../../common/utils'),
+    newsfeed = require('../../lib/newsfeed');
 
 describe('API /score', function () {
   var cookies, cookies2, uid, uid2, score, scoreId;
@@ -24,6 +25,12 @@ describe('API /score', function () {
       },
       function (callback) {
         schema.models.Score.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.News.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.NewsFeed.destroyAll(callback);
       },
       /* Account 1 */
       function (callback) {
@@ -62,25 +69,69 @@ describe('API /score', function () {
   });
 
   describe('POST /score.{format}', function () {
-    it('should create a score', function (done) {
+    it('should create a private score', function (done) {
       var rq = request(app).post('/api/score.json');
       rq.cookies = cookies;
-      rq.send({
-          title: 'Für Elise',
-          public: false,
-          instruments: [{ group: 'keyboards', instrument: 'piano' }],
-          fifths: 0,
-          beats: 3,
-          beatType: 8
-        })
-        .expect(200)
-        .end(function (err, res) {
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            title: 'Für Elise',
+            public: false,
+            instruments: [{ group: 'keyboards', instrument: 'piano' }],
+            fifths: 0,
+            beats: 3,
+            beatType: 8
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
           assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
           assert.equal(res.body.title, 'F&uuml;r Elise');
           assert.equal(res.body.userId, uid);
           scoreId = res.body.id;
-          done();
-        });
+          newsfeed.getUserNews(uid, callback);
+        },
+        function (news, callback) {
+          assert.equal(news.length, 1);
+          callback();
+        }
+      ], done);
+    });
+
+    it('should create a public score', function (done) {
+      var rq = request(app).post('/api/score.json'), score;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            title: 'Für Elise - Public',
+            public: true,
+            instruments: [{ group: 'keyboards', instrument: 'piano' }],
+            fifths: 0,
+            beats: 3,
+            beatType: 8
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
+          score = res.body;
+          assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(score.sid));
+          assert.equal(score.title, 'F&uuml;r Elise - Public');
+          assert.equal(score.userId, uid);
+          newsfeed.getUserNews(uid, callback);
+        },
+        function (news, callback) {
+          assert.equal(news.length, 2);
+          assert.equal(news[0].event, 'feed.created');
+          var parameters = JSON.parse(news[0].parameters);
+          assert.equal(parameters.title.type, 'score');
+          assert.equal(parameters.title.id, score.id);
+          assert.equal(parameters.title.text, score.title);
+          callback();
+        }
+      ], done);
     });
 
     it('should return an error since the title is duplicate', function (done) {
@@ -173,7 +224,7 @@ describe('API /score', function () {
       rq.expect(200)
         .end(function (err, res) {
           assert.ifError(err);
-          assert.equal(res.body.length, 1);
+          assert.equal(res.body.length, 2);
           assert.equal(res.body[0].title, 'F&uuml;r Elise');
           assert.equal(res.body[0].userId, uid);
           done();

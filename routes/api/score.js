@@ -1,7 +1,9 @@
 var fs = require('fs'),
+    async = require('async'),
     dataInstruments = require('../../public/fixtures/instruments').instruments,
     Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
-    apiUtils = require('./utils');
+    apiUtils = require('./utils'),
+    newsfeed = require('../../lib/newsfeed');
 
 exports.createScore = function (sw) {
   return {
@@ -56,31 +58,45 @@ exports.createScore = function (sw) {
         }
 
         // Create the new score
-        var s = new Score();
-        s.create(
-          req.body.title, req.body.instruments,
-          req.body.fifths, req.body.beats, req.body.beatType,
-          function (err, sid) {
-            if (err) {
-              console.error('[FlatAPI.createScore/score]', err);
-              return apiUtils.errorResponse(res, sw, 'Error while creating the new score.', 500);
-            }
-
-            var scoredb = new schema.models.Score();
+        var s = new Score(), scoredb;
+        async.waterfall([
+          function (callback) {
+            s.create(
+              req.body.title, req.body.instruments,
+              req.body.fifths, req.body.beats, req.body.beatType,
+              callback
+            );
+          },
+          function (sid, callback) {
+            scoredb = new schema.models.Score();
             scoredb.sid = sid;
             scoredb.title = req.body.title;
             scoredb.public = req.body.public;
             scoredb.user(req.session.user.id);
-            scoredb.save(function(err, scoredb) {
-              if (err) {
-                // Todo delete git
-                return apiUtils.errorResponse(res, sw, 'Error while creating the new score.', err.statusCode);
-              }
-
-              return apiUtils.jsonResponse(res, sw, scoredb);
-            });
+            scoredb.save(callback);
+          },
+          function (_scoredb, callback) {
+            scoredb = _scoredb;
+            if (req.body.public) {
+              newsfeed.addNews(
+                req.session.user.id,
+                'feed.created', 
+                { title: { type : 'score', id: scoredb.id, text: scoredb.title }},
+                callback
+              );
+            }
+            else {
+              callback();
+            }
           }
-        );
+        ], function (err) {
+          if (err) {
+            // Todo delete git
+            return apiUtils.errorResponse(res, sw, 'Error while creating the new score.', err.statusCode);
+          }
+
+          return apiUtils.jsonResponse(res, sw, scoredb);
+        });
       });
     }
   };
