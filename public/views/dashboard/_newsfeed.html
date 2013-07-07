@@ -3,10 +3,8 @@
 <div class="news-feed">
 	<newsitem class="event-item" ng-repeat="n in news" item="n"></newsitem>	
 
-
-
-<!--     <div class="empty-fermata">
+    <div class="empty-fermata" ng-show="is_me && news.length === 0">
         <span ng-i18next="flat:feed.news-no-right-now">No news right now...</span>
         <a ng-i18next="flat:feed.news-discover">Discover trending scores and people.</span></a>
-    </div> -->
+    </div>
 </div>
