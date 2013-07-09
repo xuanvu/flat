@@ -325,9 +325,11 @@
 .flat-signup {
     margin: 0 auto;
 
-    .wrapper {
-        width: 600px;
-        min-width: 550px;
+    @media (min-width: 550px) {
+        .wrapper {
+            width: 600px;
+            min-width: 550px;
+        }
     }
 
     .alert {
@@ -367,7 +369,10 @@
 
         .form {
             .make-column(6);
-            border-left: 1px solid #fff;
+
+            @media screen and (min-width: 768px) {
+                border-left: 1px solid #fff;
+            }
 
             .row {
                 margin-left: 0;
