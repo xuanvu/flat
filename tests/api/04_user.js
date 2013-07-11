@@ -80,9 +80,9 @@ describe('API /user', function () {
         news.userId = uid;
         news.event = 'feed.created';
         news.parameters = '{"title":{"type":"score","id":"4242","text":"42"}}';
-        news.save(function () {
-          setTimeout(callback, 1100);
-        });
+        setTimeout(function () {
+          news.save(callback);
+        }, 1100);
       }
     ], done);
   });
