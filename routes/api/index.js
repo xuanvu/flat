@@ -20,6 +20,10 @@ function FlatApi(sw) {
     .addPost(auth.authLogout(sw))
     // /scores
     .addPost(score.createScore(sw))
+    .addGet(score.getCollaborators(sw))
+    .addPut(score.addCollaborator(sw))
+    .addGet(score.getCollaborator(sw))
+    .addDelete(score.deleteCollaborator(sw))
     .addGet(score.getScores(sw))
     .addGet(score.getScore(sw))
     .addGet(score.getScoreRevision(sw))

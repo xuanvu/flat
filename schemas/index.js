@@ -34,14 +34,15 @@ exports.getSchemas = function (schema, cb) {
   Score.belongsTo(User, { as: 'user' });
   User.hasMany(Score, { as: 'scores' });
 
-  var ScoreCollaborators = schema.define('ScoreCollaborators', {
-    aclWrite: { type: Boolean }
+  var ScoreCollaborator = schema.define('ScoreCollaborator', {
+    aclWrite: { type: Boolean },
+    aclAdmin: { type: Boolean }
   });
 
-  Score.hasMany(ScoreCollaborators, { as: 'collaborator' });
-  ScoreCollaborators.belongsTo(Score, { as: 'score' });
-  User.hasMany(ScoreCollaborators, { as: 'collaborator' });
-  ScoreCollaborators.belongsTo(User, { as: 'user' });
+  Score.hasMany(ScoreCollaborator, { as: 'collaborators' });
+  ScoreCollaborator.belongsTo(Score, { as: 'score' });
+  User.hasMany(ScoreCollaborator, { as: 'collaborator' });
+  ScoreCollaborator.belongsTo(User, { as: 'user' });
 
   var News = schema.define('News', {
     event: { type: String, limit: 50, index: true },

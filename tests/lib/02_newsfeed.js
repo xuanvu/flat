@@ -29,7 +29,6 @@ describe('lib/newsfeed', function () {
         user1.email = 'user2@example.com'
         user1.password = '42';
         user1.save(callback);
-
       },
       function (user2, callback) {
         uid2 = user2.id;

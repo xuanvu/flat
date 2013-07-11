@@ -97,6 +97,21 @@ exports.models = {
       revisions: { type: 'ScoreRevision', description: 'The score revisions' }
     }
   },
+  ScoreCollaborator: {
+    id: 'ScoreCollaborator',
+    properties: {
+      id: { type: 'string', description: 'The user identifier' },
+      aclWrite: { type: 'boolean', description: 'True if the user may edit' },
+      aclAdmin: { type: 'boolean', description: 'True if the user may administrate' }
+    }
+  },
+  CollaboratorRights: {
+    id: 'CollaboratorRights',
+    properties: {
+      aclWrite: { type: 'boolean', description: 'True if the user may edit' },
+      aclAdmin: { type: 'boolean', description: 'True if the user may administrate' }
+    }
+  },
   News: {
     id: 'News',
     properties: {

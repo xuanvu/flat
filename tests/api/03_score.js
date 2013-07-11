@@ -11,7 +11,7 @@ var assert = require('assert'),
     newsfeed = require('../../lib/newsfeed');
 
 describe('API /score', function () {
-  var cookies, cookies2, uid, uid2, score, scoreId;
+  var cookies, cookies2, uid, uid2, score, scoreId, scorePrivateId;
 
   before(function (done) {
     async.waterfall([
@@ -25,6 +25,9 @@ describe('API /score', function () {
       },
       function (callback) {
         schema.models.Score.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.ScoreCollaborator.destroyAll(callback);
       },
       function (callback) {
         schema.models.News.destroyAll(callback);
@@ -89,7 +92,7 @@ describe('API /score', function () {
           assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
           assert.equal(res.body.title, 'F&uuml;r Elise');
           assert.equal(res.body.userId, uid);
-          scoreId = res.body.id;
+          scorePrivateId = res.body.id;
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {
@@ -100,7 +103,7 @@ describe('API /score', function () {
     });
 
     it('should create a public score', function (done) {
-      var rq = request(app).post('/api/score.json'), score;
+      var rq = request(app).post('/api/score.json');
       rq.cookies = cookies;
       async.waterfall([
         function (callback) {
@@ -120,6 +123,7 @@ describe('API /score', function () {
           assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(score.sid));
           assert.equal(score.title, 'F&uuml;r Elise - Public');
           assert.equal(score.userId, uid);
+          scoreId = res.body.id;
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {
@@ -211,7 +215,7 @@ describe('API /score', function () {
 
     it('should return return a forbidden', function (done) {
       request(app)
-        .get('/api/account.json')
+        .get('/api/score.json')
         .expect(403)
         .end(done);
     });
@@ -247,13 +251,13 @@ describe('API /score', function () {
         .end(function (err, res) {
           assert.ifError(err);
           score = res.body;
-          assert.equal(score.properties.title, 'F&uuml;r Elise');
+          assert.equal(score.properties.title, 'F&uuml;r Elise - Public');
           assert.equal(score.properties.userId, uid);
           assert.equal(score.revisions.length, 1);
           assert.equal(score.revisions[0].author.name, 'Flat');
           assert.equal(score.revisions[0].author.email, 'nobody@flat.io');
-          assert.equal(score.revisions[0].message, 'New score: F&uuml;r Elise');
-          assert.equal(score.revisions[0].short_message, 'New score: F&uuml;r Elise');
+          assert.equal(score.revisions[0].message, 'New score: F&uuml;r Elise - Public');
+          assert.equal(score.revisions[0].short_message, 'New score: F&uuml;r Elise - Public');
           done();
         });
     });
@@ -269,7 +273,7 @@ describe('API /score', function () {
     });
 
     it('should return not found (non public score)', function (done) {
-      var rq = request(app).get('/api/score.json/' + scoreId);
+      var rq = request(app).get('/api/score.json/' + scorePrivateId);
       rq.cookies = cookies2;
       rq.expect(404)
         .end(function (err, res) {
@@ -309,7 +313,7 @@ describe('API /score', function () {
     });
 
     it('should return not found (non public score)', function (done) {
-      var rq = request(app).get('/api/score.json/' + scoreId + '/' + score.revisions[0].id);
+      var rq = request(app).get('/api/score.json/' + scorePrivateId + '/' + score.revisions[0].id);
       rq.cookies = cookies2;
       rq.expect(404)
         .end(function (err, res) {
@@ -324,5 +328,200 @@ describe('API /score', function () {
         .expect(403)
         .end(done);
     });
+  });
+
+  describe('PUT /score.{format}/{id}/collaborators/{user_id}', function () {
+    it('should add a user as collaborator', function (done) {
+      var rq = request(app).put('/api/score.json/' + scoreId + '/collaborators/' + uid2);
+      rq.cookies = cookies;
+      rq.send({
+          aclWrite: true,
+          aclAdmin: false
+        })
+        .expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.scoreId, scoreId);
+          assert.equal(res.body.userId, uid2);
+          assert.ok(res.body.aclWrite);
+          assert.ok(!res.body.aclAdmin);
+          done();
+        });
+    });
+
+    it('should fail since the collaborator does not exists', function (done) {
+      var rq = request(app).put('/api/score.json/' + scoreId + '/collaborators/424242');
+      rq.cookies = cookies;
+      rq.send({
+          aclWrite: true,
+          aclAdmin: false
+        })
+        .expect(404)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, 'Error while adding the collaborator');
+          done();
+        });
+    });
+
+    it('should fail since the score does not exists', function (done) {
+      var rq = request(app).put('/api/score.json/424242/collaborators/' + uid2);
+      rq.cookies = cookies;
+      rq.send({
+          aclWrite: true,
+          aclAdmin: false
+        })
+        .expect(404)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, 'Error while adding the collaborator');
+          done();
+        });
+    });
+
+    it('should fail since the user does not have admin rights', function (done) {
+      var rq = request(app).put('/api/score.json/' + scorePrivateId + '/collaborators/' + uid2);
+      rq.cookies = cookies2;
+      rq.send({
+          aclWrite: true,
+          aclAdmin: false
+        })
+        .expect(403)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, "You don't have administration rights of this score");
+          done();
+        });
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .put('/api/score.json/' + scoreId + '/collaborators/' + uid2)
+        .expect(403)
+        .end(done);
+    });
+  });
+
+  describe('GET /score.{format}/{id}/collaborators', function () {
+    it('should retreive the collaborators', function (done) {
+      var rq = request(app).get('/api/score.json/' + scoreId + '/collaborators');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 2);
+          assert.equal(res.body[0].userId, uid);
+          assert.ok(res.body[0].aclWrite);
+          assert.ok(res.body[0].aclAdmin);
+          assert.equal(res.body[1].userId, uid2);
+          assert.ok(res.body[1].aclWrite);
+          assert.ok(!res.body[1].aclAdmin);
+          done();
+        });
+    });
+
+    it('should fail since the user does not have read rights', function (done) {
+      var rq = request(app).get('/api/score.json/' + scorePrivateId + '/collaborators');
+      rq.cookies = cookies2;
+      rq.send({
+          aclWrite: true,
+          aclAdmin: false
+        })
+        .expect(403)
+        .end(done);
+    });
+
+    it('should fail since the score does not exists', function (done) {
+      var rq = request(app).get('/api/score.json/424242/collaborators');
+      rq.cookies = cookies;
+      rq.expect(404)
+        .end(done);
+    });
+  });
+
+  describe('GET /score.{format}/{id}/collaborators/{user_id}', function () {
+    it('should get the rights of a collaborator (-rw)', function (done) {
+      var rq = request(app).get('/api/score.json/' + scoreId + '/collaborators/' + uid2);
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.ok(res.body.aclRead);
+          assert.ok(res.body.aclWrite);
+          assert.ok(!res.body.aclAdmin);
+          done();
+        });
+    });
+
+    it('should get the rights of a collaborator (arw)', function (done) {
+      var rq = request(app).get('/api/score.json/' + scoreId + '/collaborators/' + uid);
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.ok(res.body.aclRead);
+          assert.ok(res.body.aclWrite);
+          assert.ok(res.body.aclAdmin);
+          done();
+        });
+    });
+
+    it('should get the rights of a collaborator (---)', function (done) {
+      var rq = request(app).get('/api/score.json/' + scorePrivateId + '/collaborators/' + uid2);
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.ok(!res.body.aclRead);
+          assert.ok(!res.body.aclWrite);
+          assert.ok(!res.body.aclAdmin);
+          done();
+        });
+    });
+
+    it('should get the rights of a collaborator (arw)', function (done) {
+      var rq = request(app).get('/api/score.json/' + scorePrivateId + '/collaborators/' + uid);
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.ok(res.body.aclRead);
+          assert.ok(res.body.aclWrite);
+          assert.ok(res.body.aclAdmin);
+          done();
+        });
+    });
+
+    it('should fail since the user does not have read rights', function (done) {
+      var rq = request(app).get('/api/score.json/' + scorePrivateId + '/collaborators/' + uid);
+      rq.cookies = cookies2;
+      rq.expect(403)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, "You don't have read rights of this score");
+          done();
+        });
+    });
+  });
+
+  describe('DELETE /score.{format}/{id}/collaborators/{user_id}', function () {
+    it('should remove a collaborator', function (done) {
+      var rq = request(app).del('/api/score.json/' + scoreId + '/collaborators/' + uid2);
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function () {
+          var rq = request(app).get('/api/score.json/' + scoreId + '/collaborators/' + uid2);
+          rq.cookies = cookies;
+          rq.expect(200)
+            .end(function (err, res) {
+              assert.ifError(err);
+              assert.ok(res.body.aclRead);
+              assert.ok(!res.body.aclWrite);
+              assert.ok(!res.body.aclAdmin);
+              done();
+            });
+        });
+    });
+
   });
 });
