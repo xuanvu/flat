@@ -21,7 +21,13 @@ describe('API /user', function () {
       },
       function (callback) {
         global.app = flat.getApp();
+        schema.models.Follow.destroyAll(callback);
+      },
+      function (callback) {
         schema.models.User.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.News.destroyAll(callback);
       },
       /* Account 1 */
       function (callback) {
@@ -372,7 +378,7 @@ describe('API /user', function () {
     });
   });
 
-    describe('GET /user.{format}/{id}/news', function () {
+  describe('GET /user.{format}/{id}/news', function () {
     it('should return user news', function (done) {
       var rq = request(app).get('/api/user.json/' + uid + '/news');
       rq.cookies = cookies;
