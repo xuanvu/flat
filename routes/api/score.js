@@ -358,7 +358,7 @@ exports.getCollaborator = function (sw) {
 exports.deleteCollaborator = function (sw) {
   return {
     'spec': {
-      'summary': 'Deete a collaborator from a score',
+      'summary': 'Delete a collaborator from a score',
       'path': '/score.{format}/{id}/collaborators/{user_id}',
       'method': 'DELETE',
       'nickname': 'deleteCollaborator',
