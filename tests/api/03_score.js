@@ -357,11 +357,7 @@ describe('API /score', function () {
           aclAdmin: false
         })
         .expect(404)
-        .end(function (err, res) {
-          assert.ifError(err);
-          assert.equal(res.body.description, 'Error while adding the collaborator');
-          done();
-        });
+        .end(done);
     });
 
     it('should fail since the score does not exists', function (done) {

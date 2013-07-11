@@ -139,6 +139,9 @@ exports.getScore = function (sw) {
         },
         function (_scoredb, callback) {
           scoredb = _scoredb;
+          if (!scoredb) {
+            return callback("Score not found", 404);
+          }
           scoreUser.canRead(scoredb.id, req.session.user.id, callback);
         },
         function (canRead, callback) {
@@ -269,7 +272,7 @@ exports.addCollaborator = function (sw) {
         },
         function (user, callback) {
           if (!user) {
-            return callback('The collaborator does not exist');
+            return callback('The collaborator does not exist', 404);
           }
 
           scoreUser.addCollaborator(req.params.id, req.session.user.id,
@@ -286,7 +289,7 @@ exports.addCollaborator = function (sw) {
             return apiUtils.errorResponse(
               res, sw,
               'Error while adding the collaborator', 
-              err.status_code || 500
+              err.status_code || result || 500
             );
           }
         }

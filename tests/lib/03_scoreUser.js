@@ -163,7 +163,7 @@ describe('lib/scoreUser', function () {
   it('should add read rights to a user', function (done) {
     scoreUser.addCollaborator(score2, uid2, uid1, false, false, function (err, collab) {
       assert.ifError(err);
-      assert.ok(collab.id.length > 0);
+      assert.ok(collab.id);
       assert.equal(collab.scoreId, score2);
       assert.equal(collab.userId, uid1);
       assert.ok(!collab.aclWrite);
@@ -211,7 +211,7 @@ describe('lib/scoreUser', function () {
   it('should add write rights to a user', function (done) {
     scoreUser.addCollaborator(score1, uid2, uid1, true, false, function (err, collab) {
       assert.ifError(err);
-      assert.ok(collab.id.length > 0);
+      assert.ok(collab);
       assert.equal(collab.scoreId, score1);
       assert.equal(collab.userId, uid1);
       assert.ok(collab.aclWrite);
@@ -257,7 +257,7 @@ describe('lib/scoreUser', function () {
   it('should modify collaborator to add admin rights', function (done) {
     scoreUser.addCollaborator(score1, uid2, uid1, true, true, function (err, collab) {
       assert.ifError(err);
-      assert.ok(collab.id.length > 0);
+      assert.ok(collab.id);
       assert.equal(collab.id, collabId);
       assert.equal(collab.scoreId, score1);
       assert.equal(collab.userId, uid1);
