@@ -501,6 +501,13 @@ describe('API /score', function () {
   });
 
   describe('DELETE /score.{format}/{id}/collaborators/{user_id}', function () {
+    it('should fail since the user does not have administration rights', function (done) {
+      var rq = request(app).del('/api/score.json/' + scoreId + '/collaborators/' + uid2);
+      rq.cookies = cookies2;
+      rq.expect(403)
+        .end(done);
+    });
+
     it('should remove a collaborator', function (done) {
       var rq = request(app).del('/api/score.json/' + scoreId + '/collaborators/' + uid2);
       rq.cookies = cookies;
@@ -519,5 +526,18 @@ describe('API /score', function () {
         });
     });
 
+    it('should fail since the score does not exists', function (done) {
+      var rq = request(app).del('/api/score.json/4242/collaborators/' + uid2);
+      rq.cookies = cookies;
+      rq.expect(404)
+        .end(done);
+    });
+
+    it('should fail since the collaborator does not exists', function (done) {
+      var rq = request(app).del('/api/score.json/' + scoreId + '/collaborators/4242');
+      rq.cookies = cookies;
+      rq.expect(404)
+        .end(done);
+    });
   });
 });
