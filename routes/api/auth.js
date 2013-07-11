@@ -1,3 +1,5 @@
+'use strict';
+
 var async = require('async'),
     bcrypt = require('bcrypt'),
     config = require('config'),

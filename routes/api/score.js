@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs'),
     async = require('async'),
     dataInstruments = require('../../public/fixtures/instruments').instruments,
@@ -35,10 +37,10 @@ exports.createScore = function (sw) {
       }
 
       for (var i = 0 ; i < req.body.instruments.length ; ++i) {
-        if (typeof(req.body.instruments[i].group) == 'undefined' ||
-            typeof(req.body.instruments[i].instrument) == 'undefined' ||
-            typeof(dataInstruments[req.body.instruments[i].group]) == 'undefined' ||
-            typeof(dataInstruments[req.body.instruments[i].group][req.body.instruments[i].instrument]) == 'undefined') {
+        if (typeof(req.body.instruments[i].group) === 'undefined' ||
+            typeof(req.body.instruments[i].instrument) === 'undefined' ||
+            typeof(dataInstruments[req.body.instruments[i].group]) === 'undefined' ||
+            typeof(dataInstruments[req.body.instruments[i].group][req.body.instruments[i].instrument]) === 'undefined') {
           return apiUtils.errorResponse(res, sw, 'The instrument list is invalid.');
         }
       }
@@ -81,7 +83,7 @@ exports.createScore = function (sw) {
             if (req.body.public) {
               newsfeed.addNews(
                 req.session.user.id,
-                'feed.created', 
+                'feed.created',
                 { title: { type : 'score', id: scoredb.id, text: scoredb.title }},
                 callback
               );
@@ -194,7 +196,8 @@ exports.getScoreRevision = function (sw) {
       'responseClass': 'ScoreDetails'
     },
     'action': function (req, res) {
-       async.waterfall([
+      var scoredb;
+      async.waterfall([
         function (callback) {
           schema.models.Score.find(req.params.id, callback);
         },
@@ -288,7 +291,7 @@ exports.addCollaborator = function (sw) {
           else {
             return apiUtils.errorResponse(
               res, sw,
-              'Error while adding the collaborator', 
+              'Error while adding the collaborator',
               err.status_code || result || 500
             );
           }
@@ -318,8 +321,13 @@ exports.getCollaborator = function (sw) {
       ],
     },
     'action': function (req, res) {
+      var scoredb;
       async.waterfall([
         function (callback) {
+          schema.models.Score.find(req.params.id, callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
           scoreUser.canRead(scoredb.id, req.session.user.id, callback);
         },
         function (canRead, callback) {
@@ -365,7 +373,7 @@ exports.deleteCollaborator = function (sw) {
     },
     'action': function (req, res) {
       scoreUser.removeCollaborator(req.params.id,
-                                   req.session.user.id, req.params.user_id, 
+                                   req.session.user.id, req.params.user_id,
                                    function (err, rights) {
         if (err) {
           return apiUtils.errorResponse(res, sw, err.error || rights, err.status_code || rights);

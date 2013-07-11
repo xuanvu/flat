@@ -1,3 +1,5 @@
+'use strict';
+
 var crypto = require('crypto'),
     async = require('async'),
     apiUtils = require('./utils'),

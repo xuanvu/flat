@@ -1,9 +1,11 @@
+'use strict';
+
 process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     fs = require('fs'),
     config = require('config'),
     async = require('async'),
-    utils = require('../../common/utils');
+    utils = require('../../common/utils'),
     newsfeed = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/newsfeed');
 
 describe('lib/newsfeed', function () {
@@ -17,18 +19,18 @@ describe('lib/newsfeed', function () {
       function (callback) {
         var user1 = new schema.models.User();
         user1.username = 'user1';
-        user1.email = 'user1@example.com'
+        user1.email = 'user1@example.com';
         user1.password = '42';
         user1.save(callback);
       },
       function (user1, callback) {
         uid1 = user1.id;
 
-        var user1 = new schema.models.User();
-        user1.username = 'user2';
-        user1.email = 'user2@example.com'
-        user1.password = '42';
-        user1.save(callback);
+        var user2 = new schema.models.User();
+        user2.username = 'user2';
+        user2.email = 'user2@example.com';
+        user2.password = '42';
+        user2.save(callback);
       },
       function (user2, callback) {
         uid2 = user2.id;

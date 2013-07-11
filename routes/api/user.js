@@ -1,3 +1,5 @@
+'use strict';
+
 var crypto = require('crypto'),
     apiUtils = require('./utils'),
     newsfeed = require('../../lib/newsfeed');
@@ -45,7 +47,7 @@ exports.getUser = function (sw) {
             registrationDate: user.registrationDate,
             email_md5: crypto.createHash('md5').update(user.email).digest('hex'),
           });
-        } 
+        }
       };
 
       schema.models.User.find(req.params.id, function (err, user) {
@@ -102,7 +104,7 @@ exports.followUser = function (sw) {
     },
     'action': function (req, res) {
       req.assert('target_id', 'A user identifier is required.').notEmpty();
-      if (req.params.target_id == req.session.user.id) {
+      if (req.params.target_id === req.session.user.id) {
         return apiUtils.errorResponse(res, sw, 'You can not follow yourself.', 400);
       }
 
@@ -157,7 +159,7 @@ exports.unfollowUser = function (sw) {
           follow.destroy(function (err) {
             if (err) {
               apiUtils.errorResponse(res, sw, 'Error while adding follow.', 500);
-                console.error('[FlatAPI/unfollowUser/destroy]', err);
+              console.error('[FlatAPI/unfollowUser/destroy]', err);
             }
             else {
               res.send(200);
@@ -192,7 +194,7 @@ exports.followStatus = function (sw) {
           return apiUtils.errorResponse(res, sw, 'Unable to retrieve the follow status', 500);
         }
 
-        return res.send(n != 0 ? 204 : 404);
+        return res.send(n !== 0 ? 204 : 404);
       });
     }
   };
