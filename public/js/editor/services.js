@@ -2,7 +2,7 @@
 
 angular.module('flatEditorServices', ['ngResource']).
   factory('Account', ['$resource', function($resource) {
-    return $resource('/api/account.json');
+    return $resource('/api/user.json');
   }]).
   factory('Instruments', ['$resource', function($resource) {
     return $resource('/fixtures/instruments.min.json');
