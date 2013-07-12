@@ -96,5 +96,30 @@ exports.models = {
       properties: { type: 'ScoreDb', description: 'The score properties' },
       revisions: { type: 'ScoreRevision', description: 'The score revisions' }
     }
+  },
+  ScoreCollaborator: {
+    id: 'ScoreCollaborator',
+    properties: {
+      id: { type: 'string', description: 'The user identifier' },
+      aclWrite: { type: 'boolean', description: 'True if the user may edit' },
+      aclAdmin: { type: 'boolean', description: 'True if the user may administrate' }
+    }
+  },
+  CollaboratorRights: {
+    id: 'CollaboratorRights',
+    properties: {
+      aclWrite: { type: 'boolean', description: 'True if the user may edit' },
+      aclAdmin: { type: 'boolean', description: 'True if the user may administrate' }
+    }
+  },
+  News: {
+    id: 'News',
+    properties: {
+      id: { type: 'string', description: 'The news identifier' },
+      event: { type: 'String', description: 'The event text' },
+      parameters: { type: 'String', description: 'A JSON containing the event parameters' },
+      date: { type: 'Date', description: 'The publication date' },
+      userId: { type: 'string', description: 'The news owner' }
+    }
   }
 };

@@ -13,12 +13,27 @@
 
 .light {
     color: @gray-light;
+
+    a[data-toggle="tooltip"] {
+        color: @gray-light;
+        text-decoration: none;
+    }
 }
 
 .flat-dashboard {
+    // Avatars
+    .rd-avatar {
+        border-radius: 3px;
+        box-shadow: 0 1px 0 #fff;
+    }
+
     // Header
     .navbar.header {
         border-bottom: 1px solid #dadada;
+
+        .rd-avatar {
+            margin-left: 20px;
+        }
 
         .container {
             height: 50px;
@@ -33,12 +48,6 @@
             // Header Right
             .account {
                 padding: 0 0 10px 0;
-
-                img {
-                    border-radius: 3px;
-                    box-shadow: 0 1px 0 #fff;
-                    margin-left: 20px;
-                }
             }
 
             .actions {
@@ -87,6 +96,26 @@
 
         .content-main {
             .make-column(8);
+        }
+    }
+
+    .content-events {
+        .event-item {
+            display: block;
+            border-bottom: 1px solid @gray-lighter;
+            padding: 16px 0;
+        }
+
+        .event-avatar, .event-title {
+            display: inline-block;
+        }
+
+        .event-avatar {
+            margin-right: 10px;
+        }
+
+        .event-date {
+            margin-top: 4px;
         }
     }
 
@@ -246,7 +275,7 @@
         background: url('/img/bg-empty-fermata.png') no-repeat center top;
         min-height: 100px;
         padding-top: 110px;
-        margin: 75px auto 0 auto;
+        margin: 75px auto;
         width: 350px;
         text-align: center;
 
@@ -296,9 +325,11 @@
 .flat-signup {
     margin: 0 auto;
 
-    .wrapper {
-        width: 600px;
-        min-width: 550px;
+    @media (min-width: 550px) {
+        .wrapper {
+            width: 600px;
+            min-width: 550px;
+        }
     }
 
     .alert {
@@ -338,7 +369,10 @@
 
         .form {
             .make-column(6);
-            border-left: 1px solid #fff;
+
+            @media screen and (min-width: 768px) {
+                border-left: 1px solid #fff;
+            }
 
             .row {
                 margin-left: 0;

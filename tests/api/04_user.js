@@ -21,7 +21,13 @@ describe('API /user', function () {
       },
       function (callback) {
         global.app = flat.getApp();
+        schema.models.Follow.destroyAll(callback);
+      },
+      function (callback) {
         schema.models.User.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.News.destroyAll(callback);
       },
       /* Account 1 */
       function (callback) {
@@ -68,16 +74,53 @@ describe('API /user', function () {
         scoredb.public = false;
         scoredb.user(uid2);
         scoredb.save(callback);
+      },
+      function (res, callback) {
+        var news = new schema.models.News();
+        news.userId = uid;
+        news.event = 'feed.created';
+        news.parameters = '{"title":{"type":"score","id":"4242","text":"42"}}';
+        setTimeout(function () {
+          news.save(callback);
+        }, 1100);
       }
     ], done);
   });
 
   after(function (done) {
-    schema.models.User.destroyAll(done);
+    async.waterfall([
+      function (callback) {
+        schema.models.Follow.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.User.destroyAll(callback);
+      },
+      function (callback) {
+        schema.models.News.destroyAll(callback);
+      }
+    ], done);
   });
 
-  after(function (done) {
-    schema.models.Follow.destroyAll(done);
+  describe('GET /user.{format}', function () {
+    it('should return account details', function (done) {
+      var rq = request(app).get('/api/user.json');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.equal(res.body.id, uid);
+          assert.equal(res.body.email, 'user@domain.fr');
+          assert.equal(res.body.email_md5, '1eac591a9df93e178ed48f5a2c65fcf3');
+          assert.equal(res.body.username, 'myUsername');
+          done();
+        });
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/user.json')
+        .expect(403)
+        .end(done);
+    });
   });
 
   describe('GET /user.{format}/{id}', function () {
@@ -168,12 +211,12 @@ describe('API /user', function () {
     });
   });
 
-  describe('POST /user.{format}/{id}/follow | ' +
-           'DELETE /user.{format}/{id}/follow | ' +
+  describe('POST /user.{format}/follow/{id} | ' +
+           'DELETE /user.{format}/follow/{id} | ' +
            'GET /user.{format}/{id}/followers | ' +
            'GET /user.{format}/{id}/following', function () {
     it('should follow an another user', function (done) {
-      var rq = request(app).post('/api/user.json/' + uid2 + '/follow');
+      var rq = request(app).post('/api/user.json/follow/' + uid2);
       rq.cookies = cookies;
       rq.expect(200)
         .end(function (err, res) {
@@ -187,7 +230,7 @@ describe('API /user', function () {
     });
 
     it('should fail since the user is already followed', function (done) {
-      var rq = request(app).post('/api/user.json/' + uid2 + '/follow');
+      var rq = request(app).post('/api/user.json/follow/' + uid2);
       rq.cookies = cookies;
       rq.expect(400)
         .end(function (err, res) {
@@ -198,7 +241,7 @@ describe('API /user', function () {
     });
 
     it('should fail since the user tries to follow himself', function (done) {
-      var rq = request(app).post('/api/user.json/' + uid + '/follow');
+      var rq = request(app).post('/api/user.json/follow/' + uid);
       rq.cookies = cookies;
       rq.expect(400)
         .end(function (err, res) {
@@ -209,7 +252,7 @@ describe('API /user', function () {
     });
 
     it('should fail since the user does not exists.', function (done) {
-      var rq = request(app).post('/api/user.json/424242/follow');
+      var rq = request(app).post('/api/user.json/follow/424242');
       rq.cookies = cookies;
       rq.expect(404)
         .end(function (err, res) {
@@ -244,18 +287,17 @@ describe('API /user', function () {
     });
 
     it('should return that user is followed', function (done) {
-      var rq = request(app).get('/api/user.json/' + uid2 + '/follow');
+      var rq = request(app).get('/api/user.json/' + uid + '/follow/' + uid2);
       rq.cookies = cookies;
-      rq.expect(200)
+      rq.expect(204)
         .end(function (err, res) {
           assert.ifError(err);
-          assert.ok(res.body.follow);
           done();
         });
     });
 
     it('should unfollow the user', function (done) {
-      var rq = request(app).del('/api/user.json/' + uid2 + '/follow');
+      var rq = request(app).del('/api/user.json/follow/' + uid2);
       rq.cookies = cookies;
       rq.expect(200)
         .end(function (err, res) {
@@ -265,7 +307,7 @@ describe('API /user', function () {
     });
 
     it('should fail when trying to re-unfollow the user', function (done) {
-      var rq = request(app).del('/api/user.json/' + uid2 + '/follow');
+      var rq = request(app).del('/api/user.json/follow/' + uid2);
       rq.cookies = cookies;
       rq.expect(404)
         .end(function (err, res) {
@@ -298,26 +340,25 @@ describe('API /user', function () {
     });
 
     it('should return that user is not followed', function (done) {
-      var rq = request(app).get('/api/user.json/' + uid2 + '/follow');
+      var rq = request(app).get('/api/user.json/' + uid + '/follow/' + uid2);
       rq.cookies = cookies;
-      rq.expect(200)
+      rq.expect(404)
         .end(function (err, res) {
           assert.ifError(err);
-          assert.ok(!res.body.follow);
           done();
         });
     });
 
     it('should return return a forbidden', function (done) {
       request(app)
-        .post('/api/user.json/' + uid + '/follow')
+        .post('/api/user.json/follow/' + uid)
         .expect(403)
         .end(done);
     });
 
     it('should return return a forbidden', function (done) {
       request(app)
-        .del('/api/user.json/' + uid + '/follow')
+        .del('/api/user.json/follow/' + uid)
         .expect(403)
         .end(done);
     });
@@ -332,6 +373,52 @@ describe('API /user', function () {
     it('should return return a forbidden', function (done) {
       request(app)
         .get('/api/user.json/' + uid + '/followers')
+        .expect(403)
+        .end(done);
+    });
+  });
+
+  describe('GET /user.{format}/{id}/news', function () {
+    it('should return user news', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid + '/news');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 2); // Contains joined event
+          assert.equal(res.body[0].userId, uid);
+          // assert.equal(res.body[0].event, 'feed.created');
+          // assert.equal(res.body[0].parameters,
+            // '{"title":{"type":"score","id":"4242","text":"42"}}');
+          done();
+        });
+    });
+
+    it('should return an empty array', function (done) {
+      var rq = request(app).get('/api/user.json/' + uid2 + '/news');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.length, 1); // Contains joined event
+          done();
+        });
+    });
+
+    it('should return an empty array', function (done) {
+      var rq = request(app).get('/api/user.json/4242/news');
+      rq.cookies = cookies;
+      rq.expect(200)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body, 0);
+          done();
+        });
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .get('/api/user.json/' + uid + '/scores')
         .expect(403)
         .end(done);
     });

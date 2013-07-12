@@ -34,14 +34,35 @@ exports.getSchemas = function (schema, cb) {
   Score.belongsTo(User, { as: 'user' });
   User.hasMany(Score, { as: 'scores' });
 
-  var ScoreCollaborators = schema.define('ScoreCollaborators', {
-    aclWrite: { type: Boolean }
+  var ScoreCollaborator = schema.define('ScoreCollaborator', {
+    aclWrite: { type: Boolean },
+    aclAdmin: { type: Boolean }
   });
 
-  Score.hasMany(ScoreCollaborators, { as: 'collaborator' });
-  ScoreCollaborators.belongsTo(Score, { as: 'score' });
-  User.hasMany(ScoreCollaborators, { as: 'collaborator' });
-  ScoreCollaborators.belongsTo(User, { as: 'user' });
+  Score.hasMany(ScoreCollaborator, { as: 'collaborators' });
+  ScoreCollaborator.belongsTo(Score, { as: 'score' });
+  User.hasMany(ScoreCollaborator, { as: 'collaborator' });
+  ScoreCollaborator.belongsTo(User, { as: 'user' });
+
+  var News = schema.define('News', {
+    event: { type: String, limit: 50, index: true },
+    parameters: { type: String, limit: 500 },
+    date: {
+        type: Date,
+        default: function () { return new Date; }
+    }
+  });
+
+  User.hasMany(News, { as: 'event' });
+  News.belongsTo(User, { as: 'user' });
+
+  var NewsFeed = schema.define('NewsFeed', {});
+  NewsFeed.belongsTo(User, { as: 'user' });
+  User.hasMany(NewsFeed, { as: 'newsfeed' });
+
+  NewsFeed.belongsTo(News, { as: 'news' });
+  News.hasMany(NewsFeed, { as: 'newsfeed' });
+  
 
   schema.isActual(function(err, actual) {
     if (!actual) {

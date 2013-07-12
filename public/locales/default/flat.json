@@ -24,8 +24,9 @@
         "title": "News feed",
         "news-no-right-now": "No news right now...",
         "news-discover": "Discover trending scores and people.",
-        "created": "%(user)s created score %(title)",
-        "recent-events": "Recent events"
+        "created": "%(user)s created score %(title)s.",
+        "recent-events": "Recent events",
+        "joined": "%(user)s joined Flat."
     },
     "account": {
         "my": "My account",

@@ -42,7 +42,7 @@ describe('lib/score', function () {
         },
         function (commit, callback) {
           assert.equal(commit.message, 'New score: Fur Elise');
-          callback(null)
+          callback(null);
         }
       ], done);
     });

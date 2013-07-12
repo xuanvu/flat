@@ -6,17 +6,15 @@
                 <a ng-click="doFollow(user.id)" class="btn btn-primary btn-small" ng-show="user.id != account.id && !follow"><i class="glyphicon glyphicon-eye-open"></i> <span ng-i18next="flat:account.follow">Follow</span></a>
                 <a ng-click="doUnfollow(user.id)" class="btn btn-default btn-small" ng-show="user.id != account.id && follow"><i class="glyphicon glyphicon-eye-close"></i> <span ng-i18next="flat:account.unfollow">Unfollow</span></a>
             </div>
-            <div class="pull-left"><img src="https://secure.gravatar.com/avatar/{{user.email_md5}}?s=90" class="avatar"></div>
+            <div class="pull-left"><img src="https://secure.gravatar.com/avatar/{{user.email_md5}}?s=90&amp;d=mm" class="avatar"></div>
             <h1 class="small">{{ user.name || user.username }}</h1>
             <p class="light" ng-show="user.name">{{ user.username }}</small>
             <p class="light"><span ng-i18next="flat:account.member-since">Member since</span> {{ user.registrationDate | date: longDate }}</p>
-            <!-- {{ user }} -->
 
             <div class="clearfix"></div>
         </div>
 
-        <h1 class="small" ng-i18next="flat:feed.recent-events">Recent events</h1>
-        TODO
+        <div class="content-events" ng-include src="'views/dashboard/_newsfeed.html'" onload="is_me = true;"></div>
     </div>
     <div class="content-small">
         <div class="panel">
@@ -25,7 +23,6 @@
             </div>
 
             <span class="light" ng-i18next="flat:account.member-since">Member since</span> <strong>{{ user.registrationDate | date: longDate }}</strong>
-
             <!-- TODO -->
         </div>
 
