@@ -11,11 +11,13 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
       $scope.render.renderAll();
       $scope.drawer = new Fermata.Drawer($scope.data, document.getElementById('canvas-score'));
       $scope.drawer.drawAll();
+      $scope.Interac = new Flat.Interac($scope.data, document.getElementById('canvas-score'));
+      $scope.Interac.MouseInteracInit();
     });
   });
 
   $scope.ManageClick = function ($event) {
-    console.log($event);
+    $scope.Interac.MouseClic($event.offsetX, $event.offsetY)
   };
 };
 
