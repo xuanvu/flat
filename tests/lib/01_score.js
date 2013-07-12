@@ -63,8 +63,10 @@ describe('lib/score', function () {
     var s = new Score(sid);
     s.getScore(commitSha, function (err, score) {
       assert.ifError(err);
+      // console.log(score);
       score = JSON.parse(score);
       assert.equal(score['score-partwise'].$version, '3.0');
+      assert.equal(score['score-partwise']['movement-title'], 'Fur Elise');
       done();
     });
   });
