@@ -308,6 +308,7 @@ describe('API /score', function () {
         .end(function (err, res) {
           assert.ifError(err);
           assert.equal(res.body['score-partwise'].$version, '3.0');
+          assert.equal(res.body['score-partwise']['movement-title'], 'F&uuml;r Elise - Public');
           done();
         });
     });
