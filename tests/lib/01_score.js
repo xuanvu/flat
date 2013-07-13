@@ -65,6 +65,12 @@ describe('lib/score', function () {
       assert.ifError(err);
       score = JSON.parse(score);
       assert.equal(score['score-partwise'].$version, '3.0');
+      assert.equal(score['score-partwise']['movement-title'], 'Fur Elise');
+      assert.equal(score['score-partwise'].part[0].measure.length, 10);
+      assert.equal(score['score-partwise'].part[0].measure[0].$number, 1);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time.beats, 3);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time['beat-type'], 8);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].key.fifths, 0);
       done();
     });
   });
