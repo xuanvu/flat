@@ -148,4 +148,10 @@ module.exports = function(grunt) {
     'htmlmin', 'ngtemplates',
     'concat', 'uglify', 'copy'
   ]);
+
+  grunt.registerTask('win', [
+    'clean', 'less',
+    'htmlmin', 'ngtemplates',
+    'concat', 'uglify', 'copy'
+  ]);
 };
