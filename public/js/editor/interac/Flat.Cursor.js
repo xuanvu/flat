@@ -136,7 +136,8 @@ var Flat = Flat || {};
   };
 
   Flat.Cursor.prototype.draw = function() {
-    this.CurTick = this.x_first_tick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
+    console.log(this.CurTick);
+    this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
     this.CurTick.st.attr({fill: 'green', 'stroke-width': '2.5'});
   };
 }).call(this);
