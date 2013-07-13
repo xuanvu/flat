@@ -11,6 +11,7 @@ var Flat = Flat || {};
     this.data = data['score'];
     this.context = ctx;
     this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
+    this.g = null; // to store the glow and remove it 
     this.draw();
     this.initKeyEvents();
   };
@@ -113,6 +114,7 @@ var Flat = Flat || {};
   };
 
   Flat.Cursor.prototype.setFocus = function(newPos) {
+    console.log("setfocus");
     this.undraw();
     this.curPart = newPos.nbPart;
     this.curMeasure = newPos.nbMeasure;
@@ -132,12 +134,11 @@ var Flat = Flat || {};
   // };
 
   Flat.Cursor.prototype.undraw = function() {
-    this.CurTick.st.attr({fill: 'black', 'stroke-width': '0'});
+    this.g.remove();
   };
 
   Flat.Cursor.prototype.draw = function() {
-    console.log(this.CurTick);
     this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
-    this.CurTick.st.attr({fill: 'green', 'stroke-width': '2.5'});
+    this.g = this.CurTick.st.glow({width: 6});
   };
 }).call(this);

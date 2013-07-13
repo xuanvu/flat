@@ -17,6 +17,7 @@
 
 	Flat.Interac.prototype.MouseClic = function(pos_x, pos_y) {
     var posTick = this.is_onTick(pos_x, pos_y);
+    console.log(posTick);
     if (posTick !== null && posTick.nbTick !== null) {
       this.Cursor.setFocus(posTick);
     }
@@ -67,7 +68,7 @@
       for (var m = 0; m < parts[res.nbPart]['measure'][l]['$fermata']['vexVoices'][res.nbVoice]['tickables'].length; m++) {
         if (Raphael.isPointInsideBBox(parts[res.nbPart]['measure'][l]['$fermata']['vexVoices'][res.nbVoice]['tickables'][m].st.getBBox(),
           pos_x, pos_y)=== true) {
-          res.nbTick = m - 1;
+          res.nbTick = m
           res.nbMeasure = l;
           return res;
         }
