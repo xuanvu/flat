@@ -6,6 +6,7 @@
     "start": "node flat.js"
   },
   "dependencies": {
+    "flat-musicjson": "latest",
     "flat-fermata": "https://vincent.sh/flat/fermata.tgz",
     "js-yaml": "latest",
     "config": "0.4.26",
