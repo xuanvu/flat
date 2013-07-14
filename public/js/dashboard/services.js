@@ -25,7 +25,6 @@ angular.module('flatDashboardServices', ['ngResource']).
     var CsrfWrapper = function (resource, action) {
       resource['_' + action]  = resource[action];
       resource[action] = function (data, success, error) {
-        console.log(resource['_' + action]);
         return resource['_' + action](
           angular.extend({}, data || {}, {'_csrf': CsrfHandler.get()}),
           success,
