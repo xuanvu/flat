@@ -109,13 +109,13 @@ function ImportScoreCtrl($scope, $location, Score) {
 ImportScoreCtrl.$inject = ['$scope', '$location', 'Score'];
 
 function UserCtrl($rootScope, $scope, $routeParams, $location,
-                  User, UserScores, UserNews, Follow, FollowStatus) {
+                  User, UserScores, UserNews, Follow) {
   $scope.user = User.get({ userId: $routeParams.username },
     function () {
       $scope.is_me = $scope.user.id == $rootScope.account.id;
       $scope.scores = UserScores.query({ userId: $scope.user.id });
       $scope.news = UserNews.query({ userId: $scope.user.id });
-      $scope.follow = FollowStatus.get({ userId: $rootScope.account.id, targetId: $scope.user.id }, function (follow) {
+      $scope.follow = Follow.get({ userId: $rootScope.account.id, targetId: $scope.user.id }, function (follow) {
         $scope.follow = true;
       }, function () {
         $scope.follow = false;
@@ -128,17 +128,17 @@ function UserCtrl($rootScope, $scope, $routeParams, $location,
   );
 
   $scope.doFollow = function(userId) {
-    Follow.follow({ id: userId }, function () {
+    Follow.follow({ targetId: userId }, function () {
       $scope.follow = true;
     })
   };
 
   $scope.doUnfollow = function(userId) {
-    Follow.unfollow({ userId: userId }, function () {
+    Follow.unfollow({ targetId: userId }, function () {
       $scope.follow = false;
     })
   };
 }
 
 UserCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location',
-                    'User', 'UserScores', 'UserNews', 'Follow', 'FollowStatus'];
+                    'User', 'UserScores', 'UserNews', 'Follow'];

@@ -81,16 +81,10 @@ angular.module('flatDashboardServices', ['ngResource']).
   }]).
   factory('Follow', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
     return CsrfHandler.wrapActions(
-      $resource('/api/user.json/follow/:userId', { userId: '@id' }, {
+      $resource('/api/user.json/:userId/follow/:targetId', { targetId: '@targetId' }, {
         follow: { method: 'POST' },
         unfollow: { method: 'DELETE' }
       }),
-      ['follow', 'unfollow']
+      ['get', 'follow', 'unfollow']
     );
-  }]).
-  factory('FollowStatus', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
-    return CsrfHandler.wrapActions(
-      $resource('/api/user.json/:userId/follow/:targetId', { userId: '@id' }),
-      ['get']
-    );
-  }]);;
+  }]);
