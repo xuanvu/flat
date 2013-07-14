@@ -9,15 +9,16 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
   };
 });
 
-var app = angular.module('flatEditor', ['jm.i18next', 'flatEditorServices']).
+var app = angular.module('flatEditor', ['flat', 'flat.editor']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', { templateUrl: '/views/editor/_editor.html', controller: EditorCtrl }).
     otherwise({redirectTo: '/'});
 }]);
 
-app.run(['$rootScope', 'Account',
-  function($rootScope, Account) {
+app.run(['$rootScope', 'CsrfHandler', 'Account',
+  function($rootScope, CsrfHandler, Account) {
+    CsrfHandler.set(_csrf);
     $rootScope.account = Account.get({}, function() {}, function() {
       window.location = '/auth';
     });

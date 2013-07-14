@@ -1,195 +1,115 @@
 @import "bootstrap.less";
+@import "flat-icons-font.less";
 
 /*!
  * Flat - Editor
  * Copyright 2013 - Flat.io
  */
 
-.flat-editor {
-  // Variables
-  // - Toolbars
-  @toolbarHeight: 30px;
-  @toolbarPrimaryBG: #1e1e1e;
-  @toolbarPrimaryHover: #247794;
-  @toolbarPrimaryActive: darken(#247794, 15%);
-  @toolbarSecondaryBG: #303030;
-  // - Icons
-  @iconFlatSpritePath: "../../img/icon-test-white.png";
+// Variables
+// - Toolbars
+@toolbarHeight: 30px;
+@toolbarPrimaryBG: #1e1e1e;
+@toolbarPrimaryHover: #247794;
+@toolbarPrimaryActive: darken(#247794, 15%);
+@toolbarSecondaryBG: #303030;
+// - Icons
+@iconFlatSpritePath: "../img/icon-test-white.png";
 
-  // --------------------------------------------------
+// --------------------------------------------------
 
-  .gradient (@startColor: #eee, @endColor: white) {
-    background-color: @startColor;
-    background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
-    background: -webkit-linear-gradient(top, @startColor, @endColor);
-    background: -moz-linear-gradient(top, @startColor, @endColor);
-    background: -ms-linear-gradient(top, @startColor, @endColor);
-    background: -o-linear-gradient(top, @startColor, @endColor);
+.gradient (@startColor: #eee, @endColor: white) {
+  background-color: @startColor;
+  background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  background: -webkit-linear-gradient(top, @startColor, @endColor);
+  background: -moz-linear-gradient(top, @startColor, @endColor);
+  background: -ms-linear-gradient(top, @startColor, @endColor);
+  background: -o-linear-gradient(top, @startColor, @endColor);
+}
+
+.toolbar-top {
+  .user-select(none);
+  width: 100%;
+
+  .first, .second {
+    a {
+      padding: 6px 11px;
+      margin: 0 -1px;
+      display: inline-block;
+    }
+
+    a:hover {
+      #gradient > .vertical(@toolbarPrimaryHover, darken(@toolbarPrimaryHover, 15%));
+      padding: 6px 10px 4px;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+    }
   }
 
-  .navbar {
-    .navbar-inner {
-      min-height: 42px;
+  .first {
+    height: @toolbarHeight;
+    #gradient > .vertical(@toolbarPrimaryBG, lighten(@toolbarPrimaryBG, 3%));
+    border-bottom: 1px solid #000;
 
-      .logo {
-        background-image: url("../../img/logo_top.png");
-        display: inline-block;
-        zoom: 1;
-        vertical-align: text-top;
-        background-repeat: no-repeat;
-        position: absolute;
-        top: 0;
-        left: 50%;
-        margin-left: -32px;
-        width: 64px;
-        height: 40px;
+    a.active {
+      #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), lighten(@toolbarPrimaryBG, 6%));
+      padding: 6px 10px 4px;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+
+      span.toolbar-close {
+        float: right;
+        text-decoration: none;
+        color: #999;
       }
     }
   }
 
-  .flat-body {
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    margin-top: 45px;
-  }
+  .second {
+    height: @toolbarHeight;
 
-  .tools-menu {
-    margin:0 auto 25px auto;
-    width: 90%;
-  
-    .toolbar {
-      height:27px;
-      background-color: #232323;
-      border: solid 1px black;
-      line-height: 0;
-      width: 100%;
+    .toolbar.inactive, .toolbar.active {
+      display: inline-block;
+    }
+
+    .toolbar.inactive {
+      margin-left: 34px;
+    }
+
+    .toolbar.active {
+      height: @toolbarHeight;
+      #gradient > .vertical(@toolbarSecondaryBG, lighten(@toolbarSecondaryBG, 3%));
+      border: 1px solid #000;
+      border-top: 1px solid lighten(@toolbarSecondaryBG, 5%);
+      margin-left: -1px;
     
-      .element-group {
-        display: inline-block;
-      }
-
-      .menu-button {
-        cursor: pointer;
-        display: inline-block;
-
-        i {
-          background-repeat: no-repeat;
-          display: inline-block;
-          height: 25px;
-          vertical-align: text-top;
-          width: 25px;
-        }
-      }
-
-      .menu-button:hover {
-        background-color: #3a3a3a;
-      }
-
-      .menu-button:active {
-        background-color: #505050;
-      }
-    }
-
-    .toolbar.toolbar-sub {
-      background-color: #505050;
-      display: none;
-      height: 25px;
-      position: absolute;
-      width: auto;
-    }
-  }
-  
-  .toolbar-transport {
-    .play-button {
-      background-image: url("../../img/glyphicons-halflings-white.png");
-      background-position: -258px -68px;
-    }
-
-    .stop-button {
-      background-image: url("../../img/glyphicons-halflings-white.png");
-      background-position: -306px -68px;
-    }
-  }
-
-  .toolbar-elements {
-    .quarter-note-button {
-      background-image: url("../../img/glyphicons-halflings-white.png");
-      background-position: -18px 4px;
-    }
-  }
-  
-  .navigation {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    background: #232323;
-    color: #fff;
-    float: left;
-    width:1000px;
-    height:25px;
-
-    a, span {
-      display: block;
-      position: relative;
-      float: left;
-      width: 25px;
-      height:25px;
-      position:relative;
-      color: #fff;
-      text-decoration: none;
-      background-image: url("../../img/icon-cog-small.png");
-      background-position:top;
-      background-repeat:no-repeat;
-      border-style:solid;
-      border-right-color:#000000;
-      border-width:2px;
-    }
-
-    a:hover, a:focus, a:active {
-      text-decoration: underline;
-    }
-
-    .toggleSubMenu {
-      a, span {
-        float:left;
-        position: relative;
-        width: 25px;
-        height:25px;
-      }
-    }
-
-    .subMenu {
-      float: none;
-      display: none;
-      position: absolute;
-      margin-top:27px;
-      margin-left:0px;
-      background: #232323;
-      white-space: nowrap;
-    }
-
-    ul.subMenu {
-      li {
-          width:25px;
-          height:25px;
-          position: static;
-          float: none;
-          display: inline;
-          background-image: url("../../img/icon-cog-small.png");
-          background-position:center;
-          background-repeat:no-repeat; 
-      }
-      a {
-        height:25px;
-        width:25px;
+      a:hover {
+        border: 0;    
+        padding: 6px 11px 4px;  
       }
     }
   }
+}
 
-  .canvas-score {
-    min-height: 600px;
-    overflow-x: auto;
-    overflow-y: auto;
-  }
+[class^="flat-icon-"] {
+  font-family: 'flat-icon';
+  .icon-font();
+
+  font-size: 100px;
+}
+
+.flat-icon-treble:before {
+  .icon-content(@treble_clef);
+}
+
+.flat-icon-flat:before {
+  .icon-content(@flat);
+}
+
+.toolbar-bottom {
+  position: fixed;
+  bottom: 0;
+  height: 35px;
+  width: 100%;
+  background: #000;
 }

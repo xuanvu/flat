@@ -9,7 +9,7 @@ angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvi
   };
 }]);
 
-angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']).
+angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat', 'flat.news']).
   config(['$routeProvider', function ($routeProvider) {
   $routeProvider.
     when('/', { templateUrl: '/views/dashboard/_home.html', controller: HomeCtrl }).
