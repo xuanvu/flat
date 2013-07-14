@@ -69,8 +69,8 @@ describe('API /score', function () {
       },
       function (res, callback) {
         cookies2 = res.headers['set-cookie'][0].split(';')[0];
-        setTimeout(callback, 1100);
-        // callback();
+        // setTimeout(callback, 1100);
+        callback();
       }
     ], done);
   });
@@ -604,6 +604,7 @@ describe('API /score', function () {
           assert.equal(res.body.title, 'My super score');
           assert.equal(res.body.userId, uid);
           scoreImported = res.body;
+          console.log(app.get('db').indexOf('mysql') >= 0);
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {
