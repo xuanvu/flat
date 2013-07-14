@@ -7,6 +7,7 @@ var assert = require('assert'),
     config = require('config'),
     request = require('supertest'),
     async = require('async'),
+    moment = require('moment'),
     fse = require('fs-extra'),
     flat = require('../../common/app'),
     utils = require('../../common/utils'),
@@ -556,7 +557,6 @@ describe('API /score', function () {
       async.waterfall([
         function (callback) {
           rq.send({
-            // title: 'Für Elise',
             public: true,
             score: xml
           })
@@ -618,6 +618,30 @@ describe('API /score', function () {
       ], done);
     });
 
+    it('should import a score score with a different title (duplicate)', function (done) {
+      var rq = request(app).post('/api/score.json/fromMusicXML');
+      var xml = fs.readFileSync(
+        path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
+      );
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            public: true,
+            score: xml
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
+          assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
+          assert.equal(res.body.title, 'Apr&egrave;s un r&ecirc;ve - ' + moment().format('LLLL'));
+          assert.equal(res.body.userId, uid);
+          callback();
+        }
+      ], done);
+    });
+
     it('should fail to import a bad formated score', function (done) {
       var rq = request(app).post('/api/score.json/fromMusicXML');
       rq.cookies = cookies;
@@ -636,6 +660,13 @@ describe('API /score', function () {
           callback();
         }
       ], done);
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .post('/api/score.json/fromMusicXML')
+        .expect(403)
+        .end(done);
     });
   });
 });
