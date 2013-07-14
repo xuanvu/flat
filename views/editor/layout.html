@@ -5,40 +5,39 @@
     <link rel="stylesheet" href="/dist/css/flat-editor.css">
   </head>
   <body class="flat-editor">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-            <i class="logo"></i>
-        </div>
-      </div>
+    <div class="toolbar-top">
+      <div class="first"></div><div class="second"></div>
     </div>
 
-    <div class="flat-body" ng-view>
-      
-    </div>
-    <div class="container footer">
-      <div class="pull-left">&copy; 2013 Flat</div>
-      <div class="pull-right">
-        <a ng-i18next="flat:about">About Flat</a> -
-        <a ng-i18next="flat:tos">Terms of Service</a> -
-        <a ng-i18next="flat:privacy">Privacy</a>
-      </div>
-    </div>
+    <div toolbarMenu class="toolbar-top"></div>
+    <div editor id="canvas-score" class="canvas-score"></div>
+
+<!--     <div>
+      <div id="canvas-score" class="canvas-score" ng-click="ManageClick($event)"></div>
+      <div id="error"></div>
+    </div> -->
+
+
+    <i class="flat-icon-treble"></i>
+    <i class="flat-icon-flat"></i>
+
+    <div class="toolbar-bottom"></div>
+
+    <div ng-view></div>
     <script>var _csrf = '{_csrf}';</script>
     <script src="/dist/js/common.js"></script>
-    <script src="/js/deps/underscore-min.js"></script>
-    <script src="/js/deps/raphael-min.js"></script>
-    <script src="/js/deps/MIDI/Base64.js"></script>
-    <script src="/js/deps/MIDI/base64binary.js"></script>
-    <script src="/js/deps/MIDI/MIDI.min.js"></script>
+    <script src="/dist/js/common-editor.js"></script>
     <script src="/dist/js/fermata.js"></script>
+    <script src="/js/modules/flat.js"></script>
     <script src="/js/editor/app.js"></script>
     <script src="/js/editor/controllers.js"></script>
     <script src="/js/editor/services.js"></script>
+    <script src="/js/editor/flat.editor.js"></script>
+    <script src="/js/editor/flat.editor.toolbarMenu.js"></script>
     <script src="/js/editor/interac/Flat.Interac.js"></script>
     <script src="/js/editor/interac/Flat.Cursor.js"></script>
     <script src="/js/editor/interac/Flat.Interac.Mouse.js"></script>
     <script src="/js/editor/interac/Flat.Player.js"></script>
-    <!--<script src="/dist/js/flat-dashboard.min.js"></script>-->
+    <!--<script src="/dist/js/flat-editor.min.js"></script>-->
   </body>
 </html>

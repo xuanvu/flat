@@ -11,11 +11,23 @@ module.exports = function(grunt) {
     },
     sprite: {
       keySignatures: {
-        src: ['public/img/key-signatures/*.png'],
-        destImg: 'public/img/sprite-key-signatures.png',
-        destCSS: 'public/less/sprite-key-signatures.less',
-        imgPath: '../../img/sprite-key-signatures.png',
+        src: ['public/img/icons/sprite/*.png'],
+        destImg: 'public/img/flat-icons-sprite.png',
+        destCSS: 'public/less/flat-icons-sprite.less',
+        imgPath: '../../img/flat-icons-sprite.png',
         cssFormat: 'less'
+      }
+    },
+    font: {
+      all: {
+        src: ['public/img/icons/font/*.svg'],
+        destCss: 'public/less/flat-icons-font.less',
+        destFonts: 'public/fonts/flat-icons.{svg,woff,eot,ttf}',
+        fontFamily: 'flat-icon',
+        cssRouter: function (fontpath) {
+          console.log(fontpath);
+          return '../../fonts/' + fontpath.split('/').pop();
+        }
       }
     },
     less: {
@@ -100,6 +112,16 @@ module.exports = function(grunt) {
         ],
         dest: 'public/dist/js/flat-auth.js'
       },
+      js_deps_editor: {
+        src: [
+          'public/js/deps/underscore-min.js',
+          'public/js/deps/raphael-min.js',
+          'public/js/MIDI/Base64.js',
+          'public/js/MIDI/base64binary.js',
+          'public/js/MIDI/MIDI.min.js',
+        ],
+        dest: 'public/dist/js/common-editor.js'
+      },
       js_dashboard: {
         src: [
           'public/js/modules/flat.js',
@@ -123,7 +145,8 @@ module.exports = function(grunt) {
         files: {
           'public/dist/js/flat-auth.min.js': '<%= concat.js_auth.dest %>',
           'public/dist/js/flat-dashboard.min.js': '<%= concat.js_dashboard.dest %>',
-          'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>'
+          'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>',
+          'public/dist/js/common-editor.min.js': '<%= concat.js_deps_editor.dest %>'
         }
       },
     },
@@ -143,6 +166,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-spritesmith');
+  grunt.loadNpmTasks('grunt-fontsmith');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-angular-templates');
@@ -151,7 +175,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('default', [
-    'clean', 'sprite', 'less',
+    'clean', 'sprite', 'font', 'less',
     'htmlmin', 'ngtemplates',
     'concat', 'uglify', 'copy'
   ]);

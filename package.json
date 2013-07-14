@@ -40,6 +40,7 @@
     "grunt-angular-templates": "latest",
     "grunt-contrib-htmlmin": "latest",
     "grunt-spritesmith": "latest",
+    "grunt-fontsmith": "latest",
     "mocha": "latest",
     "supertest": "latest"
   },
