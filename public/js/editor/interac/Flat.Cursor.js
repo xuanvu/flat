@@ -33,6 +33,20 @@ var Flat = Flat || {};
     }, false);
   };
 
+  Flat.Cursor.prototype.getCursorPos = function() {
+    var res = {
+      curPart : 0,
+      curMeasure : 0,
+      curVoice : 0,
+      curNote : 0
+    };
+    res.curPart = this.curPart;
+    res.curMeasure = this.curMeasure;
+    res.curVoice = this.curVoice;
+    res.curNote = this.curNote;
+    return res;
+  };
+
   Flat.Cursor.prototype.cursorUp = function() {
     this.undraw();
     if (this.curVoice > 0) {
@@ -114,7 +128,6 @@ var Flat = Flat || {};
   };
 
   Flat.Cursor.prototype.setFocus = function(newPos) {
-    console.log("setfocus");
     this.undraw();
     this.curPart = newPos.nbPart;
     this.curMeasure = newPos.nbMeasure;

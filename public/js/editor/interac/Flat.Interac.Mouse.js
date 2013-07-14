@@ -24,7 +24,7 @@
     if (this.ActionFocus != null) {
       var res = this.getLine(pos_y, posTick);
       this.getTickPos(pos_x, posTick);
-      this.ActionFocus(this.data, posTick, this.getLine(pos_y, posTick));
+      this.ActionFocus(this.data, posTick, this.getLine(pos_y, posTick), this.render, this.drawer);
       this.ActionFocus = null;
     }
 	};
