@@ -15,6 +15,7 @@ angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']
     when('/', { templateUrl: '/views/dashboard/_home.html', controller: HomeCtrl }).
     when('/u/:username', { templateUrl: '/views/dashboard/user/_index.html', controller: UserCtrl }).
     when('/score/new', { templateUrl: '/views/dashboard/score/_new.html', controller: NewScoreCtrl }).
+    when('/score/import', { templateUrl: '/views/dashboard/score/_import.html', controller: ImportScoreCtrl }).
     otherwise({redirectTo: '/'});
 }]).
 run(['$rootScope', 'CsrfHandler', 'Account',

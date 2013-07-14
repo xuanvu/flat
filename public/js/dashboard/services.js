@@ -46,10 +46,11 @@ angular.module('flatDashboardServices', ['ngResource']).
   }]).
   factory('Score', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
     return CsrfHandler.wrapActions(
-      $resource('/api/score.json', {}, {
-        create: { method: 'POST' }
+      $resource('/api/score.json/:action_path', {}, {
+        create: { method: 'POST' },
+        import: { method: 'POST', params: { action_path: 'fromMusicXML'}}
       }),
-      ['get', 'query', 'create']
+      ['get', 'query', 'create', 'import']
     );
   }]).
   factory('User', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {

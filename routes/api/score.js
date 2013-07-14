@@ -125,9 +125,6 @@ exports.importMusicXML = function (sw) {
         return apiUtils.errorResponse(res, sw, errors);
       }
 
-
-      // console.log('HERE score', req.body.score);
-
       // Import the new score
       var s = new Score(), scoredb;
       async.waterfall([

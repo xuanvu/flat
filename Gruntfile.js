@@ -42,6 +42,7 @@ module.exports = function(grunt) {
           'public/dist/views/dashboard/_myscores.html': 'public/views/dashboard/_myscores.html',
           'public/dist/views/dashboard/_newsfeed.html': 'public/views/dashboard/_newsfeed.html',
           'public/dist/views/dashboard/score/_new.html': 'public/views/dashboard/score/_new.html',
+          'public/dist/views/dashboard/score/_import.html': 'public/views/dashboard/score/_import.html',
           'public/dist/views/dashboard/score/_panel_list.html': 'public/views/dashboard/score/_panel_list.html',
           'public/dist/views/dashboard/score/_modal_instruments.html': 'public/views/dashboard/score/_modal_instruments.html',
           'public/dist/views/dashboard/user/_index.html': 'public/views/dashboard/user/_index.html',
