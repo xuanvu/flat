@@ -134,7 +134,7 @@ exports.getApp = function () {
     res.header('Content-Type', 'application/json; charset=utf-8');
   };
 
-  if ('development' === app.get('env')) {
+  if ('production' !== app.get('env')) {
     appApi.use(function(req, res, next) {
       var access_token = (req.body && req.body.access_token) || (req.query && req.query.access_token);
       if (access_token && req.sessionStore) {
