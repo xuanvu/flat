@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('jm.i18next').config(function ($i18nextProvider) {
+angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvider) {
   $i18nextProvider.options = {
     ns: { namespaces: ['flat'] },
     useLocalStorage: false,
     fallbackLng: 'default',
     resGetPath: 'locales/__lng__/__ns__.json',
   };
-});
+}]);
 
 angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']).
   config(['$routeProvider', function ($routeProvider) {
@@ -20,7 +20,8 @@ angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']
 run(['$rootScope', 'CsrfHandler', 'Account',
   function ($rootScope, CsrfHandler, Account) {
     CsrfHandler.set(_csrf);
-    $rootScope.$watch(window.i18n.options.lng, function() {
+    $rootScope.$watch(window.i18n.options, function() {
+      console.log(window.i18n.lng(), window.i18n.options.lng);
       moment.lang(window.i18n.options.lng ? window.i18n.options.lng.split('-')[0] : 'en');
     });
 

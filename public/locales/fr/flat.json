@@ -18,7 +18,8 @@
         "public-help": "N'importe qui peut voir cette partition. Vous choisissez qui peut travailler sur votre partition.",
         "intrument-choose": "Choisissez un instrument",
         "scores": "Partitions",
-        "search": "Chercher dans les partitions..."
+        "search": "Chercher dans les partitions...",
+        "import": "Importer"
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",

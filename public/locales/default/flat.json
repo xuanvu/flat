@@ -18,7 +18,8 @@
         "private-help": "You choose who see and work on your score.",
         "intrument-choose": "Choose an instrument",
         "scores": "Scores",
-        "search": "Search in the scores..."
+        "search": "Search in the scores...",
+        "import": "Import"
     },
     "feed": {
         "title": "News feed",
