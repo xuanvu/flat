@@ -1,6 +1,6 @@
 app:
   port: 3000
-  host: '192.168.248.132'
+  host: '0.0.0.0'
 dbs:
   db_nano-gierschv: &db_nano-gierschv
     type: 'nano-gierschv' # couchdb
@@ -26,7 +26,7 @@ dbs:
       port: 6379
   db_none: &db_memory
     type: 'memory'
-db: *db_mysql-gierschv
+db: *db_nano-gierschv
 cookie:
   secret: '352IbRsD71eur0y4RUj39xmDvnP1QXAnSPT9cySrQCs5iaAfy3D9cSgsX4f7XTi2LoDduDFC03xpgCCNp4V1Lm52JQuDJSPQBEQDCVjXGE0iWmbz3pinzN8YmPbFdpLg'
   path: '/'
