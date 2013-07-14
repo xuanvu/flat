@@ -26,7 +26,8 @@
         "news-no-right-now": "Aucune actualité pour le moment...",
         "created": "%(user)s a créé une nouvelle partition %(title)s.",
         "recent-events": "Évènements récents",
-        "joined": "%(user)s a rejoint Flat."
+        "joined": "%(user)s a rejoint Flat.",
+        "imported": "%(user)s a importé une nouvelle partition %(title)s."
     },
     "account": {
         "my": "Mon compte",

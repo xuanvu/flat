@@ -2,6 +2,7 @@
 
 var fs = require('fs'),
     async = require('async'),
+    moment = require('moment'),
     dataInstruments = require('../../public/fixtures/instruments').instruments,
     Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score,
     scoreUser = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/scoreUser'),
@@ -100,6 +101,94 @@ exports.createScore = function (sw) {
 
           return apiUtils.jsonResponse(res, sw, scoredb);
         });
+      });
+    }
+  };
+};
+
+exports.importMusicXML = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Import a MusicXML score',
+      'path': '/score.{format}/fromMusicXML',
+      'method': 'POST',
+      'nickname': 'importMusicXML',
+      'params': [sw.params.post('ScoreImport', 'Score', 'score')],
+      'errorResponses' : [sw.errors.invalid('score')]
+    },
+    'action': function (req, res) {
+      req.assert('score', 'A MusicXML score is required.').notEmpty();
+      req.sanitize('public').toBoolean();
+
+      var errors = req.validationErrors(true);
+      if (errors) {
+        return apiUtils.errorResponse(res, sw, errors);
+      }
+
+
+      // console.log('HERE score', req.body.score);
+
+      // Import the new score
+      var s = new Score(), scoredb;
+      async.waterfall([
+        function (callback) {
+          s.fromMusicXML(req.body.score, callback);
+        },
+        function (sid, callback) {
+          s.getScore(null, callback);
+        },
+        function (score, callback) {
+          score = JSON.parse(score);
+
+          if (typeof(score['score-partwise']['movement-title']) === 'string' &&
+              typeof(req.body.title) === 'undefined') {
+            req.body.title = score['score-partwise']['movement-title'];
+          }
+
+          req.body.title = req.sanitize('title').trim();
+          req.body.title = req.sanitize('title').entityEncode();
+
+          schema.models.Score.count({
+            userId: req.session.user.id,
+            title: req.body.title },
+          callback);
+        },
+        function (n, callback) {
+          if (n > 0) {
+            req.body.title += ' - ' + moment().format('LLLL');
+          }
+
+          scoredb = new schema.models.Score();
+          scoredb.sid = s.sid;
+          scoredb.title = req.body.title;
+          scoredb.public = req.body.public;
+          scoredb.user(req.session.user.id);
+          scoredb.save(callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
+          if (req.body.public) {
+            newsfeed.addNews(
+              req.session.user.id,
+              'feed.imported',
+              { title: { type : 'score', id: scoredb.id, text: scoredb.title }},
+              callback
+            );
+          }
+          else {
+            callback();
+          }
+        }
+      ], function (err) {
+        if (err) {
+          // Todo delete git
+          return apiUtils.errorResponse(
+            res, sw,
+            'Error while creating the new score.', err.statusCode
+          );
+        }
+
+        return apiUtils.jsonResponse(res, sw, scoredb);
       });
     }
   };
