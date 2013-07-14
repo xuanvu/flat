@@ -24,7 +24,8 @@
         "import_musicxml_supported": "Flat supporte l'import de partitions au format MusicXML uniquement, le standard le plus utilisé dans le domaine des éditeurs de partions musicales.",
         "import_musicxml_tip": "Exportez une partition depuis votre logiciel favori et importez-la ci-dessous au format MusicXML (*.xml).",
         "title_optional": "Title (optionnel)",
-        "title_optional_tip": "Si aucun titre n'est spécifié, celui utilisé sera celui de votre partition importée."
+        "title_optional_tip": "Si aucun titre n'est spécifié, celui utilisé sera celui de votre partition importée.",
+        "musicxml_file": "Fichier MusicXML"
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",
