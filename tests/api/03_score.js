@@ -69,8 +69,8 @@ describe('API /score', function () {
       },
       function (res, callback) {
         cookies2 = res.headers['set-cookie'][0].split(';')[0];
-        // setTimeout(callback, 1100);
-        callback();
+        setTimeout(callback, 1100);
+        // callback();
       }
     ], done);
   });
