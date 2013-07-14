@@ -65,6 +65,23 @@ exports.models = {
       }
     }
   },
+  ScoreImport: {
+    id: 'ScoreImport',
+    properties: {
+      title: {
+        type: 'string',
+        description: 'The (optional) title of the score'
+      },
+      'public': {
+        type: 'boolean',
+        description: 'True if the score is public'
+      },
+      'score': {
+        type: 'string',
+        description: 'The content of the score'
+      }
+    }
+  },
   ScoreDb: {
     id: 'ScoreDb',
     properties: {

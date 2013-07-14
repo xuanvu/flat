@@ -135,7 +135,7 @@ exports.getApp = function () {
     res.header('Content-Type', 'application/json; charset=utf-8');
   };
 
-  if ('development' === app.get('env')) {
+  if ('production' !== app.get('env')) {
     appApi.use(function(req, res, next) {
       var access_token = (req.body && req.body.access_token) || (req.query && req.query.access_token);
       if (access_token && req.sessionStore) {
@@ -159,6 +159,21 @@ exports.getApp = function () {
       else {
         return next();
       }
+    });
+  }
+  else {
+    appApi.use(function(req, res, next) {
+      var csrf = (req.body && req.body._csrf)
+        || (req.query && req.query._csrf)
+        || (req.headers['x-csrf-token'])
+        || (req.headers['x-xsrf-token']);
+
+      var token = req.session._csrf || (req.session._csrf = uid(24));
+      if (csrf != token) {
+        return res.send(403);
+      }
+
+      return next();
     });
   }
 

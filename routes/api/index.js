@@ -20,6 +20,7 @@ function FlatApi(sw) {
     .addPost(auth.authLogout(sw))
     // /scores
     .addPost(score.createScore(sw))
+    .addPost(score.importMusicXML(sw))
     .addGet(score.getCollaborators(sw))
     .addPut(score.addCollaborator(sw))
     .addGet(score.getCollaborator(sw))

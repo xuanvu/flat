@@ -1,0 +1,59 @@
+<h1 class="small" ng-i18next="flat:score.import_score">Import a score</h1>
+<div class="newscore-properties">
+    <div class="side-note side-node-blue">
+        <h4>MusicXML</h4>
+        <p ng-i18next="flat:score.import_musicxml_supported"></p>
+        <p ng-i18next="flat:score.import_musicxml_tip"></p>
+    </div>
+
+    <div class="alert alert-danger" ng-show="errors.length">
+      <a class="close" data-dismiss="alert" ng-click="errors = false">&times;</a>
+        <ul ng-repeat="error in errors" ng-show="errors.length > 1"><li>{{(error || 'error.unknown') | i18next}}</li></ul>
+        <span ng-show="errors.length == 1">{{(errors[0] || 'error.unknown') | i18next}}</span>
+    </div>
+
+    <form ng-submit="import()">
+        <!-- Title -->
+        <div  class="form-horizontal">
+            <label for="score-title" ng-i18next="flat:score.title_optional">Title (optional)</label>
+            <input type="text" ng-model="title" />
+            <span class="help-block" ng-i18next="flat:score.title_optional_tip">If no title is specified, the one used will be the title of your imported score.</span>
+        </div>
+        <!-- /Title -->
+
+        <hr />
+
+        <!-- Privacy -->
+        <div class="radio">
+            <input type="radio" name="public" ng-model="public" id="repo-public" value="1"> 
+            <label for="repo-public">
+                <i class="glyphicon glyphicon-globe"></i>
+                <span ng-i18next="flat:score.public">Public</span>
+            </label>
+            <span class="help-block" ng-i18next="flat:score.public-help">Anyone can see this score. You choose who can work on your score.</span>
+        </div>
+        <div class="radio">
+            <input type="radio" name="public" ng-model="public" id="repo-private" value="0">
+            <label for="repo-private">
+                <i class="glyphicon glyphicon-lock"></i>
+                <span ng-i18next="flat:score.private">Private</span>
+            </label>
+            <span class="help-block" ng-i18next="flat:score.private-help">You choose who see and work on your score.</span>
+        </div>
+        <!-- /Privacy -->
+
+        <hr />
+
+        <!-- File -->
+        <div class="form-horizontal">
+            <label ng-i18next="flat:score.musicxml_file" for="score-file">MusicXML file</label>
+            <div class="controls"><file ng-model="file" id="score-file" accept="application/xml" /></div>
+        </div>
+        <!-- /File-->
+
+        <div class="clearfix"></div>
+        <div class="pull-right"><input type="submit" value="{{ 'flat:score.import' | i18next }}" class="btn btn-primary" /></div>
+    </form>
+</div>
+
+<div class="modal fade" id="modalAddInstrument" ng-include src="'/views/dashboard/score/_modal_instruments.html'"></div>

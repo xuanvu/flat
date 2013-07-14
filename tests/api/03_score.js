@@ -2,9 +2,12 @@
 
 process.env.NODE_ENV = 'test';
 var assert = require('assert'),
+    path = require('path'),
+    fs = require('fs'),
     config = require('config'),
     request = require('supertest'),
     async = require('async'),
+    moment = require('moment'),
     fse = require('fs-extra'),
     flat = require('../../common/app'),
     utils = require('../../common/utils'),
@@ -66,7 +69,8 @@ describe('API /score', function () {
       },
       function (res, callback) {
         cookies2 = res.headers['set-cookie'][0].split(';')[0];
-        setTimeout(callback, 1100);
+        // setTimeout(callback, 1100);
+        callback();
       }
     ], done);
   });
@@ -538,6 +542,131 @@ describe('API /score', function () {
       var rq = request(app).del('/api/score.json/' + scoreId + '/collaborators/4242');
       rq.cookies = cookies;
       rq.expect(404)
+        .end(done);
+    });
+  });
+
+  describe('POST /score.{format}/fromMusicXML', function () {
+    it('should import a score score', function (done) {
+      var rq = request(app).post('/api/score.json/fromMusicXML');
+      var xml = fs.readFileSync(
+        path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
+      );
+      var scoreImported;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            public: true,
+            score: xml
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
+          assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
+          assert.equal(res.body.title, 'Apr&egrave;s un r&ecirc;ve');
+          assert.equal(res.body.userId, uid);
+          scoreImported = res.body;
+          newsfeed.getUserNews(uid, callback);
+        },
+        function (news, callback) {
+          assert.equal(news.length, 3);
+          assert.equal(news[0].event, 'feed.imported');
+          var parameters = JSON.parse(news[0].parameters);
+          assert.equal(parameters.title.type, 'score');
+          assert.equal(parameters.title.id, scoreImported.id);
+          assert.equal(parameters.title.text, scoreImported.title);
+          callback();
+        }
+      ], done);
+    });
+
+    it('should import a score score and set custom title', function (done) {
+      var rq = request(app).post('/api/score.json/fromMusicXML');
+      var xml = fs.readFileSync(
+        path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
+      );
+      var scoreImported;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            title: 'My super score',
+            public: true,
+            score: xml
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
+          assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
+          assert.equal(res.body.title, 'My super score');
+          assert.equal(res.body.userId, uid);
+          scoreImported = res.body;
+          console.log(app.get('db').indexOf('mysql') >= 0);
+          newsfeed.getUserNews(uid, callback);
+        },
+        function (news, callback) {
+          assert.equal(news.length, 4);
+          assert.equal(news[0].event, 'feed.imported');
+          var parameters = JSON.parse(news[0].parameters);
+          assert.equal(parameters.title.type, 'score');
+          assert.equal(parameters.title.id, scoreImported.id);
+          assert.equal(parameters.title.text, scoreImported.title);
+          callback();
+        }
+      ], done);
+    });
+
+    it('should import a score score with a different title (duplicate)', function (done) {
+      var rq = request(app).post('/api/score.json/fromMusicXML');
+      var xml = fs.readFileSync(
+        path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
+      );
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            public: true,
+            score: xml
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
+          assert.ok(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(res.body.sid));
+          assert.equal(res.body.title, 'Apr&egrave;s un r&ecirc;ve - ' + moment().format('LLLL'));
+          assert.equal(res.body.userId, uid);
+          callback();
+        }
+      ], done);
+    });
+
+    it('should fail to import a bad formated score', function (done) {
+      var rq = request(app).post('/api/score.json/fromMusicXML');
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            title: 'My super score',
+            public: true,
+            score: '<score></score>'
+          })
+          .expect(400)
+          .end(callback);
+        },
+        function (res, callback) {
+          assert.equal(res.body.description, 'Error while creating the new score.');
+          callback();
+        }
+      ], done);
+    });
+
+    it('should return return a forbidden', function (done) {
+      request(app)
+        .post('/api/score.json/fromMusicXML')
+        .expect(403)
         .end(done);
     });
   });

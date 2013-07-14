@@ -18,7 +18,14 @@
         "private-help": "You choose who see and work on your score.",
         "intrument-choose": "Choose an instrument",
         "scores": "Scores",
-        "search": "Search in the scores..."
+        "search": "Search in the scores...",
+        "import": "Import",
+        "import_score": "Import an existing score",
+        "title_optional": "Title (optional)",
+        "import_musicxml_supported": "Flat supports the import of music scores in MusicXML, the most used standard format among the editors of music scores.",
+        "import_musicxml_tip": "Export a music score from your favorite editor and import it below (MusicXML / *.xml).",
+        "title_optional_tip": "If no title is specified, the one used will be the title of your imported score.",
+        "musicxml_file": "MusicXML file"
     },
     "feed": {
         "title": "News feed",
@@ -26,7 +33,8 @@
         "news-discover": "Discover trending scores and people.",
         "created": "%(user)s created score %(title)s.",
         "recent-events": "Recent events",
-        "joined": "%(user)s joined Flat."
+        "joined": "%(user)s joined Flat.",
+        "imported": "%(user)s imported score %(title)s."
     },
     "account": {
         "my": "My account",
