@@ -17,8 +17,9 @@ angular.module('flatDashboard', ['flatDashboardServices', 'ui.sortable', 'flat']
     when('/score/new', { templateUrl: '/views/dashboard/score/_new.html', controller: NewScoreCtrl }).
     otherwise({redirectTo: '/'});
 }]).
-run(['$rootScope', 'Account',
-  function ($rootScope, Account) {
+run(['$rootScope', 'CsrfHandler', 'Account',
+  function ($rootScope, CsrfHandler, Account) {
+    CsrfHandler.set(_csrf);
     $rootScope.$watch(window.i18n.options.lng, function() {
       moment.lang(window.i18n.options.lng ? window.i18n.options.lng.split('-')[0] : 'en');
     });

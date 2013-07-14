@@ -160,6 +160,21 @@ exports.getApp = function () {
       }
     });
   }
+  else {
+    appApi.use(function(req, res, next) {
+      var csrf = (req.body && req.body._csrf)
+        || (req.query && req.query._csrf)
+        || (req.headers['x-csrf-token'])
+        || (req.headers['x-xsrf-token']);
+
+      var token = req.session._csrf || (req.session._csrf = uid(24));
+      if (csrf != token) {
+        return res.send(403);
+      }
+
+      return next();
+    });
+  }
 
   swagger.addValidator(
     function validate(req, path, httpMethod) {

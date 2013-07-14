@@ -54,8 +54,7 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
       instruments: $scope.scoreInstruments,
       fifths: $scope.keySignature,
       beats: $scope.beats,
-      beatType: $scope.beatType,
-      _csrf: _csrf
+      beatType: $scope.beatType
     }, function (response) {
       $location.path('/');
     }, function (response) {
@@ -93,13 +92,13 @@ function UserCtrl($rootScope, $scope, $routeParams, $location,
   );
 
   $scope.doFollow = function(userId) {
-    Follow.follow({ id: userId, _csrf: _csrf }, function () {
+    Follow.follow({ id: userId }, function () {
       $scope.follow = true;
     })
   };
 
   $scope.doUnfollow = function(userId) {
-    Follow.unfollow({ userId: userId, _csrf: _csrf }, function () {
+    Follow.unfollow({ userId: userId }, function () {
       $scope.follow = false;
     })
   };
