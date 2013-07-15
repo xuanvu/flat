@@ -21,7 +21,6 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
 
     if (ret === true) {
       $scope.render.renderAll();
-      console.log($scope.data);
       $scope.drawer.drawAll();
     }
   };
