@@ -8,7 +8,7 @@
 
 // Variables
 // - Toolbars
-@toolbarHeight: 30px;
+@toolbarHeight: 35px;
 @toolbarPrimaryBG: #1e1e1e;
 @toolbarPrimaryHover: #247794;
 @toolbarPrimaryActive: darken(#247794, 15%);
@@ -32,27 +32,60 @@
   width: 100%;
 
   .first, .second {
+    overflow: hidden;
+
     a {
-      padding: 6px 11px;
+      padding: 0px 11px;
       margin: 0 -1px;
       display: inline-block;
+      color: #fff;
+      width: 45px;
+      text-align: center;
     }
 
     a:hover {
-      #gradient > .vertical(@toolbarPrimaryHover, darken(@toolbarPrimaryHover, 15%));
-      padding: 6px 10px 4px;
+      #gradient > .vertical(@toolbarPrimaryHover, 0%, darken(@toolbarPrimaryHover, 15%), 100%);
+      padding: 0px 10px;
       border-left: 1px solid #000;
       border-right: 1px solid #000;
+      text-decoration: none;
+    }
+
+    .icon-toolbar(@size, @lineHeight) {
+      line-height: @lineHeight;
+      height: @toolbarHeight;
+      font-size: @size;
+    }
+
+    .icon-toolbar-link(@size) {
+      padding-top: (@toolbarHeight - @size) / 2;
+      padding-bottom: (@toolbarHeight - @size) / 2;
+    }
+
+    [class^="unicode-icon"], [class^="unicode-icon"]:hover {
+      .icon-toolbar(26px, 41px);
+      position: relative;
+      top: -5px;
+    }
+
+    [class^="flat-iconf-"], [class^="flat-iconf-"]:hover {
+      .icon-toolbar(30px, 35px);
+    }
+
+    .glyphicon, .glyphicon:hover {
+      .icon-toolbar(18px, 47px);
+      position: relative;
+      top: -5px;
     }
   }
 
   .first {
     height: @toolbarHeight;
-    #gradient > .vertical(@toolbarPrimaryBG, lighten(@toolbarPrimaryBG, 3%));
+    #gradient > .vertical(@toolbarPrimaryBG, 0%, lighten(@toolbarPrimaryBG, 3%), 100%);
     border-bottom: 1px solid #000;
 
     a.active {
-      #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), lighten(@toolbarPrimaryBG, 6%));
+      #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), 0%, lighten(@toolbarPrimaryBG, 6%), 100%);
       padding: 6px 10px 4px;
       border-left: 1px solid #000;
       border-right: 1px solid #000;
@@ -76,7 +109,7 @@
       margin-left: 34px;
     }
 
-    .toolbar.active {
+    .toolbar {
       height: @toolbarHeight;
       #gradient > .vertical(@toolbarSecondaryBG, lighten(@toolbarSecondaryBG, 3%));
       border: 1px solid #000;
@@ -91,21 +124,6 @@
   }
 }
 
-[class^="flat-icon-"] {
-  font-family: 'flat-icon';
-  .icon-font();
-
-  font-size: 100px;
-}
-
-.flat-icon-treble:before {
-  .icon-content(@treble_clef);
-}
-
-.flat-icon-flat:before {
-  .icon-content(@flat);
-}
-
 .toolbar-bottom {
   position: fixed;
   bottom: 0;
@@ -113,3 +131,34 @@
   width: 100%;
   background: #000;
 }
+
+// Icons
+[class^="unicode-icon-"] {
+  line-height: 1;
+}  
+
+.unicode-icon-sharp:before               { content: "\266F"; }
+.unicode-icon-eighth:before             { content: "\266A"; }
+
+// - Fonts
+[class^="flat-iconf-"] {
+  font-family: 'flat-icon';
+  .icon-font();
+}
+
+.flat-iconf-treble:before       { .icon-content(@treble_clef); }
+
+// - Sprites
+[class^="flat-icons-"] {
+  .sprite-image(@75-keysign-0);
+}
+
+.sprite-flat(@sprite) {
+  .sprite-position(@sprite);
+  .sprite-width(@sprite);
+  .sprite-height(@sprite);
+}
+
+.flat-icons-clef-mezzosoprano   { .sprite-flat(@64-mezzosoprano_clef); }
+.flat-icons-clef-soprano        { .sprite-flat(@64-soprano_clef); }
+.flat-icons-clef-bass           { .sprite-flat(@64-bass_clef); }

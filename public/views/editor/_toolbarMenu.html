@@ -1,0 +1,10 @@
+<div class="first"><!-- class="{{ tool.aclass }}" -->
+	<a href="" ng-repeat="(toolName, tool) in tools" title="{{ tool.title }}" ng-click="showMenu(toolName)">
+		<i class="{{ tool.class }}"></i>
+	</a>
+</div>
+<div class="second">
+	<div class="toolbar" ng-repeat="(toolName, tool) in tools" ng-show="tool.displayed">
+		<a></a>
+	</div>
+</div>
