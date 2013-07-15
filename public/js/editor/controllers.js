@@ -10,22 +10,26 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
       $scope.render.renderAll();
       $scope.drawer = new Fermata.Drawer($scope.data, document.getElementById('canvas-score'));
       $scope.drawer.drawAll();
-      $scope.Interac = new Flat.Interac($scope.data, document.getElementById('canvas-score'), $scope.render, $scope.drawer);
+      $scope.Interac = new Flat.Interac($scope.data, document.getElementById('canvas-score'));
       $scope.Interac.MouseInteracInit();
       $scope.player = new Flat.Player($scope.data['score']['score-partwise']['part']);
     });
   });
 
   $scope.ManageClick = function ($event) {
-    $scope.Interac.MouseClic($event.offsetX, $event.offsetY)
+    var ret = $scope.Interac.MouseClic($event.offsetX, $event.offsetY);
+
+    if (ret === true) {
+      $scope.render.renderAll();
+      console.log($scope.data);
+      $scope.drawer.drawAll();
+    }
   };
 
   $scope.PlayClick = function() {
     try {
       $scope.player.reset();
-      console.log("1");
-      $scope.player.render();
-      console.log("2");      
+      $scope.player.render();   
       $scope.player.play(function () {
         $('.play-button').css('background-position-x', '-258px');
       });
@@ -43,11 +47,10 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
   };
 
   $scope.addQuarter = function () {
-    var test = function (data, pos, ligne, _render, _drawer) {
-      var type = "1";
+    var test = function (data, pos, ligne) {
+      var type = 2
       data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, ligne, type, pos.nbVoice);
-      _render.renderAll();
-      _drawer.drawAll();
+      return data;
     };
     this.Interac.ActionFocus = test;
   };
