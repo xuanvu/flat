@@ -22,6 +22,7 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
     if (ret === true) {
       $scope.render.renderAll();
       $scope.drawer.drawAll();
+      $scope.Interac.MouseInteracInit();
     }
   };
 
