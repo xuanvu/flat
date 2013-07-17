@@ -33,6 +33,7 @@ module.exports = function(grunt) {
     svgmin: {
         dist: {
             files: {
+              // Key Signatures
               'public/dist/img/icons/0-C-major_a-minor.svg': 'public/img/icons/sprite/0-C-major_a-minor.svg',
               'public/dist/img/icons/1b-F-major_d-minor.svg': 'public/img/icons/sprite/1b-F-major_d-minor.svg',
               'public/dist/img/icons/1s-G-major_e-minor.svg': 'public/img/icons/sprite/1s-G-major_e-minor.svg',
@@ -48,6 +49,7 @@ module.exports = function(grunt) {
               'public/dist/img/icons/6s-F-sharp-major_d-sharp-minor.svg': 'public/img/icons/sprite/6s-F-sharp-major_d-sharp-minor.svg',
               'public/dist/img/icons/7b-C-flat-major_a-flat-minor.svg': 'public/img/icons/sprite/7b-C-flat-major_a-flat-minor.svg',
               'public/dist/img/icons/7s-C-sharp-major_a-sharp-minor.svg': 'public/img/icons/sprite/7s-C-sharp-major_a-sharp-minor.svg',
+              // Clefs
               'public/dist/img/icons/alto_clef.svg': 'public/img/icons/sprite/alto_clef.svg',
               'public/dist/img/icons/baritone_c_clef.svg': 'public/img/icons/sprite/baritone_c_clef.svg',
               'public/dist/img/icons/bass_clef.svg': 'public/img/icons/sprite/bass_clef.svg',
@@ -55,6 +57,15 @@ module.exports = function(grunt) {
               'public/dist/img/icons/soprano_clef.svg': 'public/img/icons/sprite/soprano_clef.svg',
               'public/dist/img/icons/tenor_clef.svg': 'public/img/icons/sprite/tenor_clef.svg',
               'public/dist/img/icons/treble_clef.svg': 'public/img/icons/sprite/treble_clef.svg',
+              // Notes
+              'public/dist/img/icons/note_doublewhole.svg': 'public/img/icons/sprite/note_doublewhole.svg',
+              'public/dist/img/icons/note_whole.svg': 'public/img/icons/sprite/note_whole.svg',
+              'public/dist/img/icons/note_half.svg': 'public/img/icons/sprite/note_half.svg',
+              'public/dist/img/icons/note_quarter.svg': 'public/img/icons/sprite/note_quarter.svg',
+              'public/dist/img/icons/note_eighth.svg': 'public/img/icons/sprite/note_eighth.svg',
+              'public/dist/img/icons/note_sixteenth.svg': 'public/img/icons/sprite/note_sixteenth.svg',
+              'public/dist/img/icons/note_thirtysecondnote.svg': 'public/img/icons/sprite/note_thirtysecondnote.svg',
+              'public/dist/img/icons/note_sixtyfourth.svg': 'public/img/icons/sprite/note_sixtyfourth.svg',
             }
         }
     },
