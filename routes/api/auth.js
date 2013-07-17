@@ -70,7 +70,7 @@ exports.authFacebook = function (sw) {
       'path': '/auth.{format}/facebook',
       'method': 'GET',
       'nickname': 'facebook',
-      'params': [sw.params.post('AuthFacebook')],
+      //'params': [sw.params.post('AuthFacebook')],
       'errorResponses': [sw.errors.invalid('AuthFacebook')]
     },
     'action': function (req, res) {
@@ -85,14 +85,14 @@ exports.authFacebookReturn = function (sw) {
   return {
     'spec': {
       'summary': 'Facebook will redirect the user to this URL after approval.',
-      'path': '/auth.{format}/facebook/return',
+      'path': '/auth.{format}/facebook-return',
       'method': 'GET',
       'nickname': 'facebook-return',
-      'params': [sw.params.post('AuthFacebookReturn')],
+      //'params': [sw.params.post('AuthFacebookReturn')],
       'errorResponses': [sw.errors.invalid('AuthFacebookReturn')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/facebook/return');
+      console.log('/auth.{format}/facebook-return');
       passport.authenticate('facebook', { successRedirect: '/',
                                           failureRedirect: '/login' });
     }
@@ -106,7 +106,7 @@ exports.authTwitter = function (sw) {
       'path': '/auth.{format}/twitter',
       'method': 'GET',
       'nickname': 'twitter',
-      'params': [sw.params.post('AuthTwitter')],
+      //'params': [sw.params.post('AuthTwitter')],
       'errorResponses': [sw.errors.invalid('AuthTwitter')]
     },
     'action': function (req, res) {
@@ -120,14 +120,14 @@ exports.authTwitterReturn = function (sw) {
   return {
     'spec': {
       'summary': 'Twitter will redirect the user to this URL after approval.',
-      'path': '/auth.{format}/twitter/return',
+      'path': '/auth.{format}/twitter-return',
       'method': 'GET',
       'nickname': 'twitter-return',
-      'params': [sw.params.post('AuthTwitterReturn')],
+      //'params': [sw.params.post('AuthTwitterReturn')],
       'errorResponses': [sw.errors.invalid('AuthTwitterReturn')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/twitter/return');
+      console.log('/auth.{format}/twitter-return');
       passport.authenticate('twitter', {
         successRedirect: '/',
         failureRedirect: '/login'
@@ -143,7 +143,7 @@ exports.authGoogle = function (sw) {
       'path': '/auth.{format}/google',
       'method': 'GET',
       'nickname': 'google',
-      'params': [sw.params.post('AuthGoogle')],
+      //'params': [sw.params.post('AuthGoogle')],
       'errorResponses': [sw.errors.invalid('AuthGoogle')]
     },
     'action': function (req, res) {
@@ -157,14 +157,14 @@ exports.authGoogleReturn = function (sw) {
   return {
     'spec': {
       'summary': 'Google will redirect the user to this URL after authentication.',
-      'path': '/auth.{format}/google/return',
+      'path': '/auth.{format}/google-return',
       'method': 'GET',
       'nickname': 'google-return',
-      'params': [sw.params.post('AuthGoogleReturn')],
+      //'params': [sw.params.post('AuthGoogleReturn')],
       'errorResponses': [sw.errors.invalid('AuthGoogleReturn')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/google/return');
+      console.log('/auth.{format}/google-return');
       passport.authenticate('google', {
         successRedirect: '/',
         failureRedirect: '/login'

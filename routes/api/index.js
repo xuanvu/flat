@@ -56,8 +56,8 @@ function FlatApi(sw) {
     {
       consumerKey: "TWITTER_CONSUMER_KEY",
       consumerSecret: "TWITTER_CONSUMER_SECRET",
-      // callbackURL: "http://flat.io/auth/twitter/return"
-      callbackURL: "http://localhost:3000/auth#/twitter/return"
+      // callbackURL: "http://flat.io/auth/twitter-return"
+      callbackURL: "http://localhost:3000/auth#/twitter-return"
     },
     function(accessToken, refreshToken, profile, done) {
       console.log ("twitterStrategy");
@@ -99,8 +99,8 @@ function FlatApi(sw) {
     {
       clientID: "FACEBOOK_APP_ID",
       clientSecret: "FACEBOOK_APP_SECRET",
-      // callbackURL: "http://flat.io/auth/facebook/return"
-      callbackURL: "http://localhost:3000/auth#/facebook/return"
+      // callbackURL: "http://flat.io/auth/facebook-return"
+      callbackURL: "http://localhost:3000/auth#/facebook-return"
     },
     function(accessToken, refreshToken, profile, done) {
       console.log ("facebookStrategy");
@@ -140,9 +140,9 @@ function FlatApi(sw) {
 
   passport.use(new GoogleStrategy(
     {
-      //returnURL: 'http://flat.io/auth/google/return',
+      //returnURL: 'http://flat.io/auth/google-return',
       //realm: 'http://flat.io/'
-      returnURL: 'http://localhost:3000/auth#/google/return',
+      returnURL: 'http://localhost:3000/auth#/google-return',
       realm: 'http://localhost:3000/'
     },
     function(identifier, profile, done) {
