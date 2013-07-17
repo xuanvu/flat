@@ -9,6 +9,7 @@
 // Variables
 // - Toolbars
 @toolbarHeight: 35px;
+@iconWidth: 45px;
 @toolbarPrimaryBG: #1e1e1e;
 @toolbarPrimaryHover: #247794;
 @toolbarPrimaryActive: darken(#247794, 15%);
@@ -36,10 +37,10 @@
 
     a {
       padding: 0px 11px;
-      margin: 0 -1px;
+      margin: 0 -1px 0 0;
       display: inline-block;
       color: #fff;
-      width: 45px;
+      width: @iconWidth;
       text-align: center;
     }
 
@@ -48,6 +49,7 @@
       padding: 0px 10px;
       border-left: 1px solid #000;
       border-right: 1px solid #000;
+      width: @iconWidth;
       text-decoration: none;
     }
 
@@ -63,7 +65,7 @@
     }
 
     [class^="unicode-icon"], [class^="unicode-icon"]:hover {
-      .icon-toolbar(26px, 41px);
+      .icon-toolbar(26px, 42px);
       position: relative;
       top: -5px;
     }
@@ -73,7 +75,7 @@
     }
 
     .glyphicon, .glyphicon:hover {
-      .icon-toolbar(18px, 47px);
+      .icon-toolbar(18px, 48px);
       position: relative;
       top: -5px;
     }
@@ -84,9 +86,15 @@
     #gradient > .vertical(@toolbarPrimaryBG, 0%, lighten(@toolbarPrimaryBG, 3%), 100%);
     border-bottom: 1px solid #000;
 
+    p.icon-wrapper {
+      width: @iconWidth - 2 * 11;
+      text-align: center;
+    }
+
     a.active {
+      padding: 0px 10px;
+      text-align: left;
       #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), 0%, lighten(@toolbarPrimaryBG, 6%), 100%);
-      padding: 6px 10px 4px;
       border-left: 1px solid #000;
       border-right: 1px solid #000;
 
@@ -94,27 +102,28 @@
         float: right;
         text-decoration: none;
         color: #999;
+        line-height: @toolbarHeight - 2;
       }
     }
   }
 
   .second {
     height: @toolbarHeight;
-
-    .toolbar.inactive, .toolbar.active {
-      display: inline-block;
+    
+    .toolbar {
+      height: @toolbarHeight;
+      float: left;
     }
 
     .toolbar.inactive {
-      margin-left: 34px;
+      width: @iconWidth - 1;
     }
 
-    .toolbar {
-      height: @toolbarHeight;
+    .toolbar.active {
       #gradient > .vertical(@toolbarSecondaryBG, lighten(@toolbarSecondaryBG, 3%));
       border: 1px solid #000;
       border-top: 1px solid lighten(@toolbarSecondaryBG, 5%);
-      margin-left: -1px;
+      margin-right: -1px;
     
       a:hover {
         border: 0;    

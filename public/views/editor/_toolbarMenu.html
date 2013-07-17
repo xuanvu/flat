@@ -1,10 +1,17 @@
-<div class="first"><!-- class="{{ tool.aclass }}" -->
-	<a href="" ng-repeat="(toolName, tool) in tools" title="{{ tool.title }}" ng-click="showMenu(toolName)">
-		<i class="{{ tool.class }}"></i>
+<div class="first">
+	<a href="" title="{{ tool.title }}"
+	   ng-click="showMenu(toolName, $event)"
+	   ng-repeat="(toolName, tool) in tools"
+	   ng-class="{active: tool.displayed, inactive: !tool.displayed}"
+	   ng-style="tool.styles" class="active-toolbar">
+	   	<span class="toolbar-close" ng-show="tool.displayed">×</span>
+		<p class="icon-wrapper"><i class="{{ tool.class }}"></i></p>
 	</a>
 </div>
 <div class="second">
-	<div class="toolbar" ng-repeat="(toolName, tool) in tools" ng-show="tool.displayed">
-		<a></a>
+	<div class="toolbar" ng-repeat="(toolName, tool) in tools" ng-class="{active: tool.displayed, inactive: !tool.displayed}" id="tb-{{ toolName}}">
+		<a ng-repeat="sub in tool.subs" title="{{ sub.title }}" ng-show="tool.displayed">
+			<i class="{{ sub.class }}"></i>
+		</a>
 	</div>
 </div>
