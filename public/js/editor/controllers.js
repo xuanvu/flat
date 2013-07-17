@@ -19,10 +19,13 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
   $scope.ManageClick = function ($event) {
     var ret = $scope.Interac.MouseClic($event.offsetX, $event.offsetY);
 
-    if (ret === true) {
-      $scope.render.renderAll();
-      $scope.drawer.drawAll();
+    if (ret !== undefined) {
+      $scope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);
+      //console.log($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure]);
+      $scope.drawer.drawMeasure($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure], ret.nbMeasure, ret.nbPart);
       $scope.Interac.MouseInteracInit();
+      ret.nbVoice -= 1;
+      $scope.Interac.Cursor.setFocus(ret);
     }
   };
 
@@ -48,7 +51,7 @@ function EditorCtrl($scope, $routeParams, Score, Revision) {
 
   $scope.addQuarter = function () {
     var test = function (data, pos, ligne) {
-      var type = 2
+      var type = 2;
       data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, ligne, type, pos.nbVoice);
       return data;
     };

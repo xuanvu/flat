@@ -27,9 +27,9 @@
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
       this.ActionFocus(this.data, posTick, line, this.render, this.drawer);
       this.ActionFocus = null;
-      return true;
+      return posTick;
     }
-    return false;
+    return undefined;
 	};
 
 	Flat.Interac.prototype.getLine = function(pos_y, posTick) {
