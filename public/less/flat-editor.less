@@ -35,24 +35,6 @@
   .first, .second {
     overflow: hidden;
 
-    a {
-      padding: 0px 11px;
-      margin: 0 -1px 0 0;
-      display: inline-block;
-      color: #fff;
-      width: @iconWidth;
-      text-align: center;
-    }
-
-    a:hover {
-      #gradient > .vertical(@toolbarPrimaryHover, 0%, darken(@toolbarPrimaryHover, 15%), 100%);
-      padding: 0px 10px;
-      border-left: 1px solid #000;
-      border-right: 1px solid #000;
-      width: @iconWidth;
-      text-decoration: none;
-    }
-
     .icon-toolbar(@size, @lineHeight) {
       line-height: @lineHeight;
       height: @toolbarHeight;
@@ -91,6 +73,24 @@
       text-align: center;
     }
 
+    a {
+      padding: 0px 11px;
+      margin: 0 -1px 0 0;
+      display: inline-block;
+      color: #fff;
+      width: @iconWidth;
+      text-align: center;
+    }
+
+    a:hover {
+      #gradient > .vertical(@toolbarPrimaryHover, 0%, darken(@toolbarPrimaryHover, 15%), 100%);
+      padding: 0px 10px;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+      width: @iconWidth;
+      text-decoration: none;
+    }
+
     a.active {
       padding: 0px 10px;
       text-align: left;
@@ -108,10 +108,10 @@
   }
 
   .second {
-    height: @toolbarHeight;
+    height: @toolbarHeight * 2;
     
     .toolbar {
-      height: @toolbarHeight;
+      height: @toolbarHeight * 2;
       float: left;
     }
 
@@ -124,11 +124,15 @@
       border: 1px solid #000;
       border-top: 1px solid lighten(@toolbarSecondaryBG, 5%);
       margin-right: -1px;
-    
-      a:hover {
-        border: 0;    
-        padding: 6px 11px 4px;  
-      }
+    }
+
+    .svg-container {
+      display: inline-block;
+    }
+
+    svg path {
+      fill: #fff;
+      stroke: #fff;
     }
   }
 }
@@ -159,6 +163,7 @@
 
 // - Sprites
 [class^="flat-icons-"] {
+  display: inline-block;
   .sprite-image(@75-keysign-0);
 }
 

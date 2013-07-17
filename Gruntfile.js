@@ -30,6 +30,34 @@ module.exports = function(grunt) {
         }
       }
     },
+    svgmin: {
+        dist: {
+            files: {
+              'public/dist/img/icons/0-C-major_a-minor.svg': 'public/img/icons/sprite/0-C-major_a-minor.svg',
+              'public/dist/img/icons/1b-F-major_d-minor.svg': 'public/img/icons/sprite/1b-F-major_d-minor.svg',
+              'public/dist/img/icons/1s-G-major_e-minor.svg': 'public/img/icons/sprite/1s-G-major_e-minor.svg',
+              'public/dist/img/icons/2b-B-flat-major_g-minor.svg': 'public/img/icons/sprite/2b-B-flat-major_g-minor.svg',
+              'public/dist/img/icons/2s-D-major_h-minor.svg': 'public/img/icons/sprite/2s-D-major_h-minor.svg',
+              'public/dist/img/icons/3b-E-flat-major_c-minor.svg': 'public/img/icons/sprite/3b-E-flat-major_c-minor.svg',
+              'public/dist/img/icons/3s-A-major_f-sharp-minor.svg': 'public/img/icons/sprite/3s-A-major_f-sharp-minor.svg',
+              'public/dist/img/icons/4b-A-flat-major_f-minor.svg': 'public/img/icons/sprite/4b-A-flat-major_f-minor.svg',
+              'public/dist/img/icons/4s-E-major_c-sharp-minor.svg': 'public/img/icons/sprite/4s-E-major_c-sharp-minor.svg',
+              'public/dist/img/icons/5b-D-flat-major_b-flat-minor.svg': 'public/img/icons/sprite/5b-D-flat-major_b-flat-minor.svg',
+              'public/dist/img/icons/5s-B-major_g-sharp-minor.svg': 'public/img/icons/sprite/5s-B-major_g-sharp-minor.svg',
+              'public/dist/img/icons/6b-G-flat-major_e-flat-minor.svg': 'public/img/icons/sprite/6b-G-flat-major_e-flat-minor.svg',
+              'public/dist/img/icons/6s-F-sharp-major_d-sharp-minor.svg': 'public/img/icons/sprite/6s-F-sharp-major_d-sharp-minor.svg',
+              'public/dist/img/icons/7b-C-flat-major_a-flat-minor.svg': 'public/img/icons/sprite/7b-C-flat-major_a-flat-minor.svg',
+              'public/dist/img/icons/7s-C-sharp-major_a-sharp-minor.svg': 'public/img/icons/sprite/7s-C-sharp-major_a-sharp-minor.svg',
+              'public/dist/img/icons/alto_clef.svg': 'public/img/icons/sprite/alto_clef.svg',
+              'public/dist/img/icons/baritone_c_clef.svg': 'public/img/icons/sprite/baritone_c_clef.svg',
+              'public/dist/img/icons/bass_clef.svg': 'public/img/icons/sprite/bass_clef.svg',
+              'public/dist/img/icons/mezzosoprano_clef.svg': 'public/img/icons/sprite/mezzosoprano_clef.svg',
+              'public/dist/img/icons/soprano_clef.svg': 'public/img/icons/sprite/soprano_clef.svg',
+              'public/dist/img/icons/tenor_clef.svg': 'public/img/icons/sprite/tenor_clef.svg',
+              'public/dist/img/icons/treble_clef.svg': 'public/img/icons/sprite/treble_clef.svg',
+            }
+        }
+    },
     less: {
       compile: {
         options: {
@@ -167,6 +195,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-spritesmith');
   grunt.loadNpmTasks('grunt-fontsmith');
+  grunt.loadNpmTasks('grunt-svgmin');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-angular-templates');
@@ -175,7 +204,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('default', [
-    'clean', 'sprite', 'font', 'less',
+    'clean', 'font', 'svgmin', 'less',
     'htmlmin', 'ngtemplates',
     'concat', 'uglify', 'copy'
   ]);

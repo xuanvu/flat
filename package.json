@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node flat.js"
+    "start": "node flat.js",
+    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 5000ms tests/*"
   },
   "dependencies": {
     "flat-musicjson": "latest",
@@ -42,10 +43,7 @@
     "grunt-spritesmith": "latest",
     "grunt-fontsmith": "latest",
     "mocha": "latest",
-    "supertest": "latest"
-  },
-  "scripts": {
-    "start": "node flat.js",
-    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 5000ms tests/*"
+    "supertest": "latest",
+    "grunt-svgmin": "~0.2.0"
   }
 }

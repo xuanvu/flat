@@ -10,8 +10,9 @@
 </div>
 <div class="second">
 	<div class="toolbar" ng-repeat="(toolName, tool) in tools" ng-class="{active: tool.displayed, inactive: !tool.displayed}" id="tb-{{ toolName}}">
-		<a ng-repeat="sub in tool.subs" title="{{ sub.title }}" ng-show="tool.displayed">
-			<i class="{{ sub.class }}"></i>
+		<a href="" ng-repeat="sub in tool.subs" title="{{ sub.title }}" ng-show="tool.displayed">
+			<i class="{{ sub.class }}" ng-show="sub.class"></i>
+			<img class="svg-container" toolbar-svg="sub.svg" svg-width="sub.svgWidth" svg-height="sub.svgHeight" ng-show="typeof(sub.svg) != 'undefined'"></object>
 		</a>
 	</div>
 </div>
