@@ -91,8 +91,8 @@ exports.authFacebookReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthFacebookReturn')]
     },
     'action': function (req, res) {
-      passport.authenticate('facebook', { successRedirect: '/',
-                                          failureRedirect: '/login' });
+      passport.authenticate('facebook', { successRedirect: '/dashboard',
+                                          failureRedirect: '/auth' });
     }
   };
 };
@@ -125,8 +125,8 @@ exports.authTwitterReturn = function (sw) {
     },
     'action': function (req, res) {
       passport.authenticate('twitter', {
-        successRedirect: '/',
-        failureRedirect: '/login'
+        successRedirect: '/dashboard',
+        failureRedirect: '/auth'
       });
     }
   };
@@ -160,8 +160,8 @@ exports.authGoogleReturn = function (sw) {
     },
     'action': function (req, res) {
       passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/login'
+        successRedirect: '/dashboard',
+        failureRedirect: '/auth'
       });
     }
   };
