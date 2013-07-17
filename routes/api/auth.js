@@ -6,7 +6,7 @@ var async = require('async'),
     passport = require('passport'),
     GoogleStrategy = require('passport-google').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
-		FacebookStrategy = require('passport-facebook').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy,
     signature = require('cookie-signature'),
     apiUtils = require('./utils'),
     newsfeed = require('../../lib/newsfeed');
@@ -64,7 +64,7 @@ exports.authSignup = function (sw) {
 };
 
 exports.authFacebook = function (sw) {
-	return {
+  return {
     'spec': {
       'summary': 'Redirect the user to Facebook for authentication.',
       'path': '/auth.{format}/facebook',
@@ -74,15 +74,15 @@ exports.authFacebook = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthFacebook')]
     },
     'action': function (req, res) {
-			console.log('/auth.{format}/facebook');
-			// passport.authenticate('facebook', { scope: ['read_stream', 'publish_actions'] })
-			passport.authenticate('facebook');
-		}
-	};
+      console.log('/auth.{format}/facebook');
+      // passport.authenticate('facebook', { scope: ['read_stream', 'publish_actions'] })
+      passport.authenticate('facebook');
+    }
+  };
 };
 
 exports.authFacebookReturn = function (sw) {
-	return {
+  return {
     'spec': {
       'summary': 'Facebook will redirect the user to this URL after approval.',
       'path': '/auth.{format}/facebook/return',
@@ -92,15 +92,15 @@ exports.authFacebookReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthFacebookReturn')]
     },
     'action': function (req, res) {
-			console.log('/auth.{format}/facebook/return');
-			passport.authenticate('facebook', { successRedirect: '/',
-                                      failureRedirect: '/login' });
-		}
-	};
+      console.log('/auth.{format}/facebook/return');
+      passport.authenticate('facebook', { successRedirect: '/',
+                                          failureRedirect: '/login' });
+    }
+  };
 };
 
 exports.authTwitter = function (sw) {
-	return {
+  return {
     'spec': {
       'summary': 'Redirect the user to Twitter for authentication.',
       'path': '/auth.{format}/twitter',
@@ -110,14 +110,14 @@ exports.authTwitter = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthTwitter')]
     },
     'action': function (req, res) {
-			console.log('/auth.{format}/twitter');
-			passport.authenticate('twitter');
-		}
-	};
+      console.log('/auth.{format}/twitter');
+      passport.authenticate('twitter');
+    }
+  };
 };
 
 exports.authTwitterReturn = function (sw) {
-	return {
+  return {
     'spec': {
       'summary': 'Twitter will redirect the user to this URL after approval.',
       'path': '/auth.{format}/twitter/return',
@@ -127,17 +127,17 @@ exports.authTwitterReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthTwitterReturn')]
     },
     'action': function (req, res) {
-			console.log('/auth.{format}/twitter/return');
-			passport.authenticate('twitter', {
-				successRedirect: '/',
-				failureRedirect: '/login'
-			});
-		}
-	};
+      console.log('/auth.{format}/twitter/return');
+      passport.authenticate('twitter', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+      });
+    }
+  };
 };
 
 exports.authGoogle = function (sw) {
-	return {
+  return {
     'spec': {
       'summary': 'Redirect the user to Google for authentication.',
       'path': '/auth.{format}/google',
@@ -147,14 +147,14 @@ exports.authGoogle = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthGoogle')]
     },
     'action': function (req, res) {
-			console.log('/auth.{format}/google');
-			passport.authenticate('google');
-		}
-	};
+      console.log('/auth.{format}/google');
+      passport.authenticate('google');
+    }
+  };
 };
 
 exports.authGoogleReturn = function (sw) {
-	return {
+  return {
     'spec': {
       'summary': 'Google will redirect the user to this URL after authentication.',
       'path': '/auth.{format}/google/return',
@@ -164,13 +164,13 @@ exports.authGoogleReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthGoogleReturn')]
     },
     'action': function (req, res) {
-			console.log('/auth.{format}/google/return');
-			passport.authenticate('google', {
-				successRedirect: '/',
+      console.log('/auth.{format}/google/return');
+      passport.authenticate('google', {
+        successRedirect: '/',
         failureRedirect: '/login'
-			});
-		}
-	};
+      });
+    }
+  };
 };
 
 exports.authSignin = function (sw) {
