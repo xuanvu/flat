@@ -13,7 +13,14 @@ var models = require('./models'),
 var auth = require('./auth'),
     score = require('./score'),
     user = require('./user'),
-    newsfeed = require('./newsfeed');
+    newsfeed = require('./newsfeed'),
+    config = require('config');
+
+var TWITTER_CONSUMER_SECRET = config.social.twitter_secret,
+    TWITTER_CONSUMER_KEY = config.social.twitter_key;
+
+var FACEBOOK_APP_ID = config.social.facebook_id,
+    FACEBOOK_APP_SECRET = config.social.facebook_secret;
 
 function FlatApi(sw) {
   console.log(sw);
@@ -54,8 +61,8 @@ function FlatApi(sw) {
 
   passport.use(new TwitterStrategy(
     {
-      consumerKey: "TWITTER_CONSUMER_KEY",
-      consumerSecret: "TWITTER_CONSUMER_SECRET",
+      consumerKey: TWITTER_CONSUMER_KEY,
+      consumerSecret: TWITTER_CONSUMER_SECRET,
       // callbackURL: "http://flat.io/auth/twitter-return"
       callbackURL: "http://localhost:3000/auth#/twitter-return"
     },
@@ -67,13 +74,11 @@ function FlatApi(sw) {
           async.waterfall([
             function (callback, profile) {
               user = new schema.models.User();
-              user.username = profile.id; //ask later
+              user.username = profile.id;  //ask later to replace the username
               user.twitterId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
               user.picture = profile.photos[0].value;
-              // ask here for a username
-
               user.save(callback)
             },
             function (_user, callback) {
@@ -97,8 +102,8 @@ function FlatApi(sw) {
 
   passport.use(new FacebookStrategy(
     {
-      clientID: "FACEBOOK_APP_ID",
-      clientSecret: "FACEBOOK_APP_SECRET",
+      clientID: FACEBOOK_APP_ID,
+      clientSecret: FACEBOOK_APP_SECRET,
       // callbackURL: "http://flat.io/auth/facebook-return"
       callbackURL: "http://localhost:3000/auth#/facebook-return"
     },
@@ -110,13 +115,11 @@ function FlatApi(sw) {
           async.waterfall([
             function (callback, profile) {
               user = new schema.models.User();
-              user.username = profile.id; //ask later
+              user.username = profile.id;  //ask later to replace the username
               user.facebookId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
               user.picture = profile.photos[0].value;
-              // ask here for a username
-
               user.save(callback)
             },
             function (_user, callback) {
@@ -153,13 +156,11 @@ function FlatApi(sw) {
           async.waterfall([
             function (callback, profile) {
               user = new schema.models.User();
-              user.username = profile.id; //ask later
+              user.username = profile.id; //ask later to replace the username
               user.googleId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
               user.picture = profile.photos[0].value;
-              // ask here for a username
-
               user.save(callback)
             },
             function (_user, callback) {
