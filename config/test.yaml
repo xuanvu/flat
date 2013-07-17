@@ -15,6 +15,12 @@ dbs:
     type: 'memory'
 db: *db_nano-gierschv
 
+social:
+  twitter_secret: ''
+  twitter_key: ''
+  facebook_id: ''
+  facebook_secret: ''
+
 cookie:
   secret: 'flat-test'
   path: '/'
