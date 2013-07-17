@@ -3,6 +3,7 @@
 process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     fs = require('fs'),
+    path = require('path'),
     config = require('config'),
     fse = require('fs-extra'),
     git = require('git-gierschv'),
@@ -26,8 +27,6 @@ describe('lib/score', function () {
       assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid));
       assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid + '/objects'));
 
-      // TODO: check props
-
       var repo;
       async.waterfall([
         function (callback) {
@@ -42,7 +41,7 @@ describe('lib/score', function () {
         },
         function (commit, callback) {
           assert.equal(commit.message, 'New score: Fur Elise');
-          callback(null)
+          callback(null);
         }
       ], done);
     });
@@ -65,6 +64,12 @@ describe('lib/score', function () {
       assert.ifError(err);
       score = JSON.parse(score);
       assert.equal(score['score-partwise'].$version, '3.0');
+      assert.equal(score['score-partwise']['movement-title'], 'Fur Elise');
+      assert.equal(score['score-partwise'].part[0].measure.length, 10);
+      assert.equal(score['score-partwise'].part[0].measure[0].$number, 1);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time.beats, 3);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time['beat-type'], 8);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].key.fifths, 0);
       done();
     });
   });
@@ -92,6 +97,57 @@ describe('lib/score', function () {
     var s = new Score(sid);
     s.getScore('34973274ccef6ab4dfaaf86599792fa9c3fe4689', function (err, score) {
       assert.equal(err, 'no such sha found');
+      done();
+    });
+  });
+
+  it('should import a MusicXML score', function (done) {
+    var xml = fs.readFileSync(
+      path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
+    );
+
+    var s = new Score();
+    async.waterfall([
+      function (callback) {
+        s.fromMusicXML(xml, callback);
+      },
+      function (sid, callback) {
+        assert.ok(check(sid).isUUID(), 'Bad returned value');
+        assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid));
+        assert.ok(fs.existsSync(config.flat.score_storage + '/' + sid + '/objects'));
+        s.getScore(null, callback);
+      },
+      function (score, callback) {
+        score = JSON.parse(score);
+        assert.equal(score['score-partwise'].$version, '3.0');
+        assert.equal(score['score-partwise']['movement-title'], 'Après un rêve');
+        s.getRevisions(callback);
+      },
+      function (revisions, callback) {
+        assert.equal(revisions.length, 1);
+        assert.equal(revisions[0].message, 'Import a score: Apr&egrave;s un r&ecirc;ve');
+        callback();
+      }
+    ], done);
+  });
+
+  it('should fail when importing a MusicXML score: non XML string', function (done) {
+    var s = new Score();
+    s.fromMusicXML('<html></html>', function (err, score) {
+      assert.equal(err, 'Error while importing the score, the format is incorrect.');
+      done();
+    });
+  });
+
+  it('should fail when importing a MusicXML score: bad XML format', function (done) {
+    var xml = fs.readFileSync(
+      path.resolve(__dirname, '../fixtures', 'FaurReveFail.xml'), 'UTF-8'
+    );
+
+    var s = new Score();
+    s.fromMusicXML(xml, function (err, score) {
+      assert.equal(err, 'Error while importing the score, the format is ' +
+        'incorrect or some features are not supported yet.');
       done();
     });
   });

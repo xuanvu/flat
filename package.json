@@ -6,6 +6,7 @@
     "start": "node flat.js"
   },
   "dependencies": {
+    "flat-musicjson": "latest",
     "flat-fermata": "https://vincent.sh/flat/fermata.tgz",
     "js-yaml": "latest",
     "config": "0.4.26",
@@ -25,7 +26,8 @@
     "node-uuid": "1.4.0",
     "fs-extra": "0.6.1",
     "git-gierschv": "0.1.x",
-    "async": "0.2.9"
+    "async": "0.2.9",
+    "moment": "latest"
   },
   "devDependencies": {
     "jshint": "latest",

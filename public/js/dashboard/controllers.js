@@ -54,8 +54,7 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
       instruments: $scope.scoreInstruments,
       fifths: $scope.keySignature,
       beats: $scope.beats,
-      beatType: $scope.beatType,
-      _csrf: _csrf
+      beatType: $scope.beatType
     }, function (response) {
       $location.path('/');
     }, function (response) {
@@ -73,14 +72,50 @@ function NewScoreCtrl($scope, $location, Instruments, Score) {
 
 NewScoreCtrl.$inject = ['$scope', '$location', 'Instruments', 'Score'];
 
+function ImportScoreCtrl($scope, $location, Score) {
+  $scope.public = true;
+
+  $scope.import = function() {
+    $scope.errors = [];
+
+    if (typeof($scope.file) == 'undefined') {
+      return $scope.errors.push('Select the file that you want to import.');
+    }
+
+    var reader = new FileReader();
+    reader.onload = function () {
+      Score.import({
+        title: $scope.title,
+        public: $scope.public,
+        score: reader.result
+      }, function (response) {
+        $location.path('/');
+      }, function (response) {
+        if (typeof(response.data.description) === 'string') {
+          $scope.errors.push(response.data.description);
+        }
+        else if (typeof(response.data.description) === 'object') {
+          angular.forEach(response.data.description, function(val, key) {
+            $scope.errors.push(key + ': ' + (val.msg || val));
+          });
+        }
+      });
+    };
+
+    reader.readAsText($scope.file);
+  };
+}
+
+ImportScoreCtrl.$inject = ['$scope', '$location', 'Score'];
+
 function UserCtrl($rootScope, $scope, $routeParams, $location,
-                  User, UserScores, UserNews, Follow, FollowStatus) {
+                  User, UserScores, UserNews, Follow) {
   $scope.user = User.get({ userId: $routeParams.username },
     function () {
       $scope.is_me = $scope.user.id == $rootScope.account.id;
       $scope.scores = UserScores.query({ userId: $scope.user.id });
       $scope.news = UserNews.query({ userId: $scope.user.id });
-      $scope.follow = FollowStatus.get({ userId: $rootScope.account.id, targetId: $scope.user.id }, function (follow) {
+      $scope.follow = Follow.get({ userId: $rootScope.account.id, targetId: $scope.user.id }, function (follow) {
         $scope.follow = true;
       }, function () {
         $scope.follow = false;
@@ -93,17 +128,17 @@ function UserCtrl($rootScope, $scope, $routeParams, $location,
   );
 
   $scope.doFollow = function(userId) {
-    Follow.follow({ id: userId, _csrf: _csrf }, function () {
+    Follow.follow({ targetId: userId }, function () {
       $scope.follow = true;
     })
   };
 
   $scope.doUnfollow = function(userId) {
-    Follow.unfollow({ userId: userId, _csrf: _csrf }, function () {
+    Follow.unfollow({ targetId: userId }, function () {
       $scope.follow = false;
     })
   };
 }
 
 UserCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location',
-                    'User', 'UserScores', 'UserNews', 'Follow', 'FollowStatus'];
+                    'User', 'UserScores', 'UserNews', 'Follow'];

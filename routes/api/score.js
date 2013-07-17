@@ -1,7 +1,11 @@
+'use strict';
+
 var fs = require('fs'),
     async = require('async'),
+    moment = require('moment'),
     dataInstruments = require('../../public/fixtures/instruments').instruments,
-    Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score;
+    Score = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/score').Score,
+    scoreUser = require((fs.existsSync('lib-cov') ? '../../lib-cov' : '../../lib') + '/scoreUser'),
     apiUtils = require('./utils'),
     newsfeed = require('../../lib/newsfeed');
 
@@ -34,10 +38,10 @@ exports.createScore = function (sw) {
       }
 
       for (var i = 0 ; i < req.body.instruments.length ; ++i) {
-        if (typeof(req.body.instruments[i].group) == 'undefined' ||
-            typeof(req.body.instruments[i].instrument) == 'undefined' ||
-            typeof(dataInstruments[req.body.instruments[i].group]) == 'undefined' ||
-            typeof(dataInstruments[req.body.instruments[i].group][req.body.instruments[i].instrument]) == 'undefined') {
+        if (typeof(req.body.instruments[i].group) === 'undefined' ||
+            typeof(req.body.instruments[i].instrument) === 'undefined' ||
+            typeof(dataInstruments[req.body.instruments[i].group]) === 'undefined' ||
+            typeof(dataInstruments[req.body.instruments[i].group][req.body.instruments[i].instrument]) === 'undefined') {
           return apiUtils.errorResponse(res, sw, 'The instrument list is invalid.');
         }
       }
@@ -80,7 +84,7 @@ exports.createScore = function (sw) {
             if (req.body.public) {
               newsfeed.addNews(
                 req.session.user.id,
-                'feed.created', 
+                'feed.created',
                 { title: { type : 'score', id: scoredb.id, text: scoredb.title }},
                 callback
               );
@@ -97,6 +101,91 @@ exports.createScore = function (sw) {
 
           return apiUtils.jsonResponse(res, sw, scoredb);
         });
+      });
+    }
+  };
+};
+
+exports.importMusicXML = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Import a MusicXML score',
+      'path': '/score.{format}/fromMusicXML',
+      'method': 'POST',
+      'nickname': 'importMusicXML',
+      'params': [sw.params.post('ScoreImport', 'Score', 'score')],
+      'errorResponses' : [sw.errors.invalid('score')]
+    },
+    'action': function (req, res) {
+      req.assert('score', 'A MusicXML score is required.').notEmpty();
+      req.sanitize('public').toBoolean();
+
+      var errors = req.validationErrors(true);
+      if (errors) {
+        return apiUtils.errorResponse(res, sw, errors);
+      }
+
+      // Import the new score
+      var s = new Score(), scoredb;
+      async.waterfall([
+        function (callback) {
+          s.fromMusicXML(req.body.score, callback);
+        },
+        function (sid, callback) {
+          s.getScore(null, callback);
+        },
+        function (score, callback) {
+          score = JSON.parse(score);
+
+          if (typeof(score['score-partwise']['movement-title']) === 'string' &&
+              typeof(req.body.title) === 'undefined') {
+            req.body.title = score['score-partwise']['movement-title'];
+          }
+
+          req.body.title = req.sanitize('title').trim();
+          req.body.title = req.sanitize('title').entityEncode();
+
+          schema.models.Score.count({
+            userId: req.session.user.id,
+            title: req.body.title },
+          callback);
+        },
+        function (n, callback) {
+          if (n > 0) {
+            req.body.title += ' - ' + moment().format('LLLL');
+          }
+
+          scoredb = new schema.models.Score();
+          scoredb.sid = s.sid;
+          scoredb.title = req.body.title;
+          scoredb.public = req.body.public;
+          scoredb.user(req.session.user.id);
+          scoredb.save(callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
+          if (req.body.public) {
+            newsfeed.addNews(
+              req.session.user.id,
+              'feed.imported',
+              { title: { type : 'score', id: scoredb.id, text: scoredb.title }},
+              callback
+            );
+          }
+          else {
+            callback();
+          }
+        }
+      ], function (err) {
+        if (err) {
+          // Todo delete git
+          return apiUtils.errorResponse(
+            res, sw,
+            'Error while creating the new score.', err.statusCode
+          );
+        }
+
+        return apiUtils.jsonResponse(res, sw, scoredb);
       });
     }
   };
@@ -120,6 +209,7 @@ exports.getScores = function (sw) {
 };
 
 exports.getScore = function (sw) {
+  var scoredb;
   return {
     'spec': {
       'summary': 'Get a score',
@@ -131,18 +221,26 @@ exports.getScore = function (sw) {
       'responseClass': 'ScoreDetails'
     },
     'action': function (req, res) {
-      schema.models.Score.find(req.params.id, function (err, scoredb) {
-        if (err || !scoredb || (!scoredb.public && scoredb.userId != req.session.user.id)) {
-          return apiUtils.errorResponse(res, sw, 'Score not found.', 404);
-        }
-
-        var s = new Score(scoredb.sid);
-        s.getRevisions(function (err, _revisions) {
-          if (err) {
-            console.error('[FlatAPI.getScore]', err);
-            return apiUtils.errorResponse(res, sw, 'Error while fetching the score.', 500);
+      async.waterfall([
+        function (callback) {
+          schema.models.Score.find(req.params.id, callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
+          if (!scoredb) {
+            return callback("Score not found", 404);
+          }
+          scoreUser.canRead(scoredb.id, req.session.user.id, callback);
+        },
+        function (canRead, callback) {
+          if (!canRead) {
+            return callback("You don't have read rights of this score", 403);
           }
 
+          var s = new Score(scoredb.sid);
+          s.getRevisions(callback);
+        },
+        function (_revisions, callback) {
           var revisions = [];
           for (var i = 0 ; i < _revisions.length ; ++i) {
             revisions.push({
@@ -153,11 +251,17 @@ exports.getScore = function (sw) {
             });
           }
 
-          return apiUtils.jsonResponse(res, sw, {
+          return callback(null, {
             properties: scoredb,
             revisions: revisions
           });
-        });
+        }
+      ], function (err, result) {
+        if (err) {
+          return apiUtils.errorResponse(res, sw, 'Score not found.', 404);
+        }
+
+        apiUtils.jsonResponse(res, sw, result);
       });
     }
   };
@@ -178,20 +282,190 @@ exports.getScoreRevision = function (sw) {
       'responseClass': 'ScoreDetails'
     },
     'action': function (req, res) {
-      schema.models.Score.find(req.params.id, function (err, scoredb) {
-        if (err || (!scoredb.public && scoredb.userId != req.session.user.id)) {
+      var scoredb;
+      async.waterfall([
+        function (callback) {
+          schema.models.Score.find(req.params.id, callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
+          scoreUser.canRead(scoredb.id, req.session.user.id, callback);
+        },
+        function (canRead, callback) {
+          if (!canRead) {
+            return callback(true);
+          }
+
+          var s = new Score(scoredb.sid);
+          s.getScore(req.params.revision, callback);
+        }
+      ], function (err, result) {
+        if (err) {
           return apiUtils.errorResponse(res, sw, 'Score not found.', 404);
         }
 
-        var s = new Score(scoredb.sid);
-        s.getScore(req.params.revision, function (err, score) {
-          if (err) {
-            console.error('[FlatAPI.getScoreRevision]', err);
-            return apiUtils.errorResponse(res, sw, 'Error while fetching the score.', 500);
+        apiUtils.stringResponse(res, sw, result);
+      });
+    }
+  };
+};
+
+exports.getCollaborators = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Get the collaborators of a score',
+      'path': '/score.{format}/{id}/collaborators',
+      'method': 'GET',
+      'nickname': 'getCollaborators',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string')
+      ],
+      'errorResponses' : [sw.errors.notFound('score')],
+      'responseClass': 'List[ScoreCollaborator]'
+    },
+    'action': function (req, res) {
+      scoreUser.getCollaborators(req.params.id, req.session.user.id, function (err, collaborators) {
+        if (err) {
+          return apiUtils.errorResponse(res, sw, err.error || collaborators, err.status_code || collaborators);
+        }
+
+        return apiUtils.jsonResponse(res, sw, collaborators);
+      });
+    }
+  };
+};
+
+exports.addCollaborator = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Add a collaborator to a score',
+      'path': '/score.{format}/{id}/collaborators/{user_id}',
+      'method': 'PUT',
+      'nickname': 'addCollaborator',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string'),
+        sw.params.path('user_id', 'Id of the user', 'string'),
+        sw.params.post('CollaboratorRights', 'Rights of the collaborator')
+      ],
+      'errorResponses' : [
+        sw.errors.notFound('id'),
+        sw.errors.notFound('user_id'),
+      ]
+    },
+    'action': function (req, res) {
+      req.sanitize('acl').toBoolean();
+
+      async.waterfall([
+        function (callback) {
+          schema.models.User.find(req.params.user_id, callback);
+        },
+        function (user, callback) {
+          if (!user) {
+            return callback('The collaborator does not exist', 404);
           }
 
-          return apiUtils.stringResponse(res, sw, score);
+          scoreUser.addCollaborator(req.params.id, req.session.user.id,
+                                    req.params.user_id,
+                                    req.body.aclWrite, req.body.aclAdmin,
+                                    callback);
+        },
+      ], function (err, result) {
+        if (err) {
+          if (typeof(err) === 'string') {
+            return apiUtils.errorResponse(res, sw, err, result || 500);
+          }
+          else {
+            return apiUtils.errorResponse(
+              res, sw,
+              'Error while adding the collaborator',
+              err.status_code || result || 500
+            );
+          }
+        }
+        else {
+          return apiUtils.jsonResponse(res, sw, result);
+        }
+      });
+    }
+  };
+};
+
+exports.getCollaborator = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Check if a user has some rights on a score',
+      'path': '/score.{format}/{id}/collaborators/{user_id}',
+      'method': 'GET',
+      'nickname': 'getCollaborator',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string'),
+        sw.params.path('user_id', 'Id of the user', 'string')
+      ],
+      'errorResponses' : [
+        sw.errors.notFound('id'),
+        sw.errors.notFound('user_id'),
+      ],
+    },
+    'action': function (req, res) {
+      var scoredb;
+      async.waterfall([
+        function (callback) {
+          schema.models.Score.find(req.params.id, callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
+          scoreUser.canRead(scoredb.id, req.session.user.id, callback);
+        },
+        function (canRead, callback) {
+          if (!canRead) {
+            return callback("You don't have read rights of this score", 403);
+          }
+          scoreUser.getRights(req.params.id, req.params.user_id, callback);
+        }
+      ], function (err, rights) {
+        if (err) {
+          if (typeof(err) === 'string') {
+            return apiUtils.errorResponse(res, sw, err, rights || 500);
+          }
+
+          return apiUtils.errorResponse(res, sw, err.error || rights, err.status_code || rights);
+        }
+
+        return apiUtils.jsonResponse(res, sw, {
+          aclRead: (rights & scoreUser.READ) > 0,
+          aclWrite: (rights & scoreUser.WRITE) > 0,
+          aclAdmin: (rights & scoreUser.ADMIN) >0
         });
+      });
+    }
+  };
+};
+
+exports.deleteCollaborator = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Delete a collaborator from a score',
+      'path': '/score.{format}/{id}/collaborators/{user_id}',
+      'method': 'DELETE',
+      'nickname': 'deleteCollaborator',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string'),
+        sw.params.path('user_id', 'Id of the user', 'string')
+      ],
+      'errorResponses' : [
+        sw.errors.notFound('id'),
+        sw.errors.notFound('user_id'),
+      ],
+    },
+    'action': function (req, res) {
+      scoreUser.removeCollaborator(req.params.id,
+                                   req.session.user.id, req.params.user_id,
+                                   function (err, rights) {
+        if (err) {
+          return apiUtils.errorResponse(res, sw, err.error || rights, err.status_code || rights);
+        }
+
+        return res.send(200);
       });
     }
   };

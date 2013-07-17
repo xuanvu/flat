@@ -18,7 +18,14 @@
         "public-help": "N'importe qui peut voir cette partition. Vous choisissez qui peut travailler sur votre partition.",
         "intrument-choose": "Choisissez un instrument",
         "scores": "Partitions",
-        "search": "Chercher dans les partitions..."
+        "search": "Chercher dans les partitions...",
+        "import": "Importer",
+        "import_score": "Importer une partition existante",
+        "import_musicxml_supported": "Flat supporte l'import de partitions au format MusicXML uniquement, le standard le plus utilisé dans le domaine des éditeurs de partions musicales.",
+        "import_musicxml_tip": "Exportez une partition depuis votre logiciel favori et importez-la ci-dessous au format MusicXML (*.xml).",
+        "title_optional": "Title (optionnel)",
+        "title_optional_tip": "Si aucun titre n'est spécifié, celui utilisé sera celui de votre partition importée.",
+        "musicxml_file": "Fichier MusicXML"
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",
@@ -26,7 +33,8 @@
         "news-no-right-now": "Aucune actualité pour le moment...",
         "created": "%(user)s a créé une nouvelle partition %(title)s.",
         "recent-events": "Évènements récents",
-        "joined": "%(user)s a rejoint Flat."
+        "joined": "%(user)s a rejoint Flat.",
+        "imported": "%(user)s a importé une nouvelle partition %(title)s."
     },
     "account": {
         "my": "Mon compte",

@@ -65,6 +65,23 @@ exports.models = {
       }
     }
   },
+  ScoreImport: {
+    id: 'ScoreImport',
+    properties: {
+      title: {
+        type: 'string',
+        description: 'The (optional) title of the score'
+      },
+      'public': {
+        type: 'boolean',
+        description: 'True if the score is public'
+      },
+      'score': {
+        type: 'string',
+        description: 'The content of the score'
+      }
+    }
+  },
   ScoreDb: {
     id: 'ScoreDb',
     properties: {
@@ -95,6 +112,21 @@ exports.models = {
     properties: {
       properties: { type: 'ScoreDb', description: 'The score properties' },
       revisions: { type: 'ScoreRevision', description: 'The score revisions' }
+    }
+  },
+  ScoreCollaborator: {
+    id: 'ScoreCollaborator',
+    properties: {
+      id: { type: 'string', description: 'The user identifier' },
+      aclWrite: { type: 'boolean', description: 'True if the user may edit' },
+      aclAdmin: { type: 'boolean', description: 'True if the user may administrate' }
+    }
+  },
+  CollaboratorRights: {
+    id: 'CollaboratorRights',
+    properties: {
+      aclWrite: { type: 'boolean', description: 'True if the user may edit' },
+      aclAdmin: { type: 'boolean', description: 'True if the user may administrate' }
     }
   },
   News: {

@@ -42,7 +42,11 @@ module.exports = function(grunt) {
           'public/dist/views/dashboard/_myscores.html': 'public/views/dashboard/_myscores.html',
           'public/dist/views/dashboard/_newsfeed.html': 'public/views/dashboard/_newsfeed.html',
           'public/dist/views/dashboard/score/_new.html': 'public/views/dashboard/score/_new.html',
+          'public/dist/views/dashboard/score/_import.html': 'public/views/dashboard/score/_import.html',
+          'public/dist/views/dashboard/score/_panel_list.html': 'public/views/dashboard/score/_panel_list.html',
           'public/dist/views/dashboard/score/_modal_instruments.html': 'public/views/dashboard/score/_modal_instruments.html',
+          'public/dist/views/dashboard/user/_index.html': 'public/views/dashboard/user/_index.html',
+          'public/dist/views/dashboard/user/_newsitem.html': 'public/views/dashboard/user/_newsitem.html',
         }
       }
     },
@@ -62,7 +66,8 @@ module.exports = function(grunt) {
         },
         src:        [ 
           'public/dist/views/dashboard/**.html',
-          'public/dist/views/dashboard/score/**.html'
+          'public/dist/views/dashboard/score/**.html',
+          'public/dist/views/dashboard/user/**.html'
         ],
         dest:       'public/dist/js/dashboard-templates.js'
       },
@@ -97,6 +102,8 @@ module.exports = function(grunt) {
       },
       js_dashboard: {
         src: [
+          'public/js/modules/flat.js',
+          'public/js/modules/flat-news.js',
           'public/js/dashboard/app.js',
           '<%= ngtemplates.flatDashboard.dest %>',
           'public/js/dashboard/controllers.js',
@@ -145,6 +152,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [
     'clean', 'sprite', 'less',
+    'htmlmin', 'ngtemplates',
+    'concat', 'uglify', 'copy'
+  ]);
+
+  grunt.registerTask('win', [
+    'clean', 'less',
     'htmlmin', 'ngtemplates',
     'concat', 'uglify', 'copy'
   ]);
