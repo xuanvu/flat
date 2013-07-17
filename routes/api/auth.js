@@ -74,7 +74,6 @@ exports.authFacebook = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthFacebook')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/facebook');
       // passport.authenticate('facebook', { scope: ['read_stream', 'publish_actions'] })
       passport.authenticate('facebook');
     }
@@ -92,7 +91,6 @@ exports.authFacebookReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthFacebookReturn')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/facebook-return');
       passport.authenticate('facebook', { successRedirect: '/',
                                           failureRedirect: '/login' });
     }
@@ -110,7 +108,6 @@ exports.authTwitter = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthTwitter')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/twitter');
       passport.authenticate('twitter');
     }
   };
@@ -127,7 +124,6 @@ exports.authTwitterReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthTwitterReturn')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/twitter-return');
       passport.authenticate('twitter', {
         successRedirect: '/',
         failureRedirect: '/login'
@@ -147,7 +143,6 @@ exports.authGoogle = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthGoogle')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/google');
       passport.authenticate('google');
     }
   };
@@ -164,7 +159,6 @@ exports.authGoogleReturn = function (sw) {
       'errorResponses': [sw.errors.invalid('AuthGoogleReturn')]
     },
     'action': function (req, res) {
-      console.log('/auth.{format}/google-return');
       passport.authenticate('google', {
         successRedirect: '/',
         failureRedirect: '/login'

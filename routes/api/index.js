@@ -67,7 +67,6 @@ function FlatApi(sw) {
       callbackURL: "http://localhost:3000/auth#/twitter-return"
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log ("twitterStrategy");
       schema.models.User.findOne({ where: { facebookId: profile.id } }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
@@ -108,7 +107,6 @@ function FlatApi(sw) {
       callbackURL: "http://localhost:3000/auth#/facebook-return"
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log ("facebookStrategy");
       schema.models.User.findOne({ where: { facebookId: profile.id } }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
@@ -149,7 +147,6 @@ function FlatApi(sw) {
       realm: 'http://localhost:3000/'
     },
     function(identifier, profile, done) {
-      console.log ("googleStrategy");
       schema.models.User.findOne({ where: { googleId: profile.id } }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
