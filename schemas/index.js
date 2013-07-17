@@ -1,16 +1,16 @@
 exports.getSchemas = function (schema, cb) {
   var User = schema.define('User', {
-		twitterId: { type: String, index: true },
-		facebookId: { type: String, index: true },
-		googleId: { type: String, index: true },
+    twitterId: { type: String, index: true },
+    facebookId: { type: String, index: true },
+    googleId: { type: String, index: true },
     username: { type: String, limit: 30, index: true },
     email: { type: String, limit: 50, index: true },
-		name: { type: String, limit: 30 },
-		picture: String,
-		password: String,
+    name: { type: String, limit: 30 },
+    picture: String,
+    password: String,
     registrationDate: {
-        type: Date,
-        default: function () { return new Date; }
+      type: Date,
+      default: function () { return new Date; }
     }
   });
 
@@ -19,8 +19,8 @@ exports.getSchemas = function (schema, cb) {
 
   var Follow = schema.define('Follow', {
     date: {
-        type: Date,
-        default: function () { return new Date; }
+      type: Date,
+      default: function () { return new Date; }
     }
   });
 
