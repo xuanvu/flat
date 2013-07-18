@@ -35,6 +35,14 @@
   .first, .second {
     overflow: hidden;
 
+    a {
+      color: #fff;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
     .icon-toolbar(@size, @lineHeight) {
       line-height: @lineHeight;
       height: @toolbarHeight;
@@ -77,7 +85,6 @@
       padding: 0px 11px;
       margin: 0 -1px 0 0;
       display: inline-block;
-      color: #fff;
       width: @iconWidth;
       text-align: center;
     }
@@ -88,7 +95,6 @@
       border-left: 1px solid #000;
       border-right: 1px solid #000;
       width: @iconWidth;
-      text-decoration: none;
     }
 
     a.active {
@@ -120,14 +126,19 @@
     }
 
     .toolbar.active {
-      #gradient > .vertical(@toolbarSecondaryBG, lighten(@toolbarSecondaryBG, 3%));
+      min-width: 60px;
+      #gradient > .vertical(@toolbarSecondaryBG, 0%, lighten(@toolbarSecondaryBG, 3%), 100%);
       border: 1px solid #000;
       border-top: 1px solid lighten(@toolbarSecondaryBG, 5%);
       margin-right: -1px;
     }
 
-    .svg-container {
+    .svg-container, .active-container {
       display: inline-block;
+    }
+
+    .active-container.active {
+       #gradient > .vertical(lighten(@toolbarSecondaryBG, 7%), 0%, lighten(@toolbarSecondaryBG, 10%), 100%);
     }
 
     svg path, svg rect {
@@ -141,6 +152,14 @@
 
     #tb-note .svg-container {
       margin: 0 -10px;
+    }
+
+    #tb-player {
+      text-align: center;
+
+      .svg-container {
+      /*display: block;*/
+      }
     }
   }
 }

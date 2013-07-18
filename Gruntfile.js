@@ -155,9 +155,9 @@ module.exports = function(grunt) {
         src: [
           'public/js/deps/underscore-min.js',
           'public/js/deps/raphael-min.js',
-          'public/js/MIDI/Base64.js',
-          'public/js/MIDI/base64binary.js',
-          'public/js/MIDI/MIDI.min.js',
+          'public/js/deps/MIDI/Base64.js',
+          'public/js/deps/MIDI/base64binary.js',
+          'public/js/deps/MIDI/MIDI.min.js',
         ],
         dest: 'public/dist/js/common-editor.js'
       },

@@ -17,16 +17,19 @@
 
 	Flat.Interac.prototype.MouseClic = function(pos_x, pos_y) {
     var posTick = this.is_onTick(pos_x, pos_y);
-    console.log(posTick);
     if (posTick !== null && posTick.nbTick !== null) {
       this.Cursor.setFocus(posTick);
     }
     if (this.ActionFocus != null) {
-      var res = this.getLine(pos_y, posTick);
       this.getTickPos(pos_x, posTick);
-      this.ActionFocus(this.data, posTick, this.getLine(pos_y, posTick), this.render, this.drawer);
+      var line = this.getLine(pos_y, posTick);
+      posTick.nbVoice += 1;
+      posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
+      this.ActionFocus(this.data, posTick, line, this.render, this.drawer);
       this.ActionFocus = null;
+      return posTick;
     }
+    return undefined;
 	};
 
 	Flat.Interac.prototype.getLine = function(pos_y, posTick) {
@@ -49,7 +52,6 @@
     var i = 0;
     while (i < voice.length) {
       if (voice[i].getAbsoluteX() > pos_x) {
-        console.log(i);
         posTick.nbTick = i;
         break;
       }

@@ -19,9 +19,22 @@ directive('editor', function () {
               $rootScope.drawer.drawAll();
               $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer);
               $rootScope.Interac.MouseInteracInit();
-              // $scope.player = new Flat.Player($scope.data['score']['score-partwise']['part']);
+              // $scope.player = new Flat.Player($scope.data['score']['score-partwise']['part']); // defined laet when used
             });
           });
+        };
+
+        $scope.click = function ($event) {
+          var ret = $scope.Interac.MouseClic($event.offsetX, $event.offsetY);
+
+          if (ret !== undefined) {
+            $rootScope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);
+            console.log($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure]);
+            $rootScope.drawer.drawMeasure($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure], ret.nbMeasure, ret.nbPart);
+            $rootScope.Interac.MouseInteracInit();
+            ret.nbVoice -= 1;
+            $rootScope.Interac.Cursor.setFocus(ret);
+          }
         };
 
         $rootScope.$watch(function () { return $routeParams.score; }, $scope.loadScore);
