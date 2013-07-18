@@ -23,7 +23,7 @@
     "passport": "0.1.x",
     "passport-local": "0.1.x",
     "passport-twitter": "latest",
-    "passport-google": "latest",
+    "passport-google-oauth": "latest",
     "passport-facebook": "latest",
     "connect-redis": "1.4.5",
     "node-uuid": "1.4.0",
