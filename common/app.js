@@ -10,7 +10,8 @@ var path = require('path'),
     routes = require('../routes'),
     api = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/api'),
     async = require('async'),
-    utils = require('./utils');
+    utils = require('./utils'),
+    newsfeed = require('../lib/newsfeed');
 
 var passport = require('passport'),
     GoogleStrategy = require('passport-google').Strategy,
@@ -221,13 +222,13 @@ exports.getApp = function () {
         if (err) { return done(err); }
         if (!user) {
           async.waterfall([
-            function (callback, profile) {
+            function (callback) {
               user = new schema.models.User();
               user.username = profile.id;  //ask later to replace the username
               user.twitterId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
-              user.picture = profile.photos[0].value;
+              // user.picture = profile.photos[0].value;
               user.save(callback)
             },
             function (_user, callback) {
@@ -263,13 +264,13 @@ exports.getApp = function () {
         if (err) { return done(err); }
         if (!user) {
           async.waterfall([
-            function (callback, profile) {
+            function (callback) {
               user = new schema.models.User();
               user.username = profile.id;  //ask later to replace the username
               user.facebookId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
-              user.picture = profile.photos[0].value;
+//              user.picture = profile.photos[0].value;
               user.save(callback)
             },
             function (_user, callback) {
@@ -301,17 +302,29 @@ exports.getApp = function () {
       realm: 'http://localhost:3000/'
     },
     function(identifier, profile, done) {
+      console.log(profile);
+      return (done);
+    }
+  ));
+  
+  // Auth google
+  app.get('/auth/google', passport.authenticate('google'));
+
+  app.get('/auth/google/return', passport.authenticate('google', {
+    successRedirect: function (req, res) {      
       schema.models.User.findOne({ where: { googleId: profile.id } }, function (err, user) {
-        if (err) { return done(err); }
+        if (err) { 
+          return '/';
+        }
         if (!user) {
           async.waterfall([
-            function (callback, profile) {
+            function (callback) {
               user = new schema.models.User();
               user.username = profile.id; //ask later to replace the username
               user.googleId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
-              user.picture = profile.photos[0].value;
+              // user.picture = profile.photos[0].value;
               user.save(callback)
             },
             function (_user, callback) {
@@ -321,25 +334,20 @@ exports.getApp = function () {
           ], function (err, news) {
             if (err) {
               if (err.statusCode === 400) {
+                return '/'
                 /*
                   return apiUtils.errorResponse(
                   res, sw, 'Your username or e-mail is already used.', 400
                   );
                 */
               }
-              console.error('[FlatAPI/authSigninGoogleStrategy] ', err);
+              return '/'
               //return apiUtils.errorResponse(res, sw, null, 500);
             }
           })
-        }
-      })}
-  ));
-  
-  // Auth google
-  app.get('/auth/google', passport.authenticate('google'));
-  app.get('/auth/google/return', passport.authenticate('google', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/'
+      return '/dashboard';
+        }})
+    }, failureRedirect: '/'
   }));
   
   // Auth twitter
