@@ -41,6 +41,8 @@ You can configure the application using the configurations files stored in `/con
 - [flat-musicjson](http://github.com/FlatIO/musicjson): The conversion library from [MusicXML](http://www.musicxml.com/) to a JSON format and inverse ;
 - [flat-fermata](https://npmjs.org/FlatIO/fermata): The render library from a MusicJSON format using [Vexflow](http://www.vexflow.com/).
 
+You might want to build assets using grunt-fontsmish and grunt-svgmin (npm packages are available).
+
 ## Client side
 The client side is designed into three [AngularJS](http://angularjs.org/) applications: the authentication, the dashboard and the editor.
 
