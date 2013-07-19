@@ -33,6 +33,8 @@ module.exports = function(grunt) {
     svgmin: {
         dist: {
             files: {
+              // Assets
+              'public/dist/img/logo-f-white-100.svg': 'public/img/logo-f-white-100.svg',
               // Key Signatures
               'public/dist/img/icons/0-C-major_a-minor.svg': 'public/img/icons/sprite/0-C-major_a-minor.svg',
               'public/dist/img/icons/1b-F-major_d-minor.svg': 'public/img/icons/sprite/1b-F-major_d-minor.svg',

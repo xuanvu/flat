@@ -31,6 +31,26 @@
 .toolbar-top {
   .user-select(none);
   width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+
+  .over {
+    height: 5px;
+    background: @flat-blue;
+  }
+
+  .flat-logo {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    background: @flat-blue;
+    #gradient > .vertical(@flat-blue, 0%, darken(@flat-blue, 10%), 100%);
+    width: 70px;
+    padding: 10px;
+    border-bottom-left-radius: @border-radius-base;
+    border-bottom-right-radius: @border-radius-base;
+  }
 
   .first, .second {
     overflow: hidden;
@@ -162,6 +182,11 @@
       }
     }
   }
+}
+
+#canvas-score {
+  margin-top: 130px;
+  z-index: 1;
 }
 
 .toolbar-bottom {
