@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "flat-musicjson": "latest",
-    "flat-fermata": "https://vincent.sh/flat/fermata.tgz",
+    "flat-fermata": "latest",
     "js-yaml": "latest",
     "config": "0.4.26",
     "express": "3.1.1",
