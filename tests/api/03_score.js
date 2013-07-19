@@ -262,6 +262,7 @@ describe('API /score', function () {
           assert.equal(score.revisions[0].author.email, 'nobody@flat.io');
           assert.equal(score.revisions[0].message, 'New score: F&uuml;r Elise - Public');
           assert.equal(score.revisions[0].short_message, 'New score: F&uuml;r Elise - Public');
+          assert.ok(moment(score.revisions[0].authored_date).isValid());
           done();
         });
     });
@@ -604,7 +605,6 @@ describe('API /score', function () {
           assert.equal(res.body.title, 'My super score');
           assert.equal(res.body.userId, uid);
           scoreImported = res.body;
-          console.log(app.get('db').indexOf('mysql') >= 0);
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {

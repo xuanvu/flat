@@ -104,7 +104,8 @@ exports.models = {
       id: { type: 'string', description: 'The revision identifier' },
       author: { type: 'ScoreRevisionAuthor', description: 'The revision author' },
       message: { type: 'string', description: 'The revision message' },
-      short_message: { type: 'string', description: 'The revision short message' }
+      short_message: { type: 'string', description: 'The revision short message' },
+      authored_date: { type: 'string', description: 'The authored date' }
     }
   },
   ScoreDetails: {

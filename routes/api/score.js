@@ -247,7 +247,8 @@ exports.getScore = function (sw) {
               id: _revisions[i].id,
               author: _revisions[i].author,
               message: _revisions[i].message,
-              short_message: _revisions[i].short_message
+              short_message: _revisions[i].short_message,
+              authored_date: _revisions[i].authored_date
             });
           }
 
