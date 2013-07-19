@@ -14,7 +14,7 @@ var path = require('path'),
     newsfeed = require('../lib/newsfeed');
 
 var passport = require('passport'),
-    GoogleStrategy = require('passport-google').Strategy,
+    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy;
 
@@ -203,12 +203,25 @@ exports.getApp = function () {
   }
 
   // Third Party Authentication
-  
-  var TWITTER_CONSUMER_SECRET = config.social.twitter_secret,
-      TWITTER_CONSUMER_KEY = config.social.twitter_key;
 
-  var FACEBOOK_APP_ID = config.social.facebook_id,
-      FACEBOOK_APP_SECRET = config.social.facebook_secret;
+  var TWITTER_CONSUMER_SECRET = config.social.twitter.secret,
+      TWITTER_CONSUMER_KEY = config.social.twitter.key;
+
+  var FACEBOOK_APP_ID = config.social.facebook.id,
+      FACEBOOK_APP_SECRET = config.social.facebook.secret;
+
+  var GOOGLE_CLIENT_ID = config.social.google.id,
+      GOOGLE_CLIENT_SECRET = config.social.google.secret;
+
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    schema.models.User.findOne(id, function (err, user) {
+      done(err, user);
+    });
+  });
 
   passport.use(new TwitterStrategy(
     {
@@ -218,46 +231,44 @@ exports.getApp = function () {
       callbackURL: "http://localhost:3000/auth/twitter/return"
     },
     function(accessToken, refreshToken, profile, done) {
-      schema.models.User.findOne({ where: { facebookId: profile.id } }, function (err, user) {
+      schema.models.User.findOne({ where: { twitterId: profile.id } }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
           async.waterfall([
             function (callback) {
               user = new schema.models.User();
-              user.username = profile.id;  //ask later to replace the username
+              user.username = profile.id;
               user.twitterId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
-              // user.picture = profile.photos[0].value;
+              user.picture = profile._json.picture;
               user.save(callback)
             },
             function (_user, callback) {
-              req.session.user = user = _user;
               newsfeed.addNews(user.id, 'feed.joined', {}, callback);
             }
           ], function (err, news) {
             if (err) {
               if (err.statusCode === 400) {
-                /*
-                  return apiUtils.errorResponse(
-                  res, sw, 'Your username or e-mail is already used.', 400
-                  );
-                */
+                console.error('[app/authSigninTwitterStrategy/400] ', err);
+                return done(err);
               }
-              console.error('[FlatAPI/authSigninFacebookStrategy] ', err);
-              //return apiUtils.errorResponse(res, sw, null, 500);
+              console.error('[app/authSigninTwitterStrategy] ', err);
+              return done(err);
             }
-          })
+          });
         }
-      })}
-  ));
-  
+        return done(null, profile);
+      });
+    }));
+
   passport.use(new FacebookStrategy(
     {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
       // callbackURL: "http://flat.io/auth/facebook/return"
-      callbackURL: "http://localhost:3000/auth/facebook/return"
+      callbackURL: "http://localhost:3000/auth/facebook/return",
+      profileFields: ['id', 'displayName', 'photos', 'emails']
     },
     function(accessToken, refreshToken, profile, done) {
       schema.models.User.findOne({ where: { facebookId: profile.id } }, function (err, user) {
@@ -266,105 +277,105 @@ exports.getApp = function () {
           async.waterfall([
             function (callback) {
               user = new schema.models.User();
-              user.username = profile.id;  //ask later to replace the username
+              user.username = profile.id;
               user.facebookId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
-//              user.picture = profile.photos[0].value;
-              user.save(callback)
+              user.picture = profile.photos[0].value;
+              user.save(callback);
             },
             function (_user, callback) {
-              req.session.user = user = _user;
               newsfeed.addNews(user.id, 'feed.joined', {}, callback);
             }
           ], function (err, news) {
             if (err) {
               if (err.statusCode === 400) {
-                /*
-                  return apiUtils.errorResponse(
-                  res, sw, 'Your username or e-mail is already used.', 400
-                  );
-                */
+                console.error('[app/authSigninFacebookStrategy/400] ', err);
+                return done(err);
               }
-              console.error('[FlatAPI/authSigninFacebookStrategy] ', err);
-              //return apiUtils.errorResponse(res, sw, null, 500);
+              console.error('[app/authSigninFacebookStrategy] ', err);
+              return done(err);
             }
-          })
+          });
         }
-      })}
-  ));
-  
+        return done(null, profile);
+      });
+    }));
+
   passport.use(new GoogleStrategy(
     {
-      //returnURL: 'http://flat.io/auth/google/return',
-      //realm: 'http://flat.io/'
-      returnURL: 'http://localhost:3000/auth/google/return',
-      realm: 'http://localhost:3000/'
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      //callbackURL: 'http://flat.io/auth/google/return',
+      callbackURL: "http://127.0.0.1:3000/auth/google/return",
     },
-    function(identifier, profile, done) {
-      console.log(profile);
-      return (done);
-    }
-  ));
-  
-  // Auth google
-  app.get('/auth/google', passport.authenticate('google'));
-
-  app.get('/auth/google/return', passport.authenticate('google', {
-    successRedirect: function (req, res) {      
+    function(accessToken, refreshToken, profile, done) {
       schema.models.User.findOne({ where: { googleId: profile.id } }, function (err, user) {
-        if (err) { 
-          return '/';
-        }
+        if (err) { return done(err); }
         if (!user) {
           async.waterfall([
             function (callback) {
               user = new schema.models.User();
-              user.username = profile.id; //ask later to replace the username
+              user.username = profile.id;
               user.googleId = profile.id;
               user.name = profile.displayName;
               user.email = profile.emails[0].value;
-              // user.picture = profile.photos[0].value;
-              user.save(callback)
+              user.picture = profile._json.picture;
+              user.save(callback);
             },
             function (_user, callback) {
-              req.session.user = user = _user;
               newsfeed.addNews(user.id, 'feed.joined', {}, callback);
             }
           ], function (err, news) {
             if (err) {
               if (err.statusCode === 400) {
-                return '/'
-                /*
-                  return apiUtils.errorResponse(
-                  res, sw, 'Your username or e-mail is already used.', 400
-                  );
-                */
+                console.error('[app/authSigninGoogleStrategy/400] ', err);
+                return done(err);
               }
-              return '/'
-              //return apiUtils.errorResponse(res, sw, null, 500);
+              console.error('[app/authSigninGoogleStrategy] ', err);
+              return done(err);
             }
-          })
-      return '/dashboard';
-        }})
-    }, failureRedirect: '/'
+          });
+        }
+        return done(null, profile);
+      });
+    }));
+
+  // Auth google
+  app.get('/auth/google', passport.authenticate('google', {
+    scope: ['https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email']
   }));
-  
+  app.get('/auth/google/return', passport.authenticate('google', {
+    failureRedirect: '/'
+  }), function(req, res) {
+    schema.models.User.findOne({ where: { googleId: req.user.id }}, function (err, user) {
+      req.session.user = user;
+      res.redirect('/dashboard');
+    });
+  });
+
   // Auth twitter
   app.get('/auth/twitter', passport.authenticate('twitter'));
   app.get('/auth/twitter/return', passport.authenticate('twitter', {
-    successRedirect: '/dashboard',
     failureRedirect: '/'
-  }));
-  
+  }), function(req, res) {
+    schema.models.User.findOne({ where: { twitterId: req.user.id }}, function (err, user) {
+      req.session.user = user;
+      res.redirect('/dashboard');
+    });
+  });
+
   // Auth facebook
-  app.get('/auth/facebook', passport.authenticate('facebook', {
-    scope: ['read_stream', 'publish_actions']
-  }));
+  app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email', 'user_about_me'] }));
   app.get('/auth/facebook/return', passport.authenticate('facebook', {
-    successRedirect: '/dashboard',
     failureRedirect: '/'
-  }));
+  }), function(req, res) {
+    schema.models.User.findOne({ where: { facebookId: req.user.id }}, function (err, user) {
+      req.session.user = user;
+      res.redirect('/dashboard');
+    });
+  });
 
   return app;
 };
