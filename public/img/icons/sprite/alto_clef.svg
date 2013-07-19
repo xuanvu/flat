@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg1894" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" inkscape:output_extension="org.inkscape.output.svg.inkscape" sodipodi:version="0.32" sodipodi:docname="Alto_clef_with_ref.svg" inkscape:version="0.46"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="506.5px" height="1200px"
+	 viewBox="0 0 506.5 1200" enable-background="new 0 0 506.5 1200" xml:space="preserve">
+<sodipodi:namedview  inkscape:cy="600" inkscape:cx="382.2557" inkscape:zoom="1.0842304" showgrid="false" pagecolor="#ffffff" bordercolor="#666666" guidetolerance="10.0" objecttolerance="10.0" gridtolerance="10.0" borderopacity="1.0" id="base" inkscape:current-layer="layer3" inkscape:window-y="24" inkscape:window-x="24" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:window-height="883" inkscape:window-width="1271">
+	</sodipodi:namedview>
+<defs>
+	
+	
+		<inkscape:perspective  inkscape:vp_z="810 : 600 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_x="0 : 600 : 1" sodipodi:type="inkscape:persp3d" id="perspective24" inkscape:persp3d-origin="405 : 400 : 1">
+		</inkscape:perspective>
+</defs>
+<g id="layer1" inkscape:label="staff" sodipodi:insensitive="true" inkscape:groupmode="layer">
+	<g id="g1934" transform="translate(19.223193,196.55764)">
+		<path id="path11" fill="none" stroke="#131516" stroke-width="8.4321" d="M4.216,395.784h457.061"/>
+		<path id="path13" fill="none" stroke="#131516" stroke-width="8.4321" d="M4.216,635.784h457.061"/>
+		<path id="path15" fill="none" stroke="#131516" stroke-width="8.4321" d="M4.216,515.784h457.061"/>
+		<path id="path17" fill="none" stroke="#131516" stroke-width="8.4321" d="M4.216,275.784h457.061"/>
+		<path id="path19" fill="none" stroke="#131516" stroke-width="8.4321" d="M4.216,155.784h457.061"/>
+	</g>
+</g>
+<g id="layer2" inkscape:label="clef" inkscape:groupmode="layer">
+	<path id="path2432" fill="#131516" stroke="#131516" stroke-width="0.6" d="M103.852,828.142V367.723V357.54h53.293v460.419v10.183
+		H103.852z M183.991,828.142V367.723V357.54h17.03v230.608c8.415-4.393,17.03-13.377,25.445-27.553
+		c8.615-13.977,15.828-28.751,21.437-44.524c5.61-15.773,8.615-27.354,9.016-34.94c2.604,16.771,6.812,30.148,12.421,40.331
+		c5.81,9.983,12.021,17.171,19.234,21.563c7.212,4.192,14.225,6.389,21.438,6.389c17.831,0,29.051-7.986,33.859-24.158
+		c4.808-16.173,7.212-35.939,7.212-59.3c0-10.582-0.2-20.166-0.801-28.552c-0.602-8.386-1.804-16.971-4.007-25.556
+		c-2.004-8.585-5.41-16.372-10.219-23.161c-5.009-6.789-11.42-11.581-19.434-13.977c-7.213-1.997-14.425-2.995-21.438-2.995
+		c-6.411,0-11.82,1.198-16.028,3.394c-4.408,2.196-6.812,5.591-7.213,9.584c1.002,3.594,3.406,7.787,7.614,12.778
+		c4.207,4.792,7.012,8.585,8.615,10.981c1.603,2.396,2.404,5.791,2.404,10.382c0,8.187-2.805,14.975-8.415,20.565
+		c-5.61,5.591-13.023,8.585-22.439,8.585c-9.216,0-16.829-3.394-22.439-9.982c-5.61-6.789-8.615-14.775-9.016-23.76
+		c0.802-12.18,5.209-22.762,13.023-31.546c8.014-8.585,17.831-15.174,29.652-19.567s23.641-6.589,35.662-6.589
+		c13.624,0,26.646,2.396,39.068,7.188c12.622,4.792,23.842,11.98,33.458,21.165c9.817,9.384,17.631,20.765,23.241,34.341
+		c5.609,13.378,8.414,28.751,8.414,45.723c0,23.56-4.407,43.127-13.022,58.501c-8.815,15.573-20.035,27.153-33.658,34.341
+		c-13.824,7.188-28.45,11.182-43.877,11.581c-16.028-0.999-29.452-4.593-40.07-10.782l-21.237,34.342l21.237,34.143
+		c14.626-5.99,29.051-8.985,43.075-8.985c17.831,0,33.259,5.191,46.682,15.175c13.224,10.183,23.441,23.16,30.453,39.333
+		c6.812,16.172,10.418,32.744,10.418,49.915c0,18.769-4.207,36.339-12.621,52.511c-8.415,16.173-20.236,28.951-35.463,38.734
+		c-15.427,9.584-32.857,14.376-52.691,14.376c-23.041-0.999-42.274-6.39-57.701-16.372c-15.427-9.784-23.04-24.559-23.04-43.926
+		c0.801-9.384,4.208-16.572,10.218-21.963c6.011-5.591,12.422-8.386,19.434-8.984c8.415,0,16.028,2.994,22.64,8.984
+		c6.611,5.79,10.017,13.178,10.017,21.963c0,3.395-0.801,6.589-2.404,9.584c-1.603,2.795-3.807,6.189-7.012,10.183
+		c-3.206,3.793-5.41,6.589-6.612,8.386c-1.202,1.996-2.204,4.192-2.604,6.988c0,3.594,2.204,6.588,6.812,8.984
+		c4.408,2.396,10.218,3.794,17.23,4.393c22.039-0.998,36.664-10.383,44.077-27.753c7.213-17.77,10.819-39.533,10.819-66.088
+		c0-22.961-2.604-43.127-7.813-60.298c-5.209-17.37-16.429-25.956-34.06-25.956c-15.627,0-27.648,6.589-36.063,20.166
+		c-8.415,13.378-13.824,29.15-16.229,47.319c-2.604-15.373-6.612-30.148-12.422-44.324c-5.81-14.376-12.421-26.954-20.235-37.736
+		c-7.413-10.582-15.627-19.167-24.042-25.157v231.607H183.991z"/>
+</g>
+</svg>

@@ -11,12 +11,65 @@ module.exports = function(grunt) {
     },
     sprite: {
       keySignatures: {
-        src: ['public/img/key-signatures/*.png'],
-        destImg: 'public/img/sprite-key-signatures.png',
-        destCSS: 'public/less/sprite-key-signatures.less',
-        imgPath: '../../img/sprite-key-signatures.png',
+        src: ['public/img/icons/sprite/*.png'],
+        destImg: 'public/img/flat-icons-sprite.png',
+        destCSS: 'public/less/flat-icons-sprite.less',
+        imgPath: '../../img/flat-icons-sprite.png',
         cssFormat: 'less'
       }
+    },
+    font: {
+      all: {
+        src: ['public/img/icons/font/*.svg'],
+        destCss: 'public/less/flat-icons-font.less',
+        destFonts: 'public/fonts/flat-icons.{svg,woff,eot,ttf}',
+        fontFamily: 'flat-icon',
+        cssRouter: function (fontpath) {
+          console.log(fontpath);
+          return '../../fonts/' + fontpath.split('/').pop();
+        }
+      }
+    },
+    svgmin: {
+        dist: {
+            files: {
+              // Assets
+              'public/dist/img/logo-f-white-100.svg': 'public/img/logo-f-white-100.svg',
+              // Key Signatures
+              'public/dist/img/icons/0-C-major_a-minor.svg': 'public/img/icons/sprite/0-C-major_a-minor.svg',
+              'public/dist/img/icons/1b-F-major_d-minor.svg': 'public/img/icons/sprite/1b-F-major_d-minor.svg',
+              'public/dist/img/icons/1s-G-major_e-minor.svg': 'public/img/icons/sprite/1s-G-major_e-minor.svg',
+              'public/dist/img/icons/2b-B-flat-major_g-minor.svg': 'public/img/icons/sprite/2b-B-flat-major_g-minor.svg',
+              'public/dist/img/icons/2s-D-major_h-minor.svg': 'public/img/icons/sprite/2s-D-major_h-minor.svg',
+              'public/dist/img/icons/3b-E-flat-major_c-minor.svg': 'public/img/icons/sprite/3b-E-flat-major_c-minor.svg',
+              'public/dist/img/icons/3s-A-major_f-sharp-minor.svg': 'public/img/icons/sprite/3s-A-major_f-sharp-minor.svg',
+              'public/dist/img/icons/4b-A-flat-major_f-minor.svg': 'public/img/icons/sprite/4b-A-flat-major_f-minor.svg',
+              'public/dist/img/icons/4s-E-major_c-sharp-minor.svg': 'public/img/icons/sprite/4s-E-major_c-sharp-minor.svg',
+              'public/dist/img/icons/5b-D-flat-major_b-flat-minor.svg': 'public/img/icons/sprite/5b-D-flat-major_b-flat-minor.svg',
+              'public/dist/img/icons/5s-B-major_g-sharp-minor.svg': 'public/img/icons/sprite/5s-B-major_g-sharp-minor.svg',
+              'public/dist/img/icons/6b-G-flat-major_e-flat-minor.svg': 'public/img/icons/sprite/6b-G-flat-major_e-flat-minor.svg',
+              'public/dist/img/icons/6s-F-sharp-major_d-sharp-minor.svg': 'public/img/icons/sprite/6s-F-sharp-major_d-sharp-minor.svg',
+              'public/dist/img/icons/7b-C-flat-major_a-flat-minor.svg': 'public/img/icons/sprite/7b-C-flat-major_a-flat-minor.svg',
+              'public/dist/img/icons/7s-C-sharp-major_a-sharp-minor.svg': 'public/img/icons/sprite/7s-C-sharp-major_a-sharp-minor.svg',
+              // Clefs
+              'public/dist/img/icons/alto_clef.svg': 'public/img/icons/sprite/alto_clef.svg',
+              'public/dist/img/icons/baritone_c_clef.svg': 'public/img/icons/sprite/baritone_c_clef.svg',
+              'public/dist/img/icons/bass_clef.svg': 'public/img/icons/sprite/bass_clef.svg',
+              'public/dist/img/icons/mezzosoprano_clef.svg': 'public/img/icons/sprite/mezzosoprano_clef.svg',
+              'public/dist/img/icons/soprano_clef.svg': 'public/img/icons/sprite/soprano_clef.svg',
+              'public/dist/img/icons/tenor_clef.svg': 'public/img/icons/sprite/tenor_clef.svg',
+              'public/dist/img/icons/treble_clef.svg': 'public/img/icons/sprite/treble_clef.svg',
+              // Notes
+              'public/dist/img/icons/note_doublewhole.svg': 'public/img/icons/sprite/note_doublewhole.svg',
+              'public/dist/img/icons/note_whole.svg': 'public/img/icons/sprite/note_whole.svg',
+              'public/dist/img/icons/note_half.svg': 'public/img/icons/sprite/note_half.svg',
+              'public/dist/img/icons/note_quarter.svg': 'public/img/icons/sprite/note_quarter.svg',
+              'public/dist/img/icons/note_eighth.svg': 'public/img/icons/sprite/note_eighth.svg',
+              'public/dist/img/icons/note_sixteenth.svg': 'public/img/icons/sprite/note_sixteenth.svg',
+              'public/dist/img/icons/note_thirtysecondnote.svg': 'public/img/icons/sprite/note_thirtysecondnote.svg',
+              'public/dist/img/icons/note_sixtyfourth.svg': 'public/img/icons/sprite/note_sixtyfourth.svg',
+            }
+        }
     },
     less: {
       compile: {
@@ -100,6 +153,16 @@ module.exports = function(grunt) {
         ],
         dest: 'public/dist/js/flat-auth.js'
       },
+      js_deps_editor: {
+        src: [
+          'public/js/deps/underscore-min.js',
+          'public/js/deps/raphael-min.js',
+          'public/js/deps/MIDI/Base64.js',
+          'public/js/deps/MIDI/base64binary.js',
+          'public/js/deps/MIDI/MIDI.min.js',
+        ],
+        dest: 'public/dist/js/common-editor.js'
+      },
       js_dashboard: {
         src: [
           'public/js/modules/flat.js',
@@ -123,7 +186,8 @@ module.exports = function(grunt) {
         files: {
           'public/dist/js/flat-auth.min.js': '<%= concat.js_auth.dest %>',
           'public/dist/js/flat-dashboard.min.js': '<%= concat.js_dashboard.dest %>',
-          'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>'
+          'public/dist/js/common.min.js': '<%= concat.js_deps.dest %>',
+          'public/dist/js/common-editor.min.js': '<%= concat.js_deps_editor.dest %>'
         }
       },
     },
@@ -143,6 +207,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-spritesmith');
+  grunt.loadNpmTasks('grunt-fontsmith');
+  grunt.loadNpmTasks('grunt-svgmin');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-angular-templates');
@@ -151,7 +217,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('default', [
-    'clean', 'sprite', 'less',
+    'clean', 'font', 'svgmin', 'less',
     'htmlmin', 'ngtemplates',
     'concat', 'uglify', 'copy'
   ]);

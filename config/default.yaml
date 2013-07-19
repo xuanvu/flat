@@ -10,15 +10,9 @@ dbs:
     type: 'mysql-gierschv'
     settings:
       host: 'localhost'
-#      port: 8889
       database: 'flat'
       username: 'root'
       password: ''
-#  db_mongo: &db_mongo
-#    type: 'mongodb'
-#    settings:
-#      url: 'mongo://localhost/flat'
-  # Sessions only
   db_redis: &db_redis
     type: 'redis'
     settings:

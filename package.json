@@ -1,13 +1,28 @@
 {
-  "name": "flat",
+  "name": "flat.io",
   "version": "0.0.1",
-  "private": true,
+  "author": "Flat EIP team <team@flat.io>",
+  "contributors": [ 
+    { "name": "Vincent Giersch", "email": "mail@vincent.sh" },
+    { "name": "Pierre Rannou", "email": "pierre@rannou.pl" },
+    { "name": "Cyril Coutelier", "email": "coutel_c@epitech.eu" },
+    { "name": "Corentin Gurtner", "email": "gurtne_c@epitech.eu" },
+    { "name": "Vianney Bouchaud", "email": "vianney@bouchaud.org" }
+  ],
   "scripts": {
-    "start": "node flat.js"
+    "start": "node flat.js",
+    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 5000ms tests/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FlatIO/flat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FlatIO/flat/issues"
   },
   "dependencies": {
     "flat-musicjson": "latest",
-    "flat-fermata": "https://vincent.sh/flat/fermata.tgz",
+    "flat-fermata": "latest",
     "js-yaml": "latest",
     "config": "0.4.26",
     "express": "3.1.1",
@@ -42,11 +57,9 @@
     "grunt-angular-templates": "latest",
     "grunt-contrib-htmlmin": "latest",
     "grunt-spritesmith": "latest",
+    "grunt-fontsmith": "latest",
+    "grunt-svgmin": "latest",
     "mocha": "latest",
     "supertest": "latest"
-  },
-  "scripts": {
-    "start": "node flat.js",
-    "test": "node_modules/.bin/mocha --ui exports --reporter spec --slow 150ms --timeout 5000ms tests/*"
   }
 }

@@ -1,101 +1,230 @@
 @import "bootstrap.less";
+@import "flat-icons-font.less";
 
 /*!
  * Flat - Editor
  * Copyright 2013 - Flat.io
  */
 
-.flat-editor {
-  // Variables
-  // - Toolbars
-  @toolbarHeight: 30px;
-  @toolbarPrimaryBG: #1e1e1e;
-  @toolbarPrimaryHover: #247794;
-  @toolbarPrimaryActive: darken(#247794, 15%);
-  @toolbarSecondaryBG: #303030;
-  // - Icons
-  @iconFlatSpritePath: "../../img/icon-test-white.png";
+// Variables
+// - Toolbars
+@toolbarHeight: 35px;
+@iconWidth: 45px;
+@toolbarPrimaryBG: #1e1e1e;
+@toolbarPrimaryHover: #247794;
+@toolbarPrimaryActive: darken(#247794, 15%);
+@toolbarSecondaryBG: #303030;
+// - Icons
+@iconFlatSpritePath: "../img/icon-test-white.png";
 
-  // --------------------------------------------------
+// --------------------------------------------------
 
-  .gradient (@startColor: #eee, @endColor: white) {
-    background-color: @startColor;
-    background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
-    background: -webkit-linear-gradient(top, @startColor, @endColor);
-    background: -moz-linear-gradient(top, @startColor, @endColor);
-    background: -ms-linear-gradient(top, @startColor, @endColor);
-    background: -o-linear-gradient(top, @startColor, @endColor);
+.gradient (@startColor: #eee, @endColor: white) {
+  background-color: @startColor;
+  background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  background: -webkit-linear-gradient(top, @startColor, @endColor);
+  background: -moz-linear-gradient(top, @startColor, @endColor);
+  background: -ms-linear-gradient(top, @startColor, @endColor);
+  background: -o-linear-gradient(top, @startColor, @endColor);
+}
+
+.toolbar-top {
+  .user-select(none);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+
+  .over {
+    height: 5px;
+    background: @flat-blue;
   }
 
-  .toolbar-top {
-    .user-select(none);
-    width: 100%;
+  .flat-logo {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    background: @flat-blue;
+    #gradient > .vertical(@flat-blue, 0%, darken(@flat-blue, 10%), 100%);
+    width: 70px;
+    padding: 10px;
+    border-bottom-left-radius: @border-radius-base;
+    border-bottom-right-radius: @border-radius-base;
+  }
 
-    .first, .second {
-      a {
-        padding: 6px 11px;
-        margin: 0 -1px;
-        display: inline-block;
-      }
+  .first, .second {
+    overflow: hidden;
 
-      a:hover {
-        #gradient > .vertical(@toolbarPrimaryHover, darken(@toolbarPrimaryHover, 15%));
-        padding: 6px 10px 4px;
-        border-left: 1px solid #000;
-        border-right: 1px solid #000;
-      }
+    a {
+      color: #fff;
     }
 
-    .first {
-      height: @toolbarHeight;
-      #gradient > .vertical(@toolbarPrimaryBG, lighten(@toolbarPrimaryBG, 3%));
-      border-bottom: 1px solid #000;
-
-      a.active {
-        #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), lighten(@toolbarPrimaryBG, 6%));
-        padding: 6px 10px 4px;
-        border-left: 1px solid #000;
-        border-right: 1px solid #000;
-
-        span.toolbar-close {
-          float: right;
-          text-decoration: none;
-          color: #999;
-        }
-      }
+    a:hover {
+      text-decoration: none;
     }
 
-    .second {
+    .icon-toolbar(@size, @lineHeight) {
+      line-height: @lineHeight;
       height: @toolbarHeight;
+      font-size: @size;
+    }
 
-      .toolbar.inactive, .toolbar.active {
-        display: inline-block;
-      }
+    .icon-toolbar-link(@size) {
+      padding-top: (@toolbarHeight - @size) / 2;
+      padding-bottom: (@toolbarHeight - @size) / 2;
+    }
 
-      .toolbar.inactive {
-        margin-left: 34px;
-      }
+    [class^="unicode-icon"], [class^="unicode-icon"]:hover {
+      .icon-toolbar(26px, 42px);
+      position: relative;
+      top: -5px;
+    }
 
-      .toolbar.active {
-        height: @toolbarHeight;
-        #gradient > .vertical(@toolbarSecondaryBG, lighten(@toolbarSecondaryBG, 3%));
-        border: 1px solid #000;
-        border-top: 1px solid lighten(@toolbarSecondaryBG, 5%);
-        margin-left: -1px;
-      
-        a:hover {
-          border: 0;    
-          padding: 6px 11px 4px;  
-        }
+    [class^="flat-iconf-"], [class^="flat-iconf-"]:hover {
+      .icon-toolbar(30px, 35px);
+    }
+
+    .glyphicon, .glyphicon:hover {
+      .icon-toolbar(18px, 48px);
+      position: relative;
+      top: -5px;
+    }
+  }
+
+  .first {
+    height: @toolbarHeight;
+    #gradient > .vertical(@toolbarPrimaryBG, 0%, lighten(@toolbarPrimaryBG, 3%), 100%);
+    border-bottom: 1px solid #000;
+
+    p.icon-wrapper {
+      width: @iconWidth - 2 * 11;
+      text-align: center;
+    }
+
+    a {
+      padding: 0px 11px;
+      margin: 0 -1px 0 0;
+      display: inline-block;
+      width: @iconWidth;
+      text-align: center;
+    }
+
+    a:hover {
+      #gradient > .vertical(@toolbarPrimaryHover, 0%, darken(@toolbarPrimaryHover, 15%), 100%);
+      padding: 0px 10px;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+      width: @iconWidth;
+    }
+
+    a.active {
+      padding: 0px 10px;
+      text-align: left;
+      #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), 0%, lighten(@toolbarPrimaryBG, 6%), 100%);
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+
+      span.toolbar-close {
+        float: right;
+        text-decoration: none;
+        color: #999;
+        line-height: @toolbarHeight - 2;
       }
     }
   }
 
-  .toolbar-bottom {
-    position: fixed;
-    bottom: 0;
-    height: 35px;
-    width: 100%;
-    background: #000;
+  .second {
+    height: @toolbarHeight * 2;
+    
+    .toolbar {
+      height: @toolbarHeight * 2;
+      float: left;
+    }
+
+    .toolbar.inactive {
+      width: @iconWidth - 1;
+    }
+
+    .toolbar.active {
+      min-width: 60px;
+      #gradient > .vertical(@toolbarSecondaryBG, 0%, lighten(@toolbarSecondaryBG, 3%), 100%);
+      border: 1px solid #000;
+      border-top: 1px solid lighten(@toolbarSecondaryBG, 5%);
+      margin-right: -1px;
+    }
+
+    .svg-container, .active-container {
+      display: inline-block;
+    }
+
+    .active-container.active {
+       #gradient > .vertical(lighten(@toolbarSecondaryBG, 7%), 0%, lighten(@toolbarSecondaryBG, 10%), 100%);
+    }
+
+    svg path, svg rect {
+      fill: #fff;
+      stroke: #fff;
+    }
+
+    #tb-keySignature .svg-container {
+      padding: 0 5px;
+    }
+
+    #tb-note .svg-container {
+      margin: 0 -10px;
+    }
+
+    #tb-player {
+      text-align: center;
+
+      .svg-container {
+      /*display: block;*/
+      }
+    }
   }
 }
+
+#canvas-score {
+  margin-top: 130px;
+  z-index: 1;
+}
+
+.toolbar-bottom {
+  position: fixed;
+  bottom: 0;
+  height: 35px;
+  width: 100%;
+  background: #000;
+}
+
+// Icons
+[class^="unicode-icon-"] {
+  line-height: 1;
+}  
+
+.unicode-icon-sharp:before               { content: "\266F"; }
+.unicode-icon-eighth:before             { content: "\266A"; }
+
+// - Fonts
+[class^="flat-iconf-"] {
+  font-family: 'flat-icon';
+  .icon-font();
+}
+
+.flat-iconf-treble:before       { .icon-content(@treble_clef); }
+
+// - Sprites
+[class^="flat-icons-"] {
+  display: inline-block;
+  .sprite-image(@75-keysign-0);
+}
+
+.sprite-flat(@sprite) {
+  .sprite-position(@sprite);
+  .sprite-width(@sprite);
+  .sprite-height(@sprite);
+}
+
+.flat-icons-clef-mezzosoprano   { .sprite-flat(@64-mezzosoprano_clef); }
+.flat-icons-clef-soprano        { .sprite-flat(@64-soprano_clef); }
+.flat-icons-clef-bass           { .sprite-flat(@64-bass_clef); }

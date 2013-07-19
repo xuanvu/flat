@@ -1,5 +1,4 @@
 @import "bootstrap.less";
-@import "sprite-key-signatures.less";
 
 /*!
  * Flat - Dashboard
@@ -213,21 +212,21 @@
         }
 
         [class^="keysignicon-"] {
-            .sprite-image(@keysign-0);
+            .sprite-image(@75-keysign-0);
         }
 
         .keysignicon-0 {
-            .sprite-position(@keysign-0);
-            .sprite-width(@keysign-0);
-            .sprite-height(@keysign-0);
+            .sprite-position(@75-keysign-0);
+            .sprite-width(@75-keysign-0);
+            .sprite-height(@75-keysign-0);
         }
 
         .spriteKeySignature (@i, @kstype) when (@i > 0) {
             .keysignicon-@{i}-@{kstype} {
-                height: ~"@{keysign-@{i}@{kstype}-height}";
-                width: ~"@{keysign-@{i}@{kstype}-width}";
-                @sprite-offset-x: ~"@{keysign-@{i}@{kstype}-offset-x}";
-                @sprite-offset-y: ~"@{keysign-@{i}@{kstype}-offset-y}";
+                height: ~"@{75-keysign-@{i}@{kstype}-height}";
+                width: ~"@{75-keysign-@{i}@{kstype}-width}";
+                @sprite-offset-x: ~"@{75-keysign-@{i}@{kstype}-offset-x}";
+                @sprite-offset-y: ~"@{75-keysign-@{i}@{kstype}-offset-y}";
                 background-position: @sprite-offset-x  @sprite-offset-y;
             }
 

@@ -1,0 +1,30 @@
+<div class="over"></div>
+<div class="flat-logo"><a href="/dashboard"><img src="/dist/img/logo-f-white-100.svg" alt="" /></a></div>
+<div class="first">
+	<a href="" title="{{ tool.title }}"
+	   ng-click="show(toolName, $event)"
+	   ng-repeat="(toolName, tool) in tools"
+	   ng-class="{active: tool.displayed, inactive: !tool.displayed}"
+	   ng-style="tool.styles" class="active-toolbar">
+	   	<span class="toolbar-close" ng-show="tool.displayed">×</span>
+		<p class="icon-wrapper"><i class="{{ tool.class }}"></i></p>
+	</a>
+</div>
+<div class="second">
+	<div class="toolbar"
+		 ng-repeat="(toolName, tool) in tools"
+		 ng-class="{active: tool.displayed, inactive: !tool.displayed}"
+		 id="tb-{{ toolName}}"
+	>
+		<a href="" ng-repeat="sub in tool.subs" title="{{ sub.title }}" ng-show="tool.displayed" ng-click="action(tool, sub)">
+			<div class="active-container" ng-class="{active: isActive(tool, sub)}">
+				<i class="{{ sub.class }}" ng-show="sub.class"></i>
+				<img class="svg-container" toolbar-svg="sub.svg"
+					 svg-width="sub.svgWidth || tool.svgWidth"
+					 svg-height="sub.svgHeight || tool.svgHeight"
+					 ng-show="typeof(sub.svg) != 'undefined'"
+				/>
+			</div>
+		</a>
+	</div>
+</div>
