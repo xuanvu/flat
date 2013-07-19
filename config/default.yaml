@@ -22,12 +22,17 @@ dbs:
     type: 'memory'
 db: *db_nano-gierschv
 
+# Fill with value
 social:
-        #replace with value.
-  twitter_secret: 'twitter_secret'
-  twitter_key: 'twitter_key'
-  facebook_id: 'facebook_id'
-  facebook_secret: 'facebook_secret'
+#  twitter:
+#    secret: ''
+#    key: ''
+  facebook:
+    id: ''
+    secret: ''
+  google:
+    id: ''
+    secret: ''
 
 cookie:
   secret: '352IbRsD71eur0y4RUj39xmDvnP1QXAnSPT9cySrQCs5iaAfy3D9cSgsX4f7XTi2LoDduDFC03xpgCCNp4V1Lm52JQuDJSPQBEQDCVjXGE0iWmbz3pinzN8YmPbFdpLg'
