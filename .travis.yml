@@ -2,3 +2,12 @@ language: node_js
 node_js:
   - '0.10'
   - '0.11'
+services:
+  - couchdb
+  - mysql
+before_script:
+  - curl -X PUT localhost:5984/flattest
+  - mysql -e 'CREATE DATABASE flattest;'
+env:
+  - DB=mysql-gierschv
+  - DB=nano-gierschv

@@ -7,10 +7,9 @@ dbs:
     type: 'mysql-gierschv'
     settings:
       host: 'localhost'
-      #port: 8889
       database: 'flattest'
-      username: 'flat'
-      password: 'flat'
+      username: 'travis'
+      password: ''
   db_none: &db_memory
     type: 'memory'
 db: *db_nano-gierschv
