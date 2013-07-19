@@ -7,12 +7,10 @@ var path = require('path'),
     swagger = require('swagger-node-express'),
     expressValidator = require('express-validator'),
     signature = require('cookie-signature'),
+    passport = require('passport'),
     routes = require('../routes'),
     api = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/api'),
-    async = require('async'),
-    utils = require('./utils'),
-    newsfeed = require('../lib/newsfeed'),
-    passport = require('passport');
+    utils = require('./utils');
 
 exports.getApp = function () {
   global.app = express();
