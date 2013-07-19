@@ -15,8 +15,8 @@ var path = require('path'),
 
 var passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    TwitterStrategy = require('passport-twitter').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy;
+//  TwitterStrategy = require('passport-twitter').Strategy;
 
 exports.getApp = function () {
   global.app = express();
@@ -203,10 +203,10 @@ exports.getApp = function () {
   }
 
   // Third Party Authentication
-
+/*
   var TWITTER_CONSUMER_SECRET = config.social.twitter.secret,
       TWITTER_CONSUMER_KEY = config.social.twitter.key;
-
+*/
   var FACEBOOK_APP_ID = config.social.facebook.id,
       FACEBOOK_APP_SECRET = config.social.facebook.secret;
 
@@ -222,7 +222,7 @@ exports.getApp = function () {
       done(err, user);
     });
   });
-
+/*
   passport.use(new TwitterStrategy(
     {
       consumerKey: TWITTER_CONSUMER_KEY,
@@ -240,9 +240,8 @@ exports.getApp = function () {
               user.username = profile.id;
               user.twitterId = profile.id;
               user.name = profile.displayName;
-              user.email = profile.emails[0].value;
-              user.picture = profile._json.picture;
-              user.save(callback)
+              user.picture = profile.photos[0].value;
+              user.save(callback);
             },
             function (_user, callback) {
               newsfeed.addNews(user.id, 'feed.joined', {}, callback);
@@ -261,6 +260,7 @@ exports.getApp = function () {
         return done(null, profile);
       });
     }));
+*/
 
   passport.use(new FacebookStrategy(
     {
@@ -355,6 +355,7 @@ exports.getApp = function () {
     });
   });
 
+/*
   // Auth twitter
   app.get('/auth/twitter', passport.authenticate('twitter'));
   app.get('/auth/twitter/return', passport.authenticate('twitter', {
@@ -365,6 +366,7 @@ exports.getApp = function () {
       res.redirect('/dashboard');
     });
   });
+*/
 
   // Auth facebook
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email', 'user_about_me'] }));
