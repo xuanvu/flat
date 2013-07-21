@@ -336,6 +336,60 @@ describe('API /score', function () {
     });
   });
 
+  describe('POST /score.{format}/{id}/public', function () {
+    it('should fail since the user does not have admin rights', function (done) {
+      var rq = request(app).post('/api/score.json/' + scorePrivateId + '/public');
+      rq.cookies = cookies2;
+      rq.expect(403)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, "You don't have administration rights of this score");
+          done();
+        });
+    });
+
+    it('should set a score visibility as public', function (done) {
+      var rq = request(app).post('/api/score.json/' + scorePrivateId + '/public');
+      rq.cookies = cookies;
+      rq.expect(204)
+        .end(done);
+    });
+
+    it('the new public score should be readable by everyone', function (done) {
+      var rq = request(app).get('/api/score.json/' + scorePrivateId);
+      rq.cookies = cookies2;
+      rq.expect(200)
+        .end(done);
+    });
+  });
+
+  describe('DELETE /score.{format}/{id}/public', function () {
+    it('should fail since the user does not have admin rights', function (done) {
+      var rq = request(app).post('/api/score.json/' + scorePrivateId + '/public');
+      rq.cookies = cookies2;
+      rq.expect(403)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, "You don't have administration rights of this score");
+          done();
+        });
+    });
+
+    it('should remvove a score visibility', function (done) {
+      var rq = request(app).del('/api/score.json/' + scorePrivateId + '/public');
+      rq.cookies = cookies;
+      rq.expect(204)
+        .end(done);
+    });
+
+    it('the new public score should not be readable by everyone', function (done) {
+      var rq = request(app).get('/api/score.json/' + scorePrivateId);
+      rq.cookies = cookies2;
+      rq.expect(404)
+        .end(done);
+    });
+  });
+
   describe('PUT /score.{format}/{id}/collaborators/{user_id}', function () {
     it('should add a user as collaborator', function (done) {
       var rq = request(app).put('/api/score.json/' + scoreId + '/collaborators/' + uid2);
