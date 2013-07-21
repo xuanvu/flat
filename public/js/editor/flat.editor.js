@@ -10,6 +10,8 @@ directive('editor', function () {
             return;
           }
 
+          $scope.loadScoreWatcher();
+
           $rootScope.score = Score.get({ id: $routeParams.score }, function () {
             $rootScope.revision = Revision.get({ id: $routeParams.score, revision: $rootScope.score.revisions[0].id }, function() {
               $rootScope.data = new Fermata.Data($rootScope.revision);
@@ -19,7 +21,6 @@ directive('editor', function () {
               $rootScope.drawer.drawAll();
               $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer);
               $rootScope.Interac.MouseInteracInit();
-              // $scope.player = new Flat.Player($scope.data['score']['score-partwise']['part']); // defined laet when used
             });
           });
         };
@@ -37,7 +38,7 @@ directive('editor', function () {
           }
         };
 
-        $rootScope.$watch(function () { return $routeParams.score; }, $scope.loadScore);
+        $scope.loadScoreWatcher = $rootScope.$watch(function () { return $routeParams.score; }, $scope.loadScore);
       }
     ]
   };
