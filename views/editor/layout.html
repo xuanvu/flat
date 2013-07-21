@@ -8,7 +8,25 @@
     <div toolbar-menu class="toolbar-top"></div>
     <div editor id="canvas-score" class="canvas-score" ng-click="click($event)"></div>
 
-    <div class="toolbar-bottom"></div>
+    <div class="toolbar-bottom">
+        <div class="pull-left">
+            <a href="#/privacy?score={{ score.properties.id }}">
+                <i class="glyphicon glyphicon-globe" ng-show="score.properties.public"></i>
+                <i class="glyphicon glyphicon-lock" ng-show="!score.properties.public"></i>
+            </a>
+            <span ng-bind-html-unsafe="score.properties.title"></span>
+            <span class="score-last-activity">
+                -
+                <span ng-i18next="flat:score.last-save">Last save</span>: {{ score.revisions[0].authored_date | fromNow }}
+            </span>
+        </div>
+        <div class="pull-right">
+            <div class="collaborators">
+                <a href="#/collaborators?score={{ score.properties.id }}"><i class="glyphicon glyphicon-user"></i></a>
+            </div>
+            <div class="scroll"></div>
+        </div>
+    </div>
 
     <div ng-view></div>
     <script>var _csrf = '{_csrf}';</script>

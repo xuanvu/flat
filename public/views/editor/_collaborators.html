@@ -1,0 +1,78 @@
+<div class="modal fade" id="collaboratorsModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" ng-i18next="flat:collaborators.management"></h4>
+      </div>
+      <div class="modal-body">
+        <!-- Privacy -->
+        <div ng-show="score.properties.public" class="collaborator">
+            <div class="avatar"><i class="glyphicon glyphicon-globe"></i></div>
+            <div class="username">
+              <span ng-i18next="flat:score.public">Public</span> - 
+              <span ng-i18next="flat:score.public-help">Anyone can see this score. You choose who can work on your score.</span>
+            </div>
+        </div>
+        <div ng-hide="score.properties.public" class="collaborator">
+            <div class="avatar"><i class="glyphicon glyphicon-lock"></i></div>
+            <div class="username">
+              <span ng-i18next="flat:score.private">Private</span> - 
+              <span ng-i18next="flat:score.private-help">You choose who see and work on your score.</span>
+            </div>
+        </div>
+        <!-- /Privacy -->
+
+        <div ng-repeat="collaborator in collaborators" class="collaborator form-inline">
+          <div class="remove" ng-hide="collaborator.userId == account.id">
+            <a href="" class="close" ng-click="remove(collaborator.userId)">&times;</a>
+          </div>
+
+          <select
+            class="select input-small"
+            ng-model="collaboratorRights[collaborator.userId]"
+            ng-hide="collaborator.userId == account.id"
+            ng-change="changeRights(collaborator.userId)"
+          >
+            <option value="canRead">Can read</option>
+            <option value="canWrite">Can write</option>
+            <option value="canAdministrate">Can administrate</option>
+          </select>
+
+          <div class="select" ng-show="collaborator.userId == account.id" ng-i18next="flat:account.its-you"></div>
+
+          <!-- {{ collaborator }} -->
+          <div class="avatar rd-avatar">
+            <img class="rd-avatar" ng-src="https://secure.gravatar.com/avatar/{{ collaborator.user.email_md5 }}?s=30&amp;d=mm" />
+          </div>
+          <div class="username">{{ collaborator.user.name || collaborator.user.username }}</div>
+          <!-- {{ collaborator.aclWrite }} {{ collaborator.aclAdmin }} -->
+        </div>
+
+        <form class="add" ng-submit="add()">
+          <label for="collaboratorAdd" ng-i18next="flat:collaborators.invite"></label>:
+          <div class="clearfix">
+            <textarea
+              id="collaboratorAdd" class="add-textarea"
+              placeholder="{{ 'flat:collaborators.invite-placeholder' | i18next }}"
+              ng-click="acticeTextarea = true"
+              ng-class="{active: acticeTextarea}"
+              ng-model="newCollaborators"
+            ></textarea>
+            <div class="add-right" ng-show="acticeTextarea">
+              <select ng-model="newCollaboratorsRights" class="input-small">
+                <option value="canRead">Can read</option>
+                <option value="canWrite">Can write</option>
+                <option value="canAdministrate">Can administrate</option>
+              </select>
+              <input type="submit" value="{{ 'flat:collaborators.invite-submit' | i18next }}" class="btn btn-primary btn-small">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-default" data-dismiss="modal" ng-i18next="flat:close"></a>
+      </div>
+    </div>
+  </div>
+</div>

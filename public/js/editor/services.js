@@ -12,8 +12,19 @@ angular.module('flatEditorServices', ['ngResource']).
   }]).
   factory('Score', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
     return CsrfHandler.wrapActions(
-      $resource('/api/score.json/:id', {id: '1'}, {}),
-      ['get']
+      $resource('/api/score.json/:id/:action_path', {id: '@properties.id'}, {
+        public: { method: 'POST', params: { action_path: 'public' }},
+        private: { method: 'DELETE', params: { action_path: 'public' }}
+      }),
+      ['get', 'public', 'private']
+    );
+  }]).
+  factory('Collaborator', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
+    return CsrfHandler.wrapActions(
+      $resource('/api/score.json/:id/collaborators/:userId', {id: '@id', userId: '@userId'}, {
+        add: { method: 'PUT' }
+      }),
+      ['get', 'add', 'delete']
     );
   }]).
   factory('Revision', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
@@ -24,7 +35,9 @@ angular.module('flatEditorServices', ['ngResource']).
   }]).
   factory('User', ['CsrfHandler', '$resource', function (CsrfHandler, $resource) {
     return CsrfHandler.wrapActions(
-      $resource('/api/user.json/:userId', { userId: '@id' }),
+      $resource('/api/user.json/:userId', { userId: '@id' }, {
+        get: { method: 'GET', cache: true }
+      }),
       ['get']
     );
   }]).
