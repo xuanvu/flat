@@ -34,19 +34,17 @@
             ng-hide="collaborator.userId == account.id"
             ng-change="changeRights(collaborator.userId)"
           >
-            <option value="canRead">Can read</option>
-            <option value="canWrite">Can write</option>
-            <option value="canAdministrate">Can administrate</option>
+            <option value="canRead" ng-i18next="flat:score.canRead">Can read</option>
+            <option value="canWrite" ng-i18next="flat:score.canWrite">Can write</option>
+            <option value="canAdministrate" ng-i18next="flat:score.canAdministrate">Can administrate</option>
           </select>
 
           <div class="select" ng-show="collaborator.userId == account.id" ng-i18next="flat:account.its-you"></div>
 
-          <!-- {{ collaborator }} -->
           <div class="avatar rd-avatar">
             <img class="rd-avatar" ng-src="https://secure.gravatar.com/avatar/{{ collaborator.user.email_md5 }}?s=30&amp;d=mm" />
           </div>
           <div class="username">{{ collaborator.user.name || collaborator.user.username }}</div>
-          <!-- {{ collaborator.aclWrite }} {{ collaborator.aclAdmin }} -->
         </div>
 
         <form class="add" ng-submit="add()">
@@ -61,9 +59,9 @@
             ></textarea>
             <div class="add-right" ng-show="acticeTextarea">
               <select ng-model="newCollaboratorsRights" class="input-small">
-                <option value="canRead">Can read</option>
-                <option value="canWrite">Can write</option>
-                <option value="canAdministrate">Can administrate</option>
+                <option value="canRead" ng-i18next="flat:score.canRead">Can read</option>
+                <option value="canWrite" ng-i18next="flat:score.canWrite">Can write</option>
+                <option value="canAdministrate" ng-i18next="flat:score.canAdministrate">Can administrate</option>
               </select>
               <input type="submit" value="{{ 'flat:collaborators.invite-submit' | i18next }}" class="btn btn-primary btn-small">
             </div>

@@ -27,7 +27,10 @@
         "title_optional_tip": "Si aucun titre n'est spécifié, celui utilisé sera celui de votre partition importée.",
         "musicxml_file": "Fichier MusicXML",
         "last-save": "Dernière sauvegarde",
-        "visibility": "Visibilité de la partition"
+        "visibility": "Visibilité de la partition",
+        "canAdministrate": "Peut administrer",
+        "canRead": "Peut lire",
+        "canWrite": "Peut modifier"
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",
@@ -44,12 +47,16 @@
         "profile": "Profil",
         "edit": "Modifier mon profil",
         "follow": "S'abonner",
-        "unfollow": "Se désabonner"
+        "unfollow": "Se désabonner",
+        "its-you": "C'est vous !"
     },
     "logout": "Déconnexion",
     "close": "Fermer",
     "collaborators": {
-        "management": "Gestion des collaborateurs"
+        "management": "Gestion des collaborateurs",
+        "invite": "Inviter des collaborateurs",
+        "invite-placeholder": "Entrez un nom d'utilisateur ou une adresse e-mail, un seul invité par ligne. Les utilisateurs inconnus seront ignorés.",
+        "invite-submit": "Inviter"
     },
     "save": "Sauvegarder"
 }

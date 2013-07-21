@@ -27,7 +27,10 @@
         "title_optional_tip": "If no title is specified, the one used will be the title of your imported score.",
         "musicxml_file": "MusicXML file",
         "last-save": "Last save",
-        "visibility": "Score visibility"
+        "visibility": "Score visibility",
+        "canRead": "Can read",
+        "canWrite": "Can write",
+        "canAdministrate": "Can administrate"
     },
     "feed": {
         "title": "News feed",
