@@ -33,7 +33,8 @@ directive('editor', function () {
         };
 
         $scope.click = function ($event) {
-          var ret = $scope.Interac.MouseClic($event.offsetX, $event.offsetY);
+          console.log($rootScope.Interac);
+          var ret = $rootScope.Interac.MouseClic($event.offsetX, $event.offsetY);
 
           if (ret !== undefined) {
             $rootScope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);
