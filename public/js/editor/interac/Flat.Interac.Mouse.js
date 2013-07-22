@@ -25,7 +25,7 @@
       var line = this.getLine(pos_y, posTick);
       posTick.nbVoice += 1;
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
-      this.ActionFocus(this.data, posTick, line, this.render, this.drawer);
+      this.ActionFocus(this.data, posTick, line);
       //this.ActionFocus = null;
       return posTick;
     }
@@ -194,8 +194,6 @@
           that.ledger_lines.splice(j + 2, 0, {"line": 0, "obj": ledger_line});
         }
       }
-      //console.log("Highest Line > ", highest_line);
-      //console.log("Lowest Line > ", lowest_line);
     }
     
     that.st.mouseover(function(){
