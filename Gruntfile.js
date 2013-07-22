@@ -128,6 +128,7 @@ module.exports = function(grunt) {
     concat: {
       js_deps: {
         src: [
+          'node_modules/async/lib/async.js',
           'public/js/deps/moment/moment.js',
           'public/js/deps/moment/fr.js',
           'public/js/deps/i18next-1.6.3.js',

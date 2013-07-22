@@ -2,16 +2,17 @@ angular.module('flat.editor', ['flatEditorServices', 'flat.editor.toolbarMenu'])
 directive('editor', function () {
   return {
     controller: [
-      '$rootScope', '$scope', '$routeParams', 'Score', 'Revision',
-      function ($rootScope, $scope, $routeParams, Score, Revision) {
-        $scope.loadScore = function() {
+      '$rootScope', '$scope', '$routeParams', 'Score', 'Revision', 'Collaborator', 'User', '$cacheFactory',
+      function ($rootScope, $scope, $routeParams, Score, Revision, Collaborator, User, $cacheFactory) {
+        $scope.loadScore = function () {
           if (typeof($routeParams) === 'undefined' ||
               typeof($routeParams.score) === 'undefined') {
             return;
           }
 
           $rootScope.score = Score.get({ id: $routeParams.score }, function () {
-            $rootScope.revision = Revision.get({ id: $routeParams.score, revision: $rootScope.score.revisions[0].id }, function() {
+            $rootScope.loadCollaborators();
+            $rootScope.revision = Revision.get({ id: $routeParams.score, revision: $rootScope.score.revisions[0].id }, function () {
               $rootScope.data = new Fermata.Data($rootScope.revision);
               $rootScope.render = new Fermata.Render($rootScope.data);
               $rootScope.render.renderAll();
@@ -19,8 +20,15 @@ directive('editor', function () {
               $rootScope.drawer.drawAll();
               $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer);
               $rootScope.Interac.MouseInteracInit();
-              // $scope.player = new Flat.Player($scope.data['score']['score-partwise']['part']); // defined laet when used
             });
+          });
+        };
+
+        $rootScope.loadCollaborators = function (callback) {
+          $rootScope.collaborators = Collaborator.query({ id: $rootScope.score.properties.id }, function () {
+            async.each($rootScope.collaborators, function (collaborator, callback) {
+              collaborator.user = User.get({ userId: collaborator.userId }, callback);
+            }, callback);
           });
         };
 
@@ -37,7 +45,7 @@ directive('editor', function () {
           }
         };
 
-        $rootScope.$watch(function () { return $routeParams.score; }, $scope.loadScore);
+        $scope.loadScoreWatcher = $rootScope.$watch(function () { return $routeParams.score; }, $scope.loadScore);
       }
     ]
   };

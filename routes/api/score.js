@@ -471,3 +471,72 @@ exports.deleteCollaborator = function (sw) {
     }
   };
 };
+
+exports.publicAction = function (req, res) {
+  var scoredb;
+  async.waterfall([
+    function (callback) {
+      schema.models.Score.find(req.params.id, callback);
+    },
+    function (_scoredb, callback) {
+      scoredb = _scoredb;
+      scoreUser.canAdmin(scoredb.id, req.session.user.id, callback);
+    },
+    function (canAdmin, callback) {
+      if (!canAdmin) {
+        return callback("You don't have administration rights of this score", 403);
+      }
+      scoredb.public = req.method === 'POST';
+      scoredb.save(callback);
+    }
+  ], function (err, param) {
+    if (err) {
+      if (typeof(err) === 'string') {
+        return apiUtils.errorResponse(res, null, err, param || 500);
+      }
+
+      return apiUtils.errorResponse(
+        res, null, err.error || param,
+        err.status_code || param
+      );
+    }
+
+    res.send(204);
+  });
+};
+
+exports.enablePublic = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Enable the public visibility',
+      'path': '/score.{format}/{id}/public',
+      'method': 'POST',
+      'nickname': 'enablePublic',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string')
+      ],
+      'errorResponses' : [
+        sw.errors.notFound('id')
+      ],
+    },
+    'action': exports.publicAction
+  }
+};
+
+exports.disablePublic = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Disable the public visibility',
+      'path': '/score.{format}/{id}/public',
+      'method': 'DELETE',
+      'nickname': 'disablePublic',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string')
+      ],
+      'errorResponses' : [
+        sw.errors.notFound('id')
+      ],
+    },
+    'action': exports.publicAction
+  }
+};
