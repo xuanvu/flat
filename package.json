@@ -42,7 +42,7 @@
     "fs-extra": "0.6.1",
     "git-gierschv": "0.1.x",
     "async": "0.2.9",
-    "moment": "latest"
+    "moment": "latest",
     "socket.io": "latest"
   },
   "devDependencies": {
