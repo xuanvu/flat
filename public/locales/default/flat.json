@@ -25,7 +25,12 @@
         "import_musicxml_supported": "Flat supports the import of music scores in MusicXML, the most used standard format among the editors of music scores.",
         "import_musicxml_tip": "Export a music score from your favorite editor and import it below (MusicXML / *.xml).",
         "title_optional_tip": "If no title is specified, the one used will be the title of your imported score.",
-        "musicxml_file": "MusicXML file"
+        "musicxml_file": "MusicXML file",
+        "last-save": "Last save",
+        "visibility": "Score visibility",
+        "canRead": "Can read",
+        "canWrite": "Can write",
+        "canAdministrate": "Can administrate"
     },
     "feed": {
         "title": "News feed",
@@ -42,7 +47,16 @@
         "profile": "Profile",
         "edit": "Edit profile",
         "follow": "Follow",
-        "unfollow": "Unfollow"
+        "unfollow": "Unfollow",
+        "its-you": "It's you !"
     },
-    "logout": "Logout"
+    "logout": "Logout",
+    "collaborators": {
+        "management": "Collaborators management",
+        "invite": "Invite people",
+        "invite-placeholder": "Enter username or email, one by line. The unknown users will be ignored.",
+        "invite-submit": "Invite"
+    },
+    "close": "Close",
+    "save": "Save"
 }

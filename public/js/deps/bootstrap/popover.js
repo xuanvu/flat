@@ -55,6 +55,8 @@
     $tip.find('.popover-content')[this.options.html ? 'html' : 'text'](content)
 
     $tip.removeClass('fade top bottom left right in')
+
+    $tip.find('.popover-title:empty').hide()
   }
 
   Popover.prototype.hasContent = function () {
@@ -62,11 +64,13 @@
   }
 
   Popover.prototype.getContent = function () {
-    var content = typeof this.options.content == 'function' ?
-      this.options.content.call(this.$element[0]) :
-      this.options.content
+    var $e = this.$element
+    var o  = this.options
 
-    return content || this.$element.attr('data-content')
+    return $e.attr('data-content')
+      || (typeof o.content == 'function' ?
+            o.content.call($e[0]) :
+            o.content)
   }
 
   Popover.prototype.tip = function () {

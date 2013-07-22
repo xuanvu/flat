@@ -22,7 +22,6 @@ run(['$rootScope', 'CsrfHandler', 'Account',
   function ($rootScope, CsrfHandler, Account) {
     CsrfHandler.set(_csrf);
     $rootScope.$watch(window.i18n.options, function() {
-      console.log(window.i18n.lng(), window.i18n.options.lng);
       moment.lang(window.i18n.options.lng ? window.i18n.options.lng.split('-')[0] : 'en');
     });
 

@@ -19,15 +19,6 @@
 
 // --------------------------------------------------
 
-.gradient (@startColor: #eee, @endColor: white) {
-  background-color: @startColor;
-  background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
-  background: -webkit-linear-gradient(top, @startColor, @endColor);
-  background: -moz-linear-gradient(top, @startColor, @endColor);
-  background: -ms-linear-gradient(top, @startColor, @endColor);
-  background: -o-linear-gradient(top, @startColor, @endColor);
-}
-
 .toolbar-top {
   .user-select(none);
   width: 100%;
@@ -50,6 +41,10 @@
     padding: 10px;
     border-bottom-left-radius: @border-radius-base;
     border-bottom-right-radius: @border-radius-base;
+
+    img {
+      width: 50px;
+    }
   }
 
   .first, .second {
@@ -192,9 +187,57 @@
 .toolbar-bottom {
   position: fixed;
   bottom: 0;
-  height: 35px;
+  height: @toolbarHeight;
   width: 100%;
-  background: #000;
+  #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), 0%, @toolbarPrimaryBG, 100%);
+  border-top: 1px solid #000;
+  
+  a {
+    color: #fff;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  .pull-left {
+    color: #fff;
+    line-height: @toolbarHeight;
+    margin-left: 10px;
+  }
+
+  .score-last-activity {
+    color: @gray-light;
+  }
+
+  .pull-right {
+    float: right;
+    height: @toolbarHeight;
+  }
+
+  .scroll, .collaborators {
+    height: 100%;
+    float: right;
+    position: relative;
+    top: 0;
+  }
+
+  .scroll {
+    width: 400px;
+    background: #0ff
+  }
+
+  .collaborators {
+    padding: 0 10px;
+
+    a {
+      line-height: @toolbarHeight;
+    }
+
+    .glyphicon {
+      font-size: 18px;
+    }
+  }
 }
 
 // Icons
@@ -228,3 +271,67 @@
 .flat-icons-clef-mezzosoprano   { .sprite-flat(@64-mezzosoprano_clef); }
 .flat-icons-clef-soprano        { .sprite-flat(@64-soprano_clef); }
 .flat-icons-clef-bass           { .sprite-flat(@64-bass_clef); }
+
+// Modals
+#collaboratorsModal {
+  .add {
+    margin: 10px 0 0 0;
+    padding: 10px;
+    background-color: lighten(@flat-blue, 60%);
+    border-radius: @border-radius-base;
+  }
+
+  .collaborator {
+    border-bottom: 1px solid @gray-lighter;
+    padding: 10px 0;
+
+    .avatar, .username, .select, .remove {
+      height: 30px;
+      line-height: 30px;
+    }
+
+    .avatar {
+      float: left;
+      margin-right: 10px;
+      width: 30px;
+      text-align: center;
+    }
+
+    .select {
+      float: right;
+      width: 150px;
+    }
+
+    .remove {
+      float: right;
+      margin: 0 0 0 15px;
+    }
+
+    .remove a {
+      line-height: 25px;
+    }
+  }
+
+  .add-textarea, .add-right {
+    float: left;
+  }
+
+  .add-textarea {
+    height: 50px;
+  }
+
+  .add-textarea.active {
+    width: 70%;
+    height: 70px;
+  }
+
+  .add-right {
+    padding: 0 0 0 5px;
+    width: 30%;
+
+    input[type="submit"] {
+      float: right;
+      margin: 5px 0 0 0;
+    }
+  }
+}

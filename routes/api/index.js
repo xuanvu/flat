@@ -24,6 +24,8 @@ function FlatApi(sw) {
     .addPut(score.addCollaborator(sw))
     .addGet(score.getCollaborator(sw))
     .addDelete(score.deleteCollaborator(sw))
+    .addPost(score.enablePublic(sw))
+    .addDelete(score.disablePublic(sw))
     .addGet(score.getScores(sw))
     .addGet(score.getScore(sw))
     .addGet(score.getScoreRevision(sw))
