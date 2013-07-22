@@ -11,11 +11,12 @@
 			for (var j = 0; j < parts[i]['measure'].length; j++)
 				for (var k = 0; k < parts[i]['measure'][j]['$fermata']['vexVoices'].length; k++)
 					for (var l = 0; l < parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'].length; l++) {
-						this.MouseUpdateTick(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l]);
+						this.MouseUpdateTick(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l], this);
           }
 	};
 
 	Flat.Interac.prototype.MouseClic = function(pos_x, pos_y) {
+    console.log(pos_x, pos_y);
     var posTick = this.is_onTick(pos_x, pos_y);
     if (posTick !== null && posTick.nbTick !== null) {
       this.Cursor.setFocus(posTick);
@@ -26,7 +27,6 @@
       posTick.nbVoice += 1;
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
       this.ActionFocus(this.data, posTick, line);
-      //this.ActionFocus = null;
       return posTick;
     }
     return undefined;
@@ -51,7 +51,7 @@
     var voice = this.data['score']['score-partwise']['part'][posTick.nbPart]['measure'][posTick.nbMeasure]['$fermata']['vexVoices'][posTick.nbVoice]['tickables'];
     var i = 0;
     while (i < voice.length) {
-      if (voice[i].getAbsoluteX() > pos_x) {
+      if (voice[i].getAbsoluteX() >= pos_x) {
         posTick.nbTick = i;
         break;
       }
@@ -104,9 +104,10 @@
     return null;  
   };
 
-	Flat.Interac.prototype.MouseUpdateTick = function(tick) {
+	Flat.Interac.prototype.MouseUpdateTick = function(tick, this_) {
 		//FLAT: Here is the big part which bring interactivity
     var that = tick;
+    var _this = this_;
     var ctx = that.context;
     function stroke(y) {
         if (that.default_head_x != null)
@@ -120,7 +121,6 @@
     function changeStaveNotePitch(offset) {
       var orig_lowest_line = that.lowest_line;
       var orig_highest_line = that.highest_line;
-
       for (var i in that.keyProps)
       {
         var note_props = that.keyProps[i];
@@ -148,7 +148,7 @@
               first_line = that.ledger_lines[0];
             }
           }
-          console.log(note_props);
+          //console.log(note_props);
         }
         // Else if we move down the note
         else
@@ -212,16 +212,26 @@
           var y_offset = ((dy >= 0) ? Math.floor(dy / step_y) : Math.ceil(dy / step_y));
           var scaled_y_offset = y_offset / 2;
           var trans_y = (y_offset * step_y) - that.st.oy;
+          var posTick;
           
           if (that.st.last_y_offset !== scaled_y_offset)
           {
-            changeStaveNotePitch(that.st.last_y_offset - scaled_y_offset);
-            that.st.last_y_offset = scaled_y_offset;
+            var offset = that.st.last_y_offset - scaled_y_offset;
+            posTick = _this.is_onTick(that.getAbsoluteX(), that.getYs()[0]);
+            _this.getTickPos(that.getAbsoluteX(), posTick);
+            try {
+              // console.log(posTick, offset);
+              _this.data.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, offset);
+              that.st.last_y_offset = scaled_y_offset;
+              changeStaveNotePitch(offset);
+              that.st.transform("...t" + trans_x + "," + trans_y);
+              that.st.ox = dx;
+              that.st.oy += trans_y;
+            }
+            catch (err) {
+              console.log(err);
+            }            
           }
-
-          that.st.transform("...t" + trans_x + "," + trans_y);
-          that.st.ox = dx;
-          that.st.oy += trans_y;
         }, 
         function () {
           that.st.ox = 0;
@@ -239,6 +249,11 @@
               console.log("Add missing line > ", missing_line);
             }
           }
+          // var posTick = _this.is_onTick(that.getAbsoluteX(), that.getYs()[0]);
+          // _this.getTickPos(that.getAbsoluteX(), posTick);
+          // _this.render.renderOneMeasure(posTick.nbMeasure, posTick.nbPart, true);
+          // _this.drawer.drawMeasure(_this.data.getPart(posTick.nbPart).measure[posTick.nbMeasure], posTick.nbMeasure, posTick.nbPart);
+          // _this.MouseInteracInit();
         }
       );
   //FLAT: End of interactivity part
