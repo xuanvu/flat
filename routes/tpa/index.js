@@ -1,13 +1,13 @@
 'use strict';
 
-var models = require('./models'),
+var models = require('../api/models'),
     bcrypt = require('bcrypt'),
     config = require('config'),
     utils = require('../../common/utils');
 
-var auth = require('./auth'),
-    user = require('./user'),
-    newsfeed = require('./newsfeed');
+var auth = require('../api/auth'),
+    user = require('../api/user'),
+    newsfeed = require('../api/newsfeed');
 
 var passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
@@ -15,7 +15,7 @@ var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 //var TwitterStrategy = require('passport-twitter').Strategy;
 
-function AuthStrategy() {
+function authStrategy() {
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
@@ -41,7 +41,7 @@ function AuthStrategy() {
     }
   ));
 
-/*
+  /*
   passport.use(new TwitterStrategy(
     {
       consumerKey: config.social.twitter.key,
@@ -73,8 +73,8 @@ function AuthStrategy() {
         return done(null, profile);
       });
     }));
-*/
-
+  */
+  
   passport.use(new FacebookStrategy(
     {
       clientID: config.social.facebook.id,
@@ -107,7 +107,7 @@ function AuthStrategy() {
         return done(null, profile);
       });
     }));
-
+  
   passport.use(new GoogleStrategy(
     {
       clientID: config.social.google.id,
@@ -156,14 +156,14 @@ function authFacebookReturn(req, res) {
   }
 }
 
-function authFacebook(req, res) {
+function authGoogle(req, res) {
   passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email']
   });
 }
 
-function authFacebookReturn(req, res) {
+function authGoogleReturn(req, res) {
   passport.authenticate('google', { failureRedirect: '/' }), function(req, res) {
     schema.models.User.findOne({ where: { googleId: req.user.id } }, function (err, user) {
       req.session.user = user;
@@ -193,10 +193,10 @@ function authTwitterReturn(res, req) {
 }
 */
 
-exports.init = AuthStrategy();
-exports.facebook = authFacebook();
-exports.facebook-return = authFacebookReturn();
-exports.google = authGoogle();
-exports.google-return = authGoogleReturn();
+exports.init = authStrategy;
+exports.facebook = authFacebook;
+exports.facebookReturn = authFacebookReturn;
+exports.google = authGoogle;
+exports.googleReturn = authGoogleReturn;
 //exports.twitter = authTwitter();
-//exports.twitter-return = authTwitterReturn();
+//exports.twitterReturn = authTwitterReturn();

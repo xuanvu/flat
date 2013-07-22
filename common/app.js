@@ -114,12 +114,15 @@ exports.getApp = function () {
   app.get('/editor', routes.editor);
 
   // Third Party Authentication 
-  app.get('/auth/facebook', routes.tap.facebook);
-  app.get('/auth/facebook/return', routes.tap.facebook-return);
-  app.get('/auth/google', routes.tap.google);
-  app.get('/auth/google/return', routes.tap.google-return);
-  // app.get('/auth/twitter', routes.tap.twitter);
-  // app.get('/auth/twitter/return', routes.tap.twitter-return);
+  app.get('/auth/facebook', routes.tpa.facebook);
+  app.get('/auth/facebook/return', routes.tpa.facebookReturn);
+  app.get('/auth/google', routes.tpa.google);
+  app.get('/auth/google/return', routes.tpa.googleReturn);
+  // app.get('/auth/twitter', routes.tpa.twitter);
+  // app.get('/auth/twitter/return', routes.tpa.twitterReturn);
+
+  // Initialise Authentication Strategy
+  routes.tpa.init();
 
   // API
   app.use('/api', appApi);

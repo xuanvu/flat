@@ -1,6 +1,6 @@
 'use strict';
-var tap = require('./auth'),
 
+var tpa = require('./tpa');
 
 exports.index = function (req, res) {
   res.redirect('/auth');
@@ -18,4 +18,4 @@ exports.editor = function (req, res) {
   res.render('editor/layout.html', { _csrf: req.session._csrf });
 };
 
-exports.tap = tap;
+exports.tpa = tpa;
