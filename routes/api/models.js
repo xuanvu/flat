@@ -82,6 +82,38 @@ exports.models = {
       }
     }
   },
+  ScoreSave: {
+    id: 'ScoreSave',
+    properties: {
+      'type': {
+        type: 'string',
+        description: 'The save type',
+        allowableValues: {
+          valueType: 'LIST',
+          values: [
+            'json'
+          ],
+        }
+      },
+      'score': {
+        type: 'string',
+        description: 'The content of the score'
+      },
+      'message': {
+        type: 'string',
+        description: 'The save message (optional)'
+      }
+    }
+  },
+  ScoreSaveResult: {
+    id: 'ScoreSaveResult',
+    properties: {
+      'revision': {
+        type: 'string',
+        description: 'The new revision identifier'
+      }
+    }
+  },
   ScoreDb: {
     id: 'ScoreDb',
     properties: {

@@ -13,9 +13,9 @@ var assert = require('assert'),
 
 describe('lib/score', function () {
   var sid, commitSha;
-  after(function (done) {
-    fse.remove(config.flat.score_storage, done);
-  });
+  // after(function (done) {
+  //   fse.remove(config.flat.score_storage, done);
+  // });
 
   it('should create a score', function (done) {
     var s = new Score();
