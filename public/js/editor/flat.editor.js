@@ -18,7 +18,7 @@ directive('editor', function () {
               $rootScope.render.renderAll();
               $rootScope.drawer = new Fermata.Drawer($rootScope.data, document.getElementById('canvas-score'));
               $rootScope.drawer.drawAll();
-              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer);
+              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'));
               $rootScope.Interac.MouseInteracInit();
             });
           });

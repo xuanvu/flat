@@ -26,7 +26,7 @@
       posTick.nbVoice += 1;
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
       this.ActionFocus(this.data, posTick, line, this.render, this.drawer);
-      this.ActionFocus = null;
+      //this.ActionFocus = null;
       return posTick;
     }
     return undefined;

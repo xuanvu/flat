@@ -53,7 +53,7 @@ directive('toolbarMenu', function () {
           svgHeight: '70', svgWidth: '70',
           subs: [
             // { title: 'Double whole', svg: '/dist/img/icons/note_doublewhole.svg', value: null },
-            { title: 'Whole', svg: '/dist/img/icons/note_whole.svg', value: '0' },
+            { title: 'Whole', svg: '/dist/img/icons/note_whole.svg', value: 0 },
             { title: 'Half', svg: '/dist/img/icons/note_half.svg', value: 1 },
             { title: 'Quarter', svg: '/dist/img/icons/note_quarter.svg', value: 2 },
             { title: 'Eighth', svg: '/dist/img/icons/note_eighth.svg', value: 3 },
