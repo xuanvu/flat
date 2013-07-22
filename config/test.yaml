@@ -14,11 +14,20 @@ dbs:
     type: 'memory'
 db: *db_nano-gierschv
 
+# Fill with value
 social:
-  twitter_secret: ''
-  twitter_key: ''
-  facebook_id: ''
-  facebook_secret: ''
+#  twitter:
+#    secret: ''
+#    key: ''
+#    callback: 'http://localhost:3000/auth/twitter/return'
+  facebook:
+    id: ''
+    secret: ''
+    callback: 'http://localhost:3000/auth/facebook/return'       
+  google:
+    id: ''
+    secret: ''
+    callback: 'http://127.0.0.1:3000/auth/google/return'       
 
 cookie:
   secret: 'flat-test'
