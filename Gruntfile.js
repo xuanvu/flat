@@ -224,7 +224,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('win', [
-    'clean', 'less',
+    'clean', 'svgmin', 'less',
     'htmlmin', 'ngtemplates',
     'concat', 'uglify', 'copy'
   ]);

@@ -55,6 +55,7 @@
     "grunt-angular-templates": "latest",
     "grunt-contrib-htmlmin": "latest",
     "grunt-spritesmith": "latest",
+    "grunt-svgmin": "latest",
     "mocha": "latest",
     "supertest": "latest"
   }
