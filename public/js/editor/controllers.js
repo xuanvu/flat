@@ -1,6 +1,22 @@
 'use strict';
 
-function EditorCtrl() {
+function EditorCtrl($scope, $routeParams, Socket) {
+  var scoreId = $routeParams.score;
+  $scope.users = [];
+  Socket.on('connect', function () {
+    Socket.emit('auth', {part: scoreId, session: }, function (data) {
+      console.log(data);
+    });
+  });
+  Socket.on('user:join', function (data) {
+    $scope.users.push(data.username);
+    console.log('User ' + data.username + ' just join.');
+  });
+  Socket.on('user:quit', function (quit) {
+    var idx = $scope.users.indexOf(data.username);
+    $scope.users.splice(idx, 1);
+    console.log('User ' + data.username + ' just quit.');
+  });
 
   // $scope.PlayClick = function() {
   //   try {
@@ -32,4 +48,4 @@ function EditorCtrl() {
   // };
 };
 
-EditorCtrl.$inject = [];
+EditorCtrl.$inject = ['$scope', '$routeParams', 'Socket'];

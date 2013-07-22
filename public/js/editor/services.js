@@ -36,4 +36,27 @@ angular.module('flatEditorServices', ['ngResource']).
   }]).
   factory('MidiInstrument', ['$ressources', function($ressource) {
     return $ressource('http://static1.ovhcloudcdn.com/V1/AUTH_d672aaa5e925e3cff7969c71e75e3349/flat-soundfront/:InstrumentsID-mp3.js', {InstrumentsID: '@name'});
-  }]);
+  }]).
+  factory('Socket', ['$rootScope', function($rootScope) {
+    var socket = io.connect();
+    return {
+      on: function(eventName, callback) {
+        socket.on(eventName, function () {  
+          var args = arguments;
+          $rootScope.$apply(function () {
+            callback.apply(socket, args);
+          });
+        });
+      },
+      emit: function(eventName, data, callback) {
+        socket.emit(eventName, data, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              callback.apply(socket, args);
+            }
+          });
+        })
+      }
+    };
+  });
