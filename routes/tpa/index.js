@@ -79,7 +79,7 @@ function authStrategy() {
     {
       clientID: config.social.facebook.id,
       clientSecret: config.social.facebook.secret,
-      callbackURL: config.social.facebook.secret,
+      callbackURL: config.social.facebook.callback,
       profileFields: ['id', 'displayName', 'photos', 'emails']
     },
     function(accessToken, refreshToken, profile, done) {
@@ -112,7 +112,7 @@ function authStrategy() {
     {
       clientID: config.social.google.id,
       clientSecret: config.social.google.secret,
-      callbackURL: config.social.google.callback 
+      callbackURL: config.social.google.callback
     },
     function(accessToken, refreshToken, profile, done) {
       schema.models.User.findOne({ where: { googleId: profile.id } }, function (err, user) {
