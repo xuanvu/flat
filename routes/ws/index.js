@@ -11,7 +11,7 @@ function FlatWS(server) {
 	io.sockets.on('connection', function (socket) {
     var name;
     socket.on('auth', function (data) {
-      var sid = data.sid; //TODO: Get session and get the username in 'name'
+      var sid = data.session; //TODO: Get session and get the username in 'name'
       socket.broadcast.emit('user:join', { username: name});
     });
 
