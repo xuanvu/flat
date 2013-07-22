@@ -72,4 +72,4 @@ angular.module('flatEditorServices', ['ngResource']).
         })
       }
     };
-  });
+  }]);
