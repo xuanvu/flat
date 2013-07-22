@@ -27,12 +27,15 @@ social:
 #  twitter:
 #    secret: ''
 #    key: ''
+#    callback: 'http://localhost:3000/auth/twitter/return'
   facebook:
     id: ''
     secret: ''
+    callback: 'http://localhost:3000/auth/facebook/return'       
   google:
     id: ''
     secret: ''
+    callback: 'http://127.0.0.1:3000/auth/google/return'       
 
 cookie:
   secret: '352IbRsD71eur0y4RUj39xmDvnP1QXAnSPT9cySrQCs5iaAfy3D9cSgsX4f7XTi2LoDduDFC03xpgCCNp4V1Lm52JQuDJSPQBEQDCVjXGE0iWmbz3pinzN8YmPbFdpLg'
