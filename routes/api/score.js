@@ -268,6 +268,100 @@ exports.getScore = function (sw) {
   };
 };
 
+exports.saveScore = function (sw) {
+  return {
+    'spec': {
+      'summary': 'Save a new version of the score',
+      'path': '/score.{format}/{id}',
+      'method': 'POST',
+      'nickname': 'createScore',
+      'params': [
+        sw.params.path('id', 'Id of the score', 'string'),
+        sw.params.post('ScoreSave', 'The saved score', 'score')
+      ],
+      'errorResponses' : [
+        sw.errors.notFound('score'),
+        sw.errors.invalid('ScoreSave')
+      ],
+      'responseClass': 'ScoreSaveResult'
+    },
+    'action': function (req, res) {
+      if (req.body.type !== 'json') {
+        return apiUtils.errorResponse(res, sw, 'Invalid type.', 400);
+      }
+
+      var addNews = true;
+      if (!req.body.message) {
+        req.body.message = 'Save - ' + moment().format('LLLL');
+        addNews = false;
+      }
+
+      req.body.message = req.sanitize('message').trim();
+      req.body.message = req.sanitize('message').entityEncode();
+
+      var scoredb, s, revision;
+      async.waterfall([
+        function (callback) {
+          schema.models.Score.find(req.params.id, callback);
+        },
+        function (_scoredb, callback) {
+          scoredb = _scoredb;
+          scoreUser.canWrite(scoredb.id, req.session.user.id, callback);
+        },
+        function (canRead, callback) {
+          if (!canRead) {
+            return callback("You don't have write rights of this score", 403);
+          }
+
+          try {
+            s = new Score(scoredb.sid);
+            var err = s.setScore(JSON.parse(req.body.score));
+            if (err) {
+              callback(err, 400);
+            }
+
+            s.getRevisions(callback);
+          }
+          catch (e) {
+            callback(e, 400);
+          }
+        },
+        function (revisions, callback) {
+          var tree = revisions[revisions.length - 1].id;
+          s.commitScore(
+            req.body.message,
+            req.session.user.username, req.session.user.id + '@flat.io',
+            'master', callback
+          );
+        },
+        function (_revision, callback) {
+          revision = _revision;
+          if (!addNews) {
+            return callback();
+          }
+
+          newsfeed.addNews(
+            req.session.user.id,
+            'feed.updated', {
+              score: { type :'score', id: scoredb.id, text: scoredb.title },
+              revision: { type: 'revision', scoreId: scoredb.id, id: revision, text: req.body.message }
+            },
+            callback
+          );
+        }
+      ], function (err, result) {
+        if (err) {
+          return apiUtils.errorResponse(
+            res, sw, err.error || err, err.status_code || err.code || result
+          );
+        }
+
+        apiUtils.jsonResponse(res, sw, { revision: revision });
+      });
+    }
+  };
+};
+
 exports.getScoreRevision = function (sw) {
   return {
     'spec': {

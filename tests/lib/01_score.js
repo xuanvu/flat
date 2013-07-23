@@ -13,9 +13,9 @@ var assert = require('assert'),
 
 describe('lib/score', function () {
   var sid, commitSha;
-  after(function (done) {
-    fse.remove(config.flat.score_storage, done);
-  });
+  // after(function (done) {
+  //   fse.remove(config.flat.score_storage, done);
+  // });
 
   it('should create a score', function (done) {
     var s = new Score();
@@ -66,6 +66,7 @@ describe('lib/score', function () {
       assert.equal(score['score-partwise'].$version, '3.0');
       assert.equal(score['score-partwise']['movement-title'], 'Fur Elise');
       assert.equal(score['score-partwise'].part[0].measure.length, 10);
+      assert.ok(!score['score-partwise'].part[0].measure[0].$fermata);
       assert.equal(score['score-partwise'].part[0].measure[0].$number, 1);
       assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time.beats, 3);
       assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time['beat-type'], 8);

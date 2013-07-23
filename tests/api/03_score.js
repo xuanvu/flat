@@ -14,7 +14,7 @@ var assert = require('assert'),
     newsfeed = require('../../lib/newsfeed');
 
 describe('API /score', function () {
-  var cookies, cookies2, uid, uid2, score, scoreId, scorePrivateId;
+  var cookies, cookies2, uid, uid2, score, scoreContent, scoreId, scorePrivateId;
 
   before(function (done) {
     async.waterfall([
@@ -314,6 +314,7 @@ describe('API /score', function () {
           assert.ifError(err);
           assert.equal(res.body['score-partwise'].$version, '3.0');
           assert.equal(res.body['score-partwise']['movement-title'], 'F&uuml;r Elise - Public');
+          scoreContent = res.body;
           done();
         });
     });
@@ -333,6 +334,143 @@ describe('API /score', function () {
         .get('/api/score.json/' + scoreId + '/' + score.revisions[0].id)
         .expect(403)
         .end(done);
+    });
+  });
+
+  describe('POST /score.{format}', function () {
+    it('should save a new version', function (done) {
+      var rq = request(app).post('/api/score.json/' + scoreId);
+      var revisions;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          scoreContent['score-partwise']['movement-title'] = 'F&uuml;r Elise - Public - Edited';
+          rq.send({
+            type: 'json',
+            score: JSON.stringify(scoreContent)
+          })
+          .expect(200)
+          .end(callback);
+
+        },
+        function (res, callback) {
+          assert.ok(res.body.revision);
+          setTimeout(callback, 50); // FIXME: random issue with node-git
+        },
+        function (callback) {
+          scoreContent['score-partwise']['movement-title'] = 'F&uuml;r Elise - Public - Edited 2';
+          rq = request(app).post('/api/score.json/' + scoreId);
+          rq.cookies = cookies;
+          rq.send({
+            type: 'json',
+            message: 'I edited my score',
+            score: JSON.stringify(scoreContent)
+          })
+          .expect(200)
+          .end(callback);
+        },
+        function (res, callback) {
+          assert.ok(res.body.revision);
+          rq = request(app).get('/api/score.json/' + scoreId);
+          rq.cookies = cookies;
+          rq.expect(200)
+            .end(callback);
+        },
+        function (res, callback) {
+          revisions = res.body.revisions;
+          assert.equal(revisions.length, 3);
+          assert.equal(revisions[1].message.indexOf('Save - '), 0);
+          assert.equal(revisions[2].message, 'I edited my score');
+          assert.equal(revisions[1].author.name, 'myUsername');
+          assert.equal(revisions[2].author.email, uid + '@flat.io');
+          newsfeed.getUserNews(uid, callback);
+        },
+        function (news, callback) {
+          assert.equal(news[0].event, 'feed.updated');
+          var parameters = JSON.parse(news[0].parameters);
+          assert.equal(parameters.score.type, 'score');
+          assert.equal(parameters.score.id, score.properties.id);
+          assert.equal(parameters.score.text, score.properties.title);
+          assert.equal(parameters.revision.type, 'revision');
+          assert.equal(parameters.revision.id, revisions[2].id);
+          assert.equal(parameters.revision.text, revisions[2].message);
+          callback();
+        }
+      ], done);
+    });
+
+    it('should not save a new version (no modification)', function (done) {
+      var rq = request(app).post('/api/score.json/' + scoreId);
+      var revisions;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            type: 'json',
+            score: JSON.stringify(scoreContent),
+            message: 'Bad commit'
+          })
+          .expect(200)
+          .end(callback)
+        },
+        function (res, callback) {
+          assert.ok(!res.body.revision);
+          rq = request(app).get('/api/score.json/' + scoreId);
+          rq.cookies = cookies;
+          rq.expect(200)
+            .end(callback);
+        },
+        function (res, callback) {
+          assert.equal(res.body.revisions.length, 3);
+          callback();
+        }
+      ], done);
+    });
+
+    it('should not save a new version (bad score)', function (done) {
+      var rq = request(app).post('/api/score.json/' + scoreId);
+      var revisions;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            type: 'json',
+            score: 'umad',
+            message: 'Bad commit'
+          })
+          .expect(400)
+          .end(callback)
+        }
+      ], done);
+    });
+
+    it('should not save a new version (bad type)', function (done) {
+      var rq = request(app).post('/api/score.json/' + scoreId);
+      var revisions;
+      rq.cookies = cookies;
+      async.waterfall([
+        function (callback) {
+          rq.send({
+            type: 'umad'
+          })
+          .expect(400)
+          .end(callback)
+        }
+      ], done);
+    });
+
+    it('should fail since the user does not have write rights', function (done) {
+      var rq = request(app).post('/api/score.json/' + scorePrivateId);
+      rq.cookies = cookies2;
+      rq.send({
+          type: 'json',
+          score: JSON.stringify(scoreContent),
+        }).expect(403)
+        .end(function (err, res) {
+          assert.ifError(err);
+          assert.equal(res.body.description, "You don't have write rights of this score");
+          done();
+        });
     });
   });
 
@@ -626,7 +764,6 @@ describe('API /score', function () {
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {
-          assert.equal(news.length, 3);
           assert.equal(news[0].event, 'feed.imported');
           var parameters = JSON.parse(news[0].parameters);
           assert.equal(parameters.title.type, 'score');
@@ -662,7 +799,6 @@ describe('API /score', function () {
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {
-          assert.equal(news.length, 4);
           assert.equal(news[0].event, 'feed.imported');
           var parameters = JSON.parse(news[0].parameters);
           assert.equal(parameters.title.type, 'score');

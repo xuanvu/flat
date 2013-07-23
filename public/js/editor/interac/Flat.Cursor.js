@@ -129,7 +129,6 @@ var Flat = Flat || {};
 
   Flat.Cursor.prototype.setFocus = function(newPos) {
     this.undraw();
-    console.log(newPos);
     this.curPart = newPos.nbPart;
     this.curMeasure = newPos.nbMeasure;
     this.curVoice = newPos.nbVoice;

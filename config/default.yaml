@@ -1,6 +1,7 @@
 app:
   port: 3000
   host: '127.0.0.1'
+  baseurl: 'http://localhost:3000'
 dbs:
   db_nano-gierschv: &db_nano-gierschv
     type: 'nano-gierschv' # couchdb
@@ -31,3 +32,14 @@ session:
   store: *db_redis
 flat:
   score_storage: './data/scores'
+
+social:
+ twitter:
+   secret: ''
+   key: ''
+ facebook:
+   id: ''
+   secret: ''
+ google:
+   id: ''
+   secret: ''   

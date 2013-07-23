@@ -18,7 +18,7 @@ directive('editor', function () {
               $rootScope.render.renderAll();
               $rootScope.drawer = new Fermata.Drawer($rootScope.data, document.getElementById('canvas-score'));
               $rootScope.drawer.drawAll();
-              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer);
+              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'));
               $rootScope.Interac.MouseInteracInit();
             });
           });
@@ -33,7 +33,8 @@ directive('editor', function () {
         };
 
         $scope.click = function ($event) {
-          var ret = $scope.Interac.MouseClic($event.offsetX, $event.offsetY);
+          console.log($rootScope.Interac);
+          var ret = $rootScope.Interac.MouseClic($event.offsetX, $event.offsetY);
 
           if (ret !== undefined) {
             $rootScope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);

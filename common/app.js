@@ -114,6 +114,15 @@ exports.getApp = function () {
   app.get('/dashboard', routes.dashboard);
   app.get('/editor', routes.editor);
 
+  // Third Party Authentication 
+  app.get('/auth/facebook', routes.tpa.facebook);
+  app.get('/auth/google', routes.tpa.google);
+  app.get('/auth/facebook/cb', routes.tpa.facebookCb[0], routes.tpa.facebookCb[1]);
+  app.get('/auth/google/cb', routes.tpa.googleCb[0], routes.tpa.googleCb[1]);
+
+  // Initialise Authentication Strategy
+  routes.tpa.init();
+
   // API
   app.use('/api', appApi);
   appApi.use(expressValidator);
