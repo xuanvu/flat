@@ -10,7 +10,6 @@ var path = require('path'),
     passport = require('passport'),
     routes = require('../routes'),
     api = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/api'),
-    ws = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/ws'),
     utils = require('./utils');
 
 exports.getApp = function () {
@@ -30,7 +29,7 @@ exports.getApp = function () {
   }
 
   app.set('db', process.env.DB || config.db.type || 'couchdb');
-  app.set('session_store', process.env.SESS_STORE || config.session.store.type || null);
+  app.set('session_store_name', process.env.SESS_STORE || config.session.store.type || null);
 
   // views
   app.set('views', __dirname + '/../views');
@@ -45,30 +44,33 @@ exports.getApp = function () {
       if (typeof(options._csrf) !== 'undefined') {
         str = str.replace('{_csrf}', options._csrf);
       }
+
+      str = str.replace('{baseurl}', config.app.baseurl);
+
       fn(null, str);
     });
   });
 
-  // app
-  // app.use(express.favicon());
-
   // session
   // - redis
-  var sessionStore;
-  if ('redis' === app.get('session_store')) {
-    console.log('[+] Uses session DB type =', app.get('session_store'));
+  if ('redis' === app.get('session_store_name')) {
+    console.log('[+] Uses session DB type =', app.get('session_store_name'));
     var redisStore = new require('connect-redis')(express);
-    sessionStore = new redisStore({
+    app.set('session_store', new redisStore({
       host: config.session.store.settings.host,
       port: config.session.store.settings.port
-    });
+    }));
+  }
+  else {
+    var MemoryStore = express.session.MemoryStore;
+    app.set('session_store', new MemoryStore());
   }
 
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser(config.cookie.secret));
   app.use(express.session({
-    store: sessionStore,
+    store: app.get('session_store'),
     key: config.session.key,
     cookie: {
       path: config.cookie.path,
