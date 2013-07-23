@@ -34,3 +34,6 @@ social:
  google:
    id: '42.apps.googleusercontent.com'
    secret: '42'
+
+socketio:
+  log_level: 0
