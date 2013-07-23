@@ -21,8 +21,9 @@
     if (posTick !== null && posTick.nbTick !== null) {
       this.Cursor.setFocus(posTick);
     }
-    if (this.ActionFocus != null) {
+    if (posTick !== null && this.ActionFocus != null) {
       this.getTickPos(pos_x, posTick);
+      console.log(posTick);
       var line = this.getLine(pos_y, posTick);
       posTick.nbVoice += 1;
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
@@ -57,6 +58,10 @@
       }
       i++;
     }
+    if (!posTick.nbTick) {
+      posTick.nbTick = voice.length;  
+    }
+    
   };
 
   Flat.Interac.prototype.is_onTick = function(pos_x, pos_y) {

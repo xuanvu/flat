@@ -37,7 +37,7 @@ directive('editor', function () {
 
           if (ret !== undefined) {
             $rootScope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);
-            $rootScope.drawer.drawMeasure($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure], ret.nbMeasure, ret.nbPart);
+            $rootScope.drawer.drawAll();
             $rootScope.Interac.MouseInteracInit();
             ret.nbVoice -= 1;
             $rootScope.Interac.Cursor.setFocus(ret);
