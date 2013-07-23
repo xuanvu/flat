@@ -180,6 +180,8 @@
     };
 
     Player.prototype.play = function(end_callback) {
+      if (typeof(end_callback) === 'undefined' || end_callback === null)
+        end_callback = function(){};
       var _this = this;
       L("Play: ", this.refresh_rate, this.ticks_per_refresh);
       if (this.loaded) {

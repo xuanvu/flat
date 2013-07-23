@@ -162,16 +162,9 @@ service('toolbarAction', ['$rootScope', function($rootScope) {
     $rootScope.player = $rootScope.player || new Flat.Player($rootScope.data['score']['score-partwise']['part']);
     console.log('player', play);
     if (play) {
-      // try {
         $rootScope.player.reset();
         $rootScope.player.render();   
         $rootScope.player.play();
-      // }
-      // catch (e) {
-        // console.log(e);
-        // $("#error").text(e.message);
-        // TODO : change error
-      // }
     }
     else {
       $rootScope.player.stop();
