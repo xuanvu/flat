@@ -109,6 +109,8 @@
     var that = tick;
     var _this = this_;
     var ctx = that.context;
+    var ligne = that.keyProps[0].line;
+
     function stroke(y) {
         if (that.default_head_x != null)
           that.head_x = that.default_head_x;
@@ -212,26 +214,16 @@
           var y_offset = ((dy >= 0) ? Math.floor(dy / step_y) : Math.ceil(dy / step_y));
           var scaled_y_offset = y_offset / 2;
           var trans_y = (y_offset * step_y) - that.st.oy;
-          var posTick;
           
           if (that.st.last_y_offset !== scaled_y_offset)
           {
             var offset = that.st.last_y_offset - scaled_y_offset;
-            posTick = _this.is_onTick(that.getAbsoluteX(), that.getYs()[0]);
-            _this.getTickPos(that.getAbsoluteX(), posTick);
-            try {
-              // console.log(posTick, offset);
-              _this.data.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, offset);
-              that.st.last_y_offset = scaled_y_offset;
-              changeStaveNotePitch(offset);
-              that.st.transform("...t" + trans_x + "," + trans_y);
-              that.st.ox = dx;
-              that.st.oy += trans_y;
-            }
-            catch (err) {
-              console.log(err);
-            }            
+            that.st.last_y_offset = scaled_y_offset;
+            changeStaveNotePitch(offset);
           }
+          that.st.transform("...t" + trans_x + "," + trans_y);
+          that.st.ox = dx;
+          that.st.oy += trans_y;
         }, 
         function () {
           that.st.ox = 0;
@@ -249,11 +241,25 @@
               console.log("Add missing line > ", missing_line);
             }
           }
-          // var posTick = _this.is_onTick(that.getAbsoluteX(), that.getYs()[0]);
-          // _this.getTickPos(that.getAbsoluteX(), posTick);
-          // _this.render.renderOneMeasure(posTick.nbMeasure, posTick.nbPart, true);
-          // _this.drawer.drawMeasure(_this.data.getPart(posTick.nbPart).measure[posTick.nbMeasure], posTick.nbMeasure, posTick.nbPart);
-          // _this.MouseInteracInit();
+          if (that.st.last_y_offset) {
+            var posTick = _this.is_onTick(that.getAbsoluteX(), that.getYs()[0]);
+            _this.getTickPos(that.getAbsoluteX(), posTick);
+            try {
+              var move = (that.keyProps[0].line - ligne) * 2.0;
+              _this.data.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, move);
+            }
+            catch (err) {
+              console.log(err);
+            }
+            for (var i = 0; i < that.ledger_lines.length; i++)
+            {
+              var ledger_line = that.ledger_lines[i];
+              ledger_line["obj"].remove();
+            }
+            _this.render.renderOneMeasure(posTick.nbMeasure, posTick.nbPart, true);
+            _this.drawer.drawMeasure(_this.data.getPart(posTick.nbPart).measure[posTick.nbMeasure], posTick.nbMeasure, posTick.nbPart);
+            _this.MouseInteracInit();
+          }
         }
       );
   //FLAT: End of interactivity part
