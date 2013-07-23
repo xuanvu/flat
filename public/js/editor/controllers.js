@@ -20,8 +20,11 @@ function EditorCtrl($scope, $routeParams, Socket) {
   });
 
   $scope.givePosition = function (partID, measureID, measurePos) {
-    Socket.emit('position', {part: partID, measure: measureID, pos: measurePos});
-  }; 
+    Socket.emit('position', {
+      part: partID, 
+      measure: measureID,
+      pos: measurePos});
+  };
 };
 
 EditorCtrl.$inject = ['$scope', '$routeParams', 'Socket'];

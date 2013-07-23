@@ -37,6 +37,7 @@ directive('editor', function () {
           var ret = $rootScope.Interac.MouseClic($event.offsetX, $event.offsetY);
 
           if (ret !== undefined) {
+            $scope.givePosition(ret.nbPart, ret.nbMeasure, ret.nbTick);
             $rootScope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);
             console.log($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure]);
             $rootScope.drawer.drawMeasure($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure], ret.nbMeasure, ret.nbPart);
