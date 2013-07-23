@@ -291,7 +291,7 @@
             _this.drawer.drawAll();
             _this.MouseInteracInit();
           }
-          this_.Socket.emit('position', {partId: posTick.nbPart, measureId: posTick.nbMeasure, measurePos: posTick.nbTick});
+          this_.Socket.emit('position', posTick.nbPart, posTick.nbMeasure, posTick.nbTick);
         }
       );
   //FLAT: End of interactivity part
