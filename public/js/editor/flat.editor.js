@@ -19,7 +19,7 @@ directive('editor', function () {
               $rootScope.render.renderAll();
               $rootScope.drawer = new Fermata.Drawer($rootScope.data, document.getElementById('canvas-score'));
               $rootScope.drawer.drawAll();
-              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'));
+              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer);
               $rootScope.Interac.MouseInteracInit();
             });
           });
@@ -34,13 +34,11 @@ directive('editor', function () {
         };
 
         $scope.click = function ($event) {
-          console.log($rootScope.Interac);
-          var ret = $rootScope.Interac.MouseClic($event.offsetX, $event.offsetY);
+          var ret = $scope.Interac.MouseClic($event.offsetX, $event.offsetY);
 
           if (ret !== undefined) {
             $rootScope.render.renderOneMeasure(ret.nbMeasure, ret.nbPart, true);
-            console.log($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure]);
-            $rootScope.drawer.drawMeasure($scope.data.getPart(ret.nbPart).measure[ret.nbMeasure], ret.nbMeasure, ret.nbPart);
+            $rootScope.drawer.drawAll();
             $rootScope.Interac.MouseInteracInit();
             ret.nbVoice -= 1;
             $rootScope.Interac.Cursor.setFocus(ret);
