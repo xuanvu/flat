@@ -10,7 +10,9 @@ var async = require('async'),
 
 function FlatWS(httpServer) {
   this.rt = new rt.rt();
-  io = io.listen(httpServer);
+  io = io.listen(httpServer, {
+    'log colors': false
+  });
   io.configure(function () {
     io.set('authorization', this.auth);
   }.bind(this));
@@ -54,7 +56,6 @@ FlatWS.prototype.auth = function (handshakeData, callback) {
     }
 
     handshakeData.session = session.user;
-    console.log('AUTH', session);
     callback(null, true);
   });
 };
