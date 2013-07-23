@@ -23,3 +23,14 @@ session:
   store: *db_memory
 flat:
   score_storage: './tests/tmp'
+
+social:
+ twitter:
+   secret: '42'
+   key: '42'
+ facebook:
+   id: '42'
+   secret: '42'
+ google:
+   id: '42.apps.googleusercontent.com'
+   secret: '42'

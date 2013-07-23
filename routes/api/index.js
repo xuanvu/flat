@@ -2,9 +2,8 @@
 
 var models = require('./models'),
     bcrypt = require('bcrypt'),
-    passport = require('passport'),
-    // fse = require('fs-extra'),
-    LocalStrategy = require('passport-local').Strategy,
+    config = require('config'),
+// fse = require('fs-extra'),
     utils = require('../../common/utils');
 
 var auth = require('./auth'),
@@ -14,11 +13,11 @@ var auth = require('./auth'),
 
 function FlatApi(sw) {
   sw.addModels(models)
-    // /auth
+  // /auth
     .addPost(auth.authSignup(sw))
     .addPost(auth.authSignin(sw))
     .addPost(auth.authLogout(sw))
-    // /scores
+  // /scores
     .addPost(score.createScore(sw))
     .addPost(score.importMusicXML(sw))
     .addPost(score.saveScore(sw))
@@ -43,21 +42,6 @@ function FlatApi(sw) {
     .addGet(user.getUserNews(sw))
     // /newsfeed
     .addGet(newsfeed.getNewsFeed(sw));
-
-  passport.use(new LocalStrategy(
-    function(username, password, done) {
-      schema.models.User.findOne({ where: { username: username } }, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-
-        bcrypt.compare(password, user.password, function (err, doesMatch) {
-          if (err) { return done(err); }
-          if (!doesMatch) { return done(null, false); }
-          return done(null, user);
-        });
-      });
-    }
-  ));
-}
+}  
 
 exports.api = FlatApi;

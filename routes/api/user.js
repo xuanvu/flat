@@ -17,7 +17,12 @@ exports.getAuthenticatedUser = function (sw) {
         id: req.session.user.id,
         email: req.session.user.email,
         email_md5: crypto.createHash('md5').update(req.session.user.email).digest('hex'),
-        username: req.session.user.username
+        username: req.session.user.username,
+        twitterId: req.session.user.twitterId,
+        googleId: req.session.user.googleId,
+        facebookId: req.session.user.facebookId,
+        name: req.session.user.name,
+        picture: req.session.user.picture
       });
     }
   };
@@ -44,6 +49,8 @@ exports.getUser = function (sw) {
           return apiUtils.jsonResponse(res, sw, {
             id: user.id,
             username: user.username,
+            name: req.session.user.name,
+            picture: req.session.user.picture,
             registrationDate: user.registrationDate,
             email_md5: crypto.createHash('md5').update(user.email).digest('hex'),
           });
