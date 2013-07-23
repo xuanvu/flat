@@ -10,6 +10,7 @@ var path = require('path'),
     passport = require('passport'),
     routes = require('../routes'),
     api = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/api'),
+    ws = require((fs.existsSync('routes-cov') ? '../routes-cov' : '../routes') + '/ws'),
     utils = require('./utils');
 
 exports.getApp = function () {

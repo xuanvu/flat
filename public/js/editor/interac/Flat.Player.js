@@ -75,6 +75,10 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             note = _ref[_i];
             if (!note.shouldIgnoreTicks()) {
+              total_voice_ticks.add(note.getTicks());
+              if (typeof(measure.note[_i].rest) !== 'undefined') {
+                note = null;
+              }
               abs_tick = total_ticks.clone();
               abs_tick.add(total_voice_ticks);
               key = abs_tick.toString();
@@ -87,7 +91,6 @@
                   notes: [note]
                 };
               }
-              total_voice_ticks.add(note.getTicks());
             }
           }
         }
@@ -110,27 +113,29 @@
       _results = [];
       for (_i = 0, _len = notes.length; _i < _len; _i++) {
         note = notes[_i];
-        keys = note.keys;
-        x = note.getAbsoluteX();
-        y = note.getStave().getYForLine(0) - 5;
-        L("X:", x, "Y:", y);
-        _results.push((function() {
-          var _j, _len1, _ref, _results1;
-          _results1 = [];
-          for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
-            key = keys[_j];
-            _ref = key.split("/"), note = _ref[0], octave = _ref[1];
-            note.toLowerCase();
-            midi_note = (21 + (octave * 12)) + noteValues[note].int_val;
-            MIDI.noteOn(channel, midi_note, 127, 0);
-            if (this.context != null) {
-              _results1.push(drawDot(this.context, x, y, "red"));
-            } else {
-              _results1.push(void 0);
+        if (note !== null) {
+          keys = note.keys;
+          x = note.getAbsoluteX();
+          y = note.getStave().getYForLine(0) - 5;
+          L("X:", x, "Y:", y);
+          _results.push((function() {
+            var _j, _len1, _ref, _results1;
+            _results1 = [];
+            for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
+              key = keys[_j];
+              _ref = key.split("/"), note = _ref[0], octave = _ref[1];
+              note.toLowerCase();
+              midi_note = (21 + (octave * 12)) + noteValues[note].int_val;
+              MIDI.noteOn(channel, midi_note, 127, 0);
+              if (this.context != null) {
+                _results1.push(drawDot(this.context, x, y, "red"));
+              } else {
+                _results1.push(void 0);
+              }
             }
-          }
-          return _results1;
-        }).call(this));
+            return _results1;
+          }).call(this));
+        }
       }
       return _results;
     };
@@ -180,10 +185,12 @@
     };
 
     Player.prototype.play = function(end_callback) {
+      if (typeof(end_callback) === 'undefined' || end_callback === null)
+        end_callback = function(){};
       var _this = this;
       L("Play: ", this.refresh_rate, this.ticks_per_refresh);
       if (this.loaded) {
-        return this.start();
+        return this.start(end_callback);
       } else {
         return MIDI.loadPlugin({
           soundfontUrl: "http://static1.ovhcloudcdn.com/V1/AUTH_d672aaa5e925e3cff7969c71e75e3349/flat-soundfront/",

@@ -202,6 +202,16 @@ module.exports = function(grunt) {
             dest: 'public/dist/js/'
           }
         ]
+      },
+      'socket.io': {
+        files: [
+          {
+            expand: true,
+            cwd: 'node_modules/socket.io/node_modules/socket.io-client/dist',
+            src: ['socket.io.js', 'socket.io.min.js'],
+            dest: 'public/dist/js'
+          }
+        ]
       }
     }
   });
