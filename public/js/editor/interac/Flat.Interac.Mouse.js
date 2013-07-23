@@ -11,22 +11,23 @@
 			for (var j = 0; j < parts[i]['measure'].length; j++)
 				for (var k = 0; k < parts[i]['measure'][j]['$fermata']['vexVoices'].length; k++)
 					for (var l = 0; l < parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'].length; l++) {
-						this.MouseUpdateTick(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l]);
+						this.MouseUpdateTick(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l], this);
           }
 	};
 
 	Flat.Interac.prototype.MouseClic = function(pos_x, pos_y) {
+    console.log(pos_x, pos_y);
     var posTick = this.is_onTick(pos_x, pos_y);
     if (posTick !== null && posTick.nbTick !== null) {
       this.Cursor.setFocus(posTick);
     }
-    if (this.ActionFocus != null) {
+    if (posTick !== null && this.ActionFocus != null) {
       this.getTickPos(pos_x, posTick);
+      console.log(posTick);
       var line = this.getLine(pos_y, posTick);
       posTick.nbVoice += 1;
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
-      this.ActionFocus(this.data, posTick, line, this.render, this.drawer);
-      //this.ActionFocus = null;
+      this.ActionFocus(this.data, posTick, line);
       return posTick;
     }
     return undefined;
@@ -51,13 +52,38 @@
     var voice = this.data['score']['score-partwise']['part'][posTick.nbPart]['measure'][posTick.nbMeasure]['$fermata']['vexVoices'][posTick.nbVoice]['tickables'];
     var i = 0;
     while (i < voice.length) {
-      if (voice[i].getAbsoluteX() > pos_x) {
+      if (voice[i].getAbsoluteX() >= pos_x) {
         posTick.nbTick = i;
         break;
       }
       i++;
     }
+    if (!posTick.nbTick) {
+      posTick.nbTick = voice.length;  
+    }
+    
   };
+
+  Flat.Interac.prototype.findNote = function (pos_x, pos_y, posTick) {
+    console.log("try", pos_x, pos_y);
+    var parts = this.data['score']['score-partwise']['part'];
+    for (var i = 0; i < parts.length; i++) {
+      for (var j = 0; j < parts[i]['measure'].length; j++) {
+        for (var k = 0; k < parts[i]['measure'][j]['$fermata']['vexVoices'].length; k++) {
+          for (var l = 0; l < parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'].length; l++) {
+            console.log(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l].st.getBBox());
+            if (Raphael.isPointInsideBBox(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l].st.getBBox(), pos_x, pos_y) === true) {
+              posTick.nbPart = i;
+              posTick.nbMeasure = j;
+              posTick.nbVoice = k;
+              posTick.nbTick = l;
+              return ;
+            }
+          }
+        }
+      }
+    }
+  }
 
   Flat.Interac.prototype.is_onTick = function(pos_x, pos_y) {
     var parts = this.data['score']['score-partwise']['part'];
@@ -88,7 +114,7 @@
     var parts = this.data['score']['score-partwise']['part'];
     for (var i = 0; i < parts.length; i++)
       for (var k = 0; k < parts[i]['measure'][0]['$fermata']['vexStaves'].length; k++) {
-        if (parts[i]['measure'][0]['$fermata']['vexStaves'][k].getYForLine(-1) < pos_y &&
+        if (parts[i]['measure'][0]['$fermata']['vexStaves'][k].getYForLine(-6) < pos_y &&
           parts[i]['measure'][0]['$fermata']['vexStaves'][k].getYForLine(7) > pos_y) {
           fStave.nbPart = i;
           fStave.nbVoice = k;
@@ -104,10 +130,19 @@
     return null;  
   };
 
-	Flat.Interac.prototype.MouseUpdateTick = function(tick) {
+	Flat.Interac.prototype.MouseUpdateTick = function(tick, this_) {
 		//FLAT: Here is the big part which bring interactivity
     var that = tick;
+    var _this = this_;
     var ctx = that.context;
+    var ligne = that.keyProps[0].line;
+    var posTick = {
+      nbPart : 0,
+      nbVoice : 0,
+      nbTick : null,
+      nbMeasure : 0
+    };
+
     function stroke(y) {
         if (that.default_head_x != null)
           that.head_x = that.default_head_x;
@@ -120,7 +155,6 @@
     function changeStaveNotePitch(offset) {
       var orig_lowest_line = that.lowest_line;
       var orig_highest_line = that.highest_line;
-
       for (var i in that.keyProps)
       {
         var note_props = that.keyProps[i];
@@ -148,7 +182,7 @@
               first_line = that.ledger_lines[0];
             }
           }
-          console.log(note_props);
+          //console.log(note_props);
         }
         // Else if we move down the note
         else
@@ -194,8 +228,6 @@
           that.ledger_lines.splice(j + 2, 0, {"line": 0, "obj": ledger_line});
         }
       }
-      //console.log("Highest Line > ", highest_line);
-      //console.log("Lowest Line > ", lowest_line);
     }
     
     that.st.mouseover(function(){
@@ -217,15 +249,16 @@
           
           if (that.st.last_y_offset !== scaled_y_offset)
           {
-            changeStaveNotePitch(that.st.last_y_offset - scaled_y_offset);
+            var offset = that.st.last_y_offset - scaled_y_offset;
             that.st.last_y_offset = scaled_y_offset;
+            changeStaveNotePitch(offset);
           }
-
           that.st.transform("...t" + trans_x + "," + trans_y);
           that.st.ox = dx;
           that.st.oy += trans_y;
         }, 
-        function () {
+        function (x, y, event) {
+          _this.findNote(event.offsetX, event.offsetY, posTick);
           that.st.ox = 0;
           that.st.oy = 0;
           that.st.last_y_offset = 0;
@@ -241,6 +274,24 @@
               console.log("Add missing line > ", missing_line);
             }
           }
+          if (that.st.last_y_offset) {
+            try {
+              var move = (that.keyProps[0].line - ligne) * 2.0;
+              _this.data.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, move);
+            }
+            catch (err) {
+              console.log(err);
+            }
+            for (var i = 0; i < that.ledger_lines.length; i++)
+            {
+              var ledger_line = that.ledger_lines[i];
+              ledger_line["obj"].remove();
+            }
+            _this.render.renderOneMeasure(posTick.nbMeasure, posTick.nbPart, true);
+            _this.drawer.drawAll();
+            _this.MouseInteracInit();
+          }
+          this_.Socket.emit('position', {partId: posTick.nbPart, measureId: posTick.nbMeasure, measurePos: posTick.nbTick});
         }
       );
   //FLAT: End of interactivity part

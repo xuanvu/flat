@@ -53,13 +53,13 @@ directive('toolbarMenu', function () {
           svgHeight: '70', svgWidth: '70',
           subs: [
             // { title: 'Double whole', svg: '/dist/img/icons/note_doublewhole.svg', value: null },
-            { title: 'Whole', svg: '/dist/img/icons/note_whole.svg', value: 0 },
-            { title: 'Half', svg: '/dist/img/icons/note_half.svg', value: 1 },
-            { title: 'Quarter', svg: '/dist/img/icons/note_quarter.svg', value: 2 },
-            { title: 'Eighth', svg: '/dist/img/icons/note_eighth.svg', value: 3 },
-            { title: 'Sixteenth', svg: '/dist/img/icons/note_sixteenth.svg', value: 4 },
-            { title: 'Thirtysecondnote', svg: '/dist/img/icons/note_thirtysecondnote.svg', value: 5 },
-            { title: 'Sixtyfourth', svg: '/dist/img/icons/note_sixtyfourth.svg', value: 6 },
+            { title: 'Whole', svg: '/dist/img/icons/note_whole.svg', value: 1 },
+            { title: 'Half', svg: '/dist/img/icons/note_half.svg', value: 2 },
+            { title: 'Quarter', svg: '/dist/img/icons/note_quarter.svg', value: 3 },
+            { title: 'Eighth', svg: '/dist/img/icons/note_eighth.svg', value: 4 },
+            { title: 'Sixteenth', svg: '/dist/img/icons/note_sixteenth.svg', value: 5 },
+            { title: 'Thirtysecondnote', svg: '/dist/img/icons/note_thirtysecondnote.svg', value: 6 },
+            { title: 'Sixtyfourth', svg: '/dist/img/icons/note_sixtyfourth.svg', value: 7 },
           ]
         },
         player: {
@@ -153,7 +153,7 @@ service('toolbarAction', ['$rootScope', function($rootScope) {
     }
     else {
       $rootScope.Interac.ActionFocus = function (data, pos, line) {
-        data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type, pos.nbVoice);
+        data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
       };
     }
   }

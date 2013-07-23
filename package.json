@@ -45,7 +45,8 @@
     "git-gierschv": "0.1.x",
     "async": "0.2.9",
     "moment": "latest",
-    "socket.io": "latest"
+    "socket.io": "latest",
+    "cookie": "latest"
   },
   "devDependencies": {
     "jshint": "latest",
@@ -60,6 +61,7 @@
     "grunt-spritesmith": "latest",
     "grunt-svgmin": "latest",
     "mocha": "latest",
-    "supertest": "latest"
+    "supertest": "latest",
+    "socket.io-client-gierschv": "latest"
   }
 }

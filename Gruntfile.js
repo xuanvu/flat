@@ -156,7 +156,8 @@ module.exports = function(grunt) {
       },
       js_deps_editor: {
         src: [
-          'public/js/deps/underscore-min.js',
+          'node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js',
+          // 'public/js/deps/underscore-min.js',
           'public/js/deps/raphael-min.js',
           'public/js/deps/MIDI/Base64.js',
           'public/js/deps/MIDI/base64binary.js',
@@ -200,16 +201,6 @@ module.exports = function(grunt) {
             cwd: 'node_modules/flat-fermata/build/fermata',
             src: ['fermata.js', 'ferama.min.js'],
             dest: 'public/dist/js/'
-          }
-        ]
-      },
-      'socket.io': {
-        files: [
-          {
-            expand: true,
-            cwd: 'node_modules/socket.io/node_modules/socket.io-client/dist',
-            src: ['socket.io.js', 'socket.io.min.js'],
-            dest: 'public/dist/js'
           }
         ]
       }
