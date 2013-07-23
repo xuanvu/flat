@@ -64,6 +64,28 @@
     
   };
 
+  Flat.Interac.prototype.findNote = function (pos_x, pos_y, posTick) {
+    console.log("try", pos_x, pos_y);
+    var parts = this.data['score']['score-partwise']['part'];
+    for (var i = 0; i < parts.length; i++) {
+      for (var j = 0; j < parts[i]['measure'].length; j++) {
+        for (var k = 0; k < parts[i]['measure'][j]['$fermata']['vexVoices'].length; k++) {
+          for (var l = 0; l < parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'].length; l++) {
+            console.log(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l].st.getBBox());
+            if (Raphael.isPointInsideBBox(parts[i]['measure'][j]['$fermata']['vexVoices'][k]['tickables'][l].st.getBBox(), pos_x, pos_y) === true) {
+              posTick.nbPart = i;
+              posTick.nbMeasure = j;
+              posTick.nbVoice = k;
+              posTick.nbTick = l;
+              console.log("found");
+              return ;
+            }
+          }
+        }
+      }
+    }
+  }
+
   Flat.Interac.prototype.is_onTick = function(pos_x, pos_y) {
     var parts = this.data['score']['score-partwise']['part'];
     var res = this.getGoodStave(pos_x, pos_y);
@@ -93,7 +115,7 @@
     var parts = this.data['score']['score-partwise']['part'];
     for (var i = 0; i < parts.length; i++)
       for (var k = 0; k < parts[i]['measure'][0]['$fermata']['vexStaves'].length; k++) {
-        if (parts[i]['measure'][0]['$fermata']['vexStaves'][k].getYForLine(-1) < pos_y &&
+        if (parts[i]['measure'][0]['$fermata']['vexStaves'][k].getYForLine(-6) < pos_y &&
           parts[i]['measure'][0]['$fermata']['vexStaves'][k].getYForLine(7) > pos_y) {
           fStave.nbPart = i;
           fStave.nbVoice = k;
@@ -115,6 +137,12 @@
     var _this = this_;
     var ctx = that.context;
     var ligne = that.keyProps[0].line;
+    var posTick = {
+      nbPart : 0,
+      nbVoice : 0,
+      nbTick : null,
+      nbMeasure : 0
+    };
 
     function stroke(y) {
         if (that.default_head_x != null)
@@ -230,7 +258,9 @@
           that.st.ox = dx;
           that.st.oy += trans_y;
         }, 
-        function () {
+        function (x, y, event) {
+          console.log("toto", event)
+          _this.findNote(event.offsetX, event.offsetY, posTick);
           that.st.ox = 0;
           that.st.oy = 0;
           that.st.last_y_offset = 0;
@@ -247,8 +277,6 @@
             }
           }
           if (that.st.last_y_offset) {
-            var posTick = _this.is_onTick(that.getAbsoluteX(), that.getYs()[0]);
-            _this.getTickPos(that.getAbsoluteX(), posTick);
             try {
               var move = (that.keyProps[0].line - ligne) * 2.0;
               _this.data.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, move);
@@ -262,7 +290,7 @@
               ledger_line["obj"].remove();
             }
             _this.render.renderOneMeasure(posTick.nbMeasure, posTick.nbPart, true);
-            _this.drawer.drawMeasure(_this.data.getPart(posTick.nbPart).measure[posTick.nbMeasure], posTick.nbMeasure, posTick.nbPart);
+            _this.drawer.drawAll();
             _this.MouseInteracInit();
           }
         }
