@@ -10,7 +10,7 @@ var async = require('async'),
 
 function FlatWS(httpServer) {
   this.rt = new rt.rt();
-	io = io.listen(httpServer);
+  io = io.listen(httpServer);
   io.configure(function () {
     io.set('authorization', this.auth);
   }.bind(this));

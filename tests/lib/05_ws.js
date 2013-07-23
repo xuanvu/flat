@@ -9,14 +9,14 @@ var assert = require('assert'),
     fs = require('fs'),
     ws = require('../../routes/ws'),
     realTime = require('../../lib/realTime'),
-		io = require('socket.io-client-gierschv'),
-		flat = require('../../common/app'),
+    io = require('socket.io-client-gierschv'),
+    flat = require('../../common/app'),
     utils = require('../../common/utils');
 
 describe('Real time', function () {
-	var cookies, cookies2, uid, uid2, score;
+  var cookies, cookies2, uid, uid2, score;
 
-	before(function (done) {
+  before(function (done) {
     async.waterfall([
       function (callback) {
         var db = config.dbs['db_' + (process.env.DB || config.db.type || 'couchdb')];
@@ -57,12 +57,12 @@ describe('Real time', function () {
       },
       function (res, callback) {
         cookies2 = res.headers['set-cookie'][0].split(';')[0];
-      	var rq = request(app).post('/api/score.json/fromMusicXML');
-	      var xml = fs.readFileSync(
-	        path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
-	      );
-	      var scoreImported;
-	      rq.cookies = cookies;
+        var rq = request(app).post('/api/score.json/fromMusicXML');
+        var xml = fs.readFileSync(
+          path.resolve(__dirname, '../fixtures', 'FaurReveShort.xml'), 'UTF-8'
+        );
+        var scoreImported;
+        rq.cookies = cookies;
         rq.send({
           public: true,
           score: xml
@@ -71,8 +71,8 @@ describe('Real time', function () {
         .end(callback);
       },
       function (res, callback) {
-      	score = res.body;
-      	var rq = request(app).put('/api/score.json/' + score.id + '/collaborators/' + uid2);
+        score = res.body;
+        var rq = request(app).put('/api/score.json/' + score.id + '/collaborators/' + uid2);
         rq.cookies = cookies;
         rq.send({ aclWrite: true })
           .expect(200)
@@ -161,11 +161,11 @@ describe('Real time', function () {
     var rtSrv = new ws.ws(5000);
 
     it('should connect and join the score', function (done) {
-    	socket = io.connect(socketUrl, {
-  	  	transports: ['websocket'],
-  	  	'force new connection': true,
-  	  	cookie: cookies
-  		});
+      socket = io.connect(socketUrl, {
+        transports: ['websocket'],
+        'force new connection': true,
+        cookie: cookies
+      });
 
       async.waterfall([
         function (callback) {
