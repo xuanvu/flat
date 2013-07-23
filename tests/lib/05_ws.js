@@ -224,5 +224,43 @@ describe('Real time', function () {
         }
       ], done);
     });
+
+    it('should send position and receive broadcast', function (done) {
+      socket2 = io.connect(socketUrl, {
+        transports: ['websocket'],
+        'force new connection': true,
+        cookie: cookies2
+      });
+
+      async.waterfall([
+        function (callback) {
+          socket2.on('connect', callback);
+        },
+        function (callback) {
+          socket2.removeAllListeners('connect');
+          socket2.on('join', function () {
+            socket2.removeAllListeners('join');
+            callback();
+          });
+          socket2.emit('join', score.id);
+        },
+        function (callback) {
+          socket2.removeAllListeners('join');
+
+          async.each([socket, socket2], function (s, callback) {
+            s.on('position', function (_uid, partId, measureId, measurePos) {
+              assert.equal(_uid, uid);
+              assert.equal(partId, 40);
+              assert.equal(measureId, 41);
+              assert.equal(measurePos, 42);
+              s.removeAllListeners('position');
+              callback();
+            });
+          }, callback);
+          socket.emit('position', 40, 41, 42);
+        }
+      ], done);
+
+    });
   });
 });

@@ -10,7 +10,10 @@ var async = require('async'),
 
 function FlatWS(httpServer) {
   this.rt = new rt.rt();
-  io = io.listen(httpServer);
+  io = io.listen(httpServer, {
+    'log colors': false,
+    'log level': config.socketio ? config.socketio.log_level : 3
+  });
   io.configure(function () {
     io.set('authorization', this.auth);
   }.bind(this));
@@ -54,7 +57,6 @@ FlatWS.prototype.auth = function (handshakeData, callback) {
     }
 
     handshakeData.session = session.user;
-    console.log('AUTH', session);
     callback(null, true);
   });
 };
@@ -99,23 +101,24 @@ FlatWS.prototype.join = function (socket, scoreId) {
 };
 
 FlatWS.prototype.leave = function (socket) {
-  io.sockets.in(socket.handshake.scoreId)
+  io.sockets.in(socket.handshake.session.scoreId)
             .emit('leave', socket.handshake.session.id);
+  this.rt.leave(socket.handshake.session.scoreId, socket.handshake.session.id);
 };
 
-FlatWS.prototype.position = function (socket, partID, measureID, measurePos) {
+FlatWS.prototype.position = function (socket, partId, measureId, measurePos) {
   if (!socket.handshake.session.scoreId) {
     return;
   }
 
   this.rt.position(socket.handshake.session.scoreId,
                    socket.handshake.session.id,
-                   partID, measureId, measurePos);
+                   partId, measureId, measurePos);
   io.sockets.in(socket.handshake.scoreId)
             .emit(
               'position',
               socket.handshake.session.id,
-              partID, measureID, measurePos
+              partId, measureId, measurePos
             );
 };
 
