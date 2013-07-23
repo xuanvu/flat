@@ -1,6 +1,7 @@
 app:
   port: 3000
   host: '127.0.0.1'
+  baseurl: 'http://localhost:3000'
 dbs:
   db_nano-gierschv: &db_nano-gierschv
     type: 'nano-gierschv' # couchdb
@@ -22,21 +23,6 @@ dbs:
     type: 'memory'
 db: *db_nano-gierschv
 
-# Fill with value
-social:
-#  twitter:
-#    secret: ''
-#    key: ''
-#    callback: 'http://localhost:3000/auth/twitter/return'
-  facebook:
-    id: ''
-    secret: ''
-    callback: 'http://localhost:3000/auth/facebook/return'       
-  google:
-    id: ''
-    secret: ''
-    callback: 'http://127.0.0.1:3000/auth/google/return'       
-
 cookie:
   secret: '352IbRsD71eur0y4RUj39xmDvnP1QXAnSPT9cySrQCs5iaAfy3D9cSgsX4f7XTi2LoDduDFC03xpgCCNp4V1Lm52JQuDJSPQBEQDCVjXGE0iWmbz3pinzN8YmPbFdpLg'
   path: '/'
@@ -46,3 +32,14 @@ session:
   store: *db_redis
 flat:
   score_storage: './data/scores'
+
+social:
+ twitter:
+   secret: ''
+   key: ''
+ facebook:
+   id: ''
+   secret: ''
+ google:
+   id: ''
+   secret: ''   

@@ -14,21 +14,6 @@ dbs:
     type: 'memory'
 db: *db_nano-gierschv
 
-# Fill with value
-social:
-#  twitter:
-#    secret: ''
-#    key: ''
-#    callback: 'http://localhost:3000/auth/twitter/return'
-  facebook:
-    id: ''
-    secret: ''
-    callback: 'http://localhost:3000/auth/facebook/return'       
-  google:
-    id: ''
-    secret: ''
-    callback: 'http://127.0.0.1:3000/auth/google/return'       
-
 cookie:
   secret: 'flat-test'
   path: '/'
@@ -38,3 +23,14 @@ session:
   store: *db_memory
 flat:
   score_storage: './tests/tmp'
+
+social:
+ twitter:
+   secret: '42'
+   key: '42'
+ facebook:
+   id: '42'
+   secret: '42'
+ google:
+   id: '42.apps.googleusercontent.com'
+   secret: '42'
