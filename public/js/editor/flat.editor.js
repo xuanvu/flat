@@ -16,9 +16,9 @@ directive('editor', function () {
 
           $rootScope.score = Score.get({ id: $routeParams.score }, function () {
             $rootScope.loadCollaborators();
-            RealTime.init();
             $rootScope.revision = Revision.get({ id: $routeParams.score, revision: $rootScope.score.revisions[0].id }, function () {
               $rootScope.data = new Fermata.Data($rootScope.revision);
+              RealTime.init();
               $rootScope.render = new Fermata.Render($rootScope.data);
               $rootScope.render.renderAll();
               $rootScope.drawer = new Fermata.Drawer($rootScope.data, document.getElementById('canvas-score'));
