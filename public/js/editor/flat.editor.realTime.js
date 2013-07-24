@@ -35,7 +35,6 @@ service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
   this.events = {};
 
   Socket.on('join', function (uid) {
-    console.log('Own UID: ', $rootScope.account.id);
     if (uid + '' !== $rootScope.account.id + '') {
       console.log('[ws] on join', uid);
       $rootScope.netCursor.addGuys(uid, 'green');
@@ -63,7 +62,7 @@ service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
       fnc: f, args: args
     };
 
-    if (uid !== $rootScope.account.id) {
+    if (uid + '' !== $rootScope.account.id + '') {
       $rootScope.data[f].apply($rootScope.data, args);
     }
   });

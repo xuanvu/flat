@@ -20,7 +20,7 @@ var Flat = Flat || {};
 
   Flat.NetCursor.prototype.delGuys = function(uid) {
   	this.user[uid].undraw();
-  	pos = this.user.indefOf(uid);
+  	pos = this.user.indexOf(uid);
   	this.user.splice(pos, 1);
   };
 
