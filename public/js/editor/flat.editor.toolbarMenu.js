@@ -152,8 +152,9 @@ service('toolbarAction', ['$rootScope', function($rootScope) {
       $rootScope.Interac.ActionFocus = null;
     }
     else {
-      $rootScope.Interac.ActionFocus = function (data, pos, line) {
-        data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
+      $rootScope.Interac.ActionFocus = function (data, pos, line, RealTime) {
+        RealTime.edit.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
+        // data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
       };
     }
   }

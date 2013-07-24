@@ -3,7 +3,7 @@ var Flat = Flat || {};
 (function() {
   "use strict";
 
-  Flat.Cursor = function (data, ctx, socket) {
+  Flat.Cursor = function (data, ctx, socket, color) {
     this.curPart = 0;
     this.curMeasure = 0;
     this.curVoice = 0;
@@ -11,10 +11,10 @@ var Flat = Flat || {};
     this.Socket = socket;
     this.data = data['score'];
     this.context = ctx;
+    this.color = color;
     this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
     this.g = null; // to store the glow and remove it 
     this.draw();
-    this.initKeyEvents();
   };
 
   Flat.Cursor.prototype.initKeyEvents = function() {
@@ -156,6 +156,6 @@ var Flat = Flat || {};
 
   Flat.Cursor.prototype.draw = function() {
     this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
-    this.g = this.CurTick.st.glow({width: 6});
+    this.g = this.CurTick.st.glow({width: 6, color: this.color});
   };
 }).call(this);
