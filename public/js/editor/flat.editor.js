@@ -23,7 +23,8 @@ directive('editor', function () {
               $rootScope.render.renderAll();
               $rootScope.drawer = new Fermata.Drawer($rootScope.data, document.getElementById('canvas-score'));
               $rootScope.drawer.drawAll();
-              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer, Socket, RealTime);
+              $rootScope.netCursor = new Flat.NetCursor($rootScope.data, document.getElementById('canvas-score'), Socket, $rootScope.account.id);
+              $rootScope.Interac = new Flat.Interac($rootScope.data, document.getElementById('canvas-score'), $rootScope.render, $rootScope.drawer, Socket, RealTime, $rootScope.netCursor.getMain());
               $rootScope.Interac.MouseInteracInit();
             });
           });
