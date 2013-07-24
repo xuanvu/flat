@@ -2,7 +2,6 @@ angular.module('flat.editor.realTime', []).
 service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
   this.init = function () {
     Socket.on('connect', function () {
-      console.log('[ws] emit join', $rootScope.score.properties.id);
       Socket.emit('join', $rootScope.score.properties.id);
     });
 
@@ -36,16 +35,25 @@ service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
   this.events = {};
 
   Socket.on('join', function (uid) {
-    console.log('[ws] on join', uid);
+    console.log('Own UID: ', $rootScope.account.id);
+    if (uid + '' !== $rootScope.account.id + '') {
+      console.log('[ws] on join', uid);
+      $rootScope.netCursor.addGuys(uid, 'green');
+    }
   });
 
   Socket.on('leave', function (uid) {
-    console.log('[ws] on leave', uid);
+    if (uid + '' !== $rootScope.account.id + '') {
+      console.log('[ws] on leave', uid);
+      $rootScope.netCursor.delGuys(uid);
+    }
   });
 
   Socket.on('position', function (uid, partID, measureID, measurePos) {
-    console.log('[ws] on position', uid, partID, measureID, measurePos);
-    
+    if (uid + '' !== $rootScope.account.id + '') {
+      console.log('[ws] on position', uid, partID, measureID, measurePos);
+      $rootScope.netCursor.updatePosition(uid, {nbPart: partID, nbMeasure: measureID, nbVoice: 0, nbTick: measurePos});
+    }
   });
 
   Socket.on('edit', function (uid, eId, eParentId, f, args) {
