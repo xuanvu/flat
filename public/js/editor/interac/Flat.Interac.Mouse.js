@@ -27,7 +27,7 @@
       var line = this.getLine(pos_y, posTick);
       posTick.nbVoice += 1;
       posTick.nbTick = (posTick.nbTick > 0) ? posTick.nbTick -1 : 0 
-      this.ActionFocus(this.data, posTick, line);
+      this.ActionFocus(this.data, posTick, line, this.RealTime);
       return posTick;
     }
     return undefined;
@@ -277,7 +277,7 @@
           if (that.st.last_y_offset) {
             try {
               var move = (that.keyProps[0].line - ligne) * 2.0;
-              _this.data.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, move);
+              _this.RealTime.edit.changeNotePitch(posTick.nbPart, posTick.nbMeasure, posTick.nbTick, move);
             }
             catch (err) {
               console.log(err);
