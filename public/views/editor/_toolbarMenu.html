@@ -4,17 +4,28 @@
 	<a href="" title="{{ tool.title }}"
 	   ng-click="show(toolName, $event)"
 	   ng-repeat="(toolName, tool) in tools"
-	   ng-class="{active: tool.displayed, inactive: !tool.displayed}"
-	   ng-style="tool.styles" class="active-toolbar">
-	   	<span class="toolbar-close" ng-show="tool.displayed">×</span>
+	   ng-class="{active: tool.displayed, inactive: !tool.displayed, 'tool-right': tool.position == 'right' }"
+	   ng-hide="tool.mode == 'hide' && tool.displayed"
+	   ng-style="tool.styles" class="link-tool active-toolbar">
+	   	<span class="toolbar-close" ng-show="tool.displayed">&times;</span>
 		<p class="icon-wrapper"><i class="{{ tool.class }}"></i></p>
 	</a>
+
+	<div class="tool-save active" ng-show="tools.r02_save.displayed">
+		<form ng-submit="action(tools.r02_save, tools.r02_save)">
+			<a href="" ng-click="show('r02_save', $event)"><span class="toolbar-close">&times;</span></a>
+			<input type="text" class="input-small" placeholder="Optional comment..." ng-model="saveComment" />
+			<a href="" title="{{ toolsRight['save'].title }}" ng-click="action(tools.r02_save, tools.r02_save)" class="active-toolbar link-tool">
+				<p class="icon-wrapper"><i class="{{ tools.r02_save.class }}"></i></p>
+			</a>
+		</form>
+	</div>
 </div>
 <div class="second">
 	<div class="toolbar"
 		 ng-repeat="(toolName, tool) in tools"
-		 ng-class="{active: tool.displayed, inactive: !tool.displayed}"
-		 id="tb-{{ toolName}}"
+		 ng-class="{active: (tool.displayed && tool.mode != 'hide'), inactive: !tool.displayed}"
+		 id="tb-{{ toolName }}"
 	>
 		<a href="" ng-repeat="sub in tool.subs" title="{{ sub.title }}" ng-show="tool.displayed" ng-click="action(tool, sub)">
 			<div class="active-container" ng-class="{active: isActive(tool, sub)}">

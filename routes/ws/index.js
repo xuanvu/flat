@@ -96,6 +96,19 @@ FlatWS.prototype.join = function (socket, scoreId) {
           this.rt.scores[scoreId].users[u].measurePos
         );
       }
+
+      // Send modifications
+      for (var i = 0 ; i < this.rt.scores[scoreId].events.length ; ++i) {
+        io.socket
+          .emit(
+            'edit',
+            this.rt.scores[scoreId].events[i].userId,
+            this.rt.scores[scoreId].events[i].id, this.rt.scores[scoreId].events[i].parent,
+            this.rt.scores[scoreId].events[i].fnc, this.rt.scores[scoreId].events[i].args
+          );
+      }
+
+      socket.emit('synced');
     }.bind(this)
   ], function (err) {
     // console.log('[rt] Join score result:', socket.handshake.session.id, scoreId, err);

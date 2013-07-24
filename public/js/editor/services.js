@@ -51,13 +51,14 @@ angular.module('flatEditorServices', ['ngResource']).
     return $ressource('http://static1.ovhcloudcdn.com/V1/AUTH_d672aaa5e925e3cff7969c71e75e3349/flat-soundfront/:InstrumentsID-mp3.js', {InstrumentsID: '@name'});
   }]).
   factory('Socket', ['$rootScope', function ($rootScope) {
-    var socket = io.connect();
-    return {
+    // var socket = io.connect();
+    var factory = {
+      socket: null,
       on: function (eventName, callback) {
-        socket.on(eventName, function () {  
+        factory.socket.on(eventName, function () {
           var args = arguments;
           $rootScope.$apply(function () {
-            callback.apply(socket, args);
+            callback.apply(factory.socket, args);
           });
         });
       },
@@ -68,12 +69,14 @@ angular.module('flatEditorServices', ['ngResource']).
           callback = args.pop();
         }
 
-        socket.emit.apply(socket, args, function () {
+        factory.socket.emit.apply(factory.socket, args, function () {
           var args = arguments;
           $rootScope.$apply(function () {
-            cb.apply(socket, args);
+            cb.apply(factory.socket, args);
           });
         })
       }
     };
+
+    return factory;
   }]);

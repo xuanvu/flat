@@ -6,8 +6,9 @@ directive('toolbarMenu', function () {
     function ($rootScope, $scope, $timeout, $element, toolbarAction) {
       $scope.active = {};
       $scope.tools = {
-        clef: {
+        l01_clef: {
           title: 'Clefs',
+          position: 'left',
           class: 'flat-iconf-treble',
           type: 'clef',
           svgHeight: '70', svgWidth: '50',
@@ -21,8 +22,9 @@ directive('toolbarMenu', function () {
             { title: 'Clef bass', svg: '/dist/img/icons/bass_clef.svg'  }
           ],
         },
-        keySignature: {
+        l02_keySignature: {
           title: 'Keys Signatures',
+          position: 'left',
           class: 'unicode-icon-sharp',
           type: 'keySignature',
           svgHeight: '70', svgWidth: '70',
@@ -44,8 +46,9 @@ directive('toolbarMenu', function () {
             { title: 'C# Major / A# Minor', svg: '/dist/img/icons/7s-C-sharp-major_a-sharp-minor.svg'},
           ]
         },
-        note: {
+        l03_note: {
           title: 'Note',
+          position: 'left',
           class: 'unicode-icon-eighth',
           mode: 'active',
           action: 'noteType',
@@ -62,15 +65,29 @@ directive('toolbarMenu', function () {
             { title: 'Sixtyfourth', svg: '/dist/img/icons/note_sixtyfourth.svg', value: 7 },
           ]
         },
-        player: {
+        l04_player: {
           title: 'Player',
+          position: 'left',
           class: 'glyphicon glyphicon-headphones',
           action: 'player',
           subs: [
             { title: 'Play', class: 'glyphicon glyphicon-play', value: true },
             { title: 'Stop', class: 'glyphicon glyphicon-stop', value: false }
           ]
-        }
+        },
+        r01_history: {
+          title: 'History',
+          position: 'right',
+          class: 'glyphicon glyphicon-tasks',
+          action: 'history'
+        },
+        r02_save: {
+          title: 'Save',
+          position: 'right',
+          class: 'glyphicon glyphicon-hdd',
+          action: 'save',
+          mode: 'hide'
+        },
       };
 
       $scope.show = function (k, e) {
@@ -81,6 +98,9 @@ directive('toolbarMenu', function () {
             var minWidth = $('.toolbar-top .second #tb-' + k).width() + 2;
             $scope.tools[k].styles['min-width'] = minWidth < 60 ? 60 : minWidth;
           }
+          else {
+            $scope.tools[k].styles['min-width'] = 'auto';
+          }
         }, 0);
 
         if ($scope.tools[k].mode === 'active') {
@@ -88,9 +108,8 @@ directive('toolbarMenu', function () {
         }
       };
 
-
       $scope.action = function (t, s) {
-        var action = s.action || t.action,
+        var action = s.action || t.action || t,
             type = s.type || t.type,
             value = s.value || t.value;
 
@@ -105,7 +124,7 @@ directive('toolbarMenu', function () {
           toolbarAction[action]($scope.active[type]);
         }
         else {
-          toolbarAction[action](value);
+          toolbarAction[action](value, $scope);
         }
       };
 
@@ -146,7 +165,7 @@ directive('toolbarSvg', ['$http', function ($http) {
     }
   };
 }]).
-service('toolbarAction', ['$rootScope', function($rootScope) {
+service('toolbarAction', ['$rootScope', 'Socket', function ($rootScope, Socket) {
   this.noteType = function (type) {
     if (type === null) {
       $rootScope.Interac.ActionFocus = null;
@@ -157,7 +176,7 @@ service('toolbarAction', ['$rootScope', function($rootScope) {
         // data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
       };
     }
-  }
+  };
 
   this.player = function (play) {
     $rootScope.player = $rootScope.player || new Flat.Player($rootScope.data['score']['score-partwise']['part']);
@@ -170,5 +189,11 @@ service('toolbarAction', ['$rootScope', function($rootScope) {
     else {
       $rootScope.player.stop();
     }
-  }
+  };
+
+  this.save = function (value, $scope) {
+    Socket.emit('save', $scope.saveComment);
+    $scope.show('r02_save');
+    $scope.saveComment = '';
+  };
 }]);
