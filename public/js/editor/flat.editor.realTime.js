@@ -45,6 +45,7 @@ service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
 
   Socket.on('position', function (uid, partID, measureID, measurePos) {
     console.log('[ws] on position', uid, partID, measureID, measurePos);
+    
   });
 
   Socket.on('edit', function (uid, eId, eParentId, f, args) {
