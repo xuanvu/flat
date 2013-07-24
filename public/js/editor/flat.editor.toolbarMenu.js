@@ -1,8 +1,8 @@
-angular.module('flat.editor.toolbarMenu', []).
+angular.module('flat.editor.toolbarMenu', ['flat.editor.realTime']).
 directive('toolbarMenu', function () {
   return {
     templateUrl: '/views/editor/_toolbarMenu.html',
-    controller: ['$rootScope', '$scope', '$timeout', '$element', 'toolbarAction',
+    controller: ['$rootScope', '$scope', '$timeout', '$element', 'toolbarAction', 'RealTime',
     function ($rootScope, $scope, $timeout, $element, toolbarAction) {
       $scope.active = {};
       $scope.tools = {
@@ -153,7 +153,8 @@ service('toolbarAction', ['$rootScope', function($rootScope) {
     }
     else {
       $rootScope.Interac.ActionFocus = function (data, pos, line) {
-        data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
+        RealTime.edit.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
+        // data.addNote(pos.nbPart, pos.nbMeasure, pos.nbTick, line, type -1, pos.nbVoice);
       };
     }
   }
