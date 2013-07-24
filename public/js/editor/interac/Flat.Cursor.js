@@ -155,7 +155,9 @@ var Flat = Flat || {};
   };
 
   Flat.Cursor.prototype.draw = function() {
-    this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
-    this.g = this.CurTick.st.glow({width: 6, color: this.color});
+    if (this.curMeasure !== null && this.curVoice !== null && this.curNote !== null) {
+      this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
+      this.g = this.CurTick.st.glow({width: 6, color: this.color});
+    }
   };
 }).call(this);
