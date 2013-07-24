@@ -129,9 +129,8 @@ CollaboratorsCtrl.$inject = ['$rootScope', '$scope', '$location', 'User', 'Colla
 
 function PropertiesCtrl($rootScope, $scope, $location, RealTime) {
   $scope.save = function () {
-    console.log(RealTime.edit);
     RealTime.edit.setTitle($scope.title);
-    // $('#propertiesModal').modal('hide');
+    $('#propertiesModal').modal('hide');
   };
 
   var unwatchScore = $scope.$watch(function () {
@@ -148,7 +147,9 @@ function PropertiesCtrl($rootScope, $scope, $location, RealTime) {
     $('#propertiesModal')
       .on('hidden.bs.modal', function () {
         $location.path('/');
-        $scope.$apply();
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
       })
       .modal('show');
   });

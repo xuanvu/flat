@@ -82,19 +82,11 @@ describe('Real time', function () {
   });
 
   after(function (done) {
-    async.waterfall([
-      function (callback) {
-        schema.models.Score.destroyAll(callback);
-      },
-      function (callback) {
-        schema.models.User.destroyAll(callback);
-      },
-      function (callback) {
-        schema.models.News.destroyAll(callback);
-      },
-      function (callback) {
-        schema.models.NewsFeed.destroyAll(callback);
-      }
+    async.parallel([
+      async.apply(schema.models.Score.destroyAll.bind(schema.models.Score)),
+      async.apply(schema.models.User.destroyAll.bind(schema.models.User)),
+      async.apply(schema.models.News.destroyAll.bind(schema.models.News)),
+      async.apply(schema.models.NewsFeed.destroyAll.bind(schema.models.NewsFeed)),
     ], done);
   });
 
@@ -121,14 +113,15 @@ describe('Real time', function () {
 
     it('should execute setTitle() 3 times', function (done) {
       async.waterfall([
-        function (callback) {
-          rt.join(score.id, uid, callback);
+        async.apply(rt.join.bind(rt), score.id, uid),
+        async.apply(rt.edit.setTitle, score.id, uid, '42'),
+        function (res, callback) {
+          rt.edit.setTitle(score.id, uid, '43', callback);
         },
-        function (callback) {
-          rt.edit.setTitle(score.id, uid, '42');
-          rt.edit.setTitle(score.id, uid, '43');
-          rt.edit.setTitle(score.id, uid, '44');
-
+        function (res, callback) {
+          rt.edit.setTitle(score.id, uid, '<script>alert("44");</script>', callback);
+        },
+        function (res, callback) {
           assert.equal(rt.scores[score.id].events.length, 3);
           assert.equal(rt.scores[score.id].events[0].fnc, 'setTitle');
           assert.equal(rt.scores[score.id].events[0].userId, uid);
@@ -137,14 +130,22 @@ describe('Real time', function () {
           
           assert.equal(rt.scores[score.id].events[0].args[0], '42');
           assert.equal(rt.scores[score.id].events[1].args[0], '43');
-          assert.equal(rt.scores[score.id].events[2].args[0], '44');
+          assert.equal(rt.scores[score.id].events[2].args[0], '<script>alert("44");</script>');
 
           assert.equal(rt.scores[score.id].events[0].parent, null);
           assert.equal(rt.scores[score.id].events[1].parent, rt.scores[score.id].events[0].id);
           assert.equal(rt.scores[score.id].events[2].parent, rt.scores[score.id].events[1].id);
 
-          assert.equal(rt.scores[score.id].fdata.score['score-partwise']['movement-title'], '44');
+          assert.equal(rt.scores[score.id].fdata.score['score-partwise']['movement-title'],
+                       '<script>alert("44");</script>');
           rt.leave(score.id, uid, callback);
+        },
+        function (callback) {
+          schema.models.Score.find(score.id, callback);
+        },
+        function (scoredb, callback) {
+          assert.equal(scoredb.title, '&lt;script&gt;alert(&quot;44&quot;);&lt;/script&gt;');
+          callback();
         }
       ], done);
     });
@@ -168,9 +169,7 @@ describe('Real time', function () {
       });
 
       async.waterfall([
-        function (callback) {
-          socket.on('connect', callback);
-        },
+        async.apply(socket.on.bind(socket), 'connect'),
         function (callback) {
           socket.removeAllListeners('connect');
           socket.emit('join', score.id);
@@ -194,9 +193,7 @@ describe('Real time', function () {
       });
 
       async.waterfall([
-        function (callback) {
-          socket2.on('connect', callback);
-        },
+        async.apply(socket2.on.bind(socket2), 'connect'),
         function (callback) {
           socket2.removeAllListeners('connect');
           socket.waitFor = [uid2];
@@ -233,9 +230,7 @@ describe('Real time', function () {
       });
 
       async.waterfall([
-        function (callback) {
-          socket2.on('connect', callback);
-        },
+        async.apply(socket2.on.bind(socket2), 'connect'),
         function (callback) {
           socket2.removeAllListeners('connect');
           socket2.on('join', function () {
@@ -260,7 +255,21 @@ describe('Real time', function () {
           socket.emit('position', 40, 41, 42);
         }
       ], done);
+    });
 
+    it('should set title in real time mode', function (done) {
+      async.each([socket, socket2], function (s, callback) {
+        s.on('edit', function (_uid, eId, eParentId, f, args) {
+          assert.equal(_uid, uid);
+          assert.equal(f, 'setTitle');
+          assert.equal(args.length, 2);
+          assert.equal(args[0], 'Super title');
+          assert.equal(args[1], 'Useless arg');
+          s.removeAllListeners('edit');
+          callback();
+        });
+      }, done);
+      socket.emit('edit', 'setTitle', 'Super title', 'Useless arg');
     });
   });
 });

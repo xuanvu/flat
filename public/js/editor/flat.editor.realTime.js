@@ -54,6 +54,8 @@ service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
       fnc: f, args: args
     };
 
-    $rootScope.data[f].apply($rootScope.data, args);
+    if (uid !== $rootScope.account.id) {
+      $rootScope.data[f].apply($rootScope.data, args);
+    }
   });
 }]);

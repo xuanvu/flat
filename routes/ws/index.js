@@ -24,7 +24,7 @@ function FlatWS(httpServer) {
     socket.on('position', function (partID, measureID, measurePos) {
       this.position(socket, partID, measureID, measurePos);
     }.bind(this));
-    socket.on('edit', function () { console.log(arguments); this.edit(socket, arguments); }.bind(this));
+    socket.on('edit', function () { this.edit(socket, arguments); }.bind(this));
   }.bind(this));
 };
 
@@ -136,8 +136,8 @@ FlatWS.prototype.edit = function (socket, args) {
   var f = args.shift();
 
   args.unshift(socket.handshake.session.scoreId, socket.handshake.session.id);
-  var e = this.rt.edit[f].apply(this.rt, args);
-  io.sockets
+  args.push(function (err, e) {
+    io.sockets
     .in(e.scoreId)
     .emit(
       'edit',
@@ -145,6 +145,9 @@ FlatWS.prototype.edit = function (socket, args) {
       e.id, e.parent,
       e.fnc, e.args
     );
+  });
+  
+  this.rt.edit[f].apply(this.rt, args);
 };
 
 exports.ws = FlatWS;
