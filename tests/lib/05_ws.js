@@ -11,7 +11,8 @@ var assert = require('assert'),
     realTime = require('../../lib/realTime'),
     io = require('socket.io-client-gierschv'),
     flat = require('../../common/app'),
-    utils = require('../../common/utils');
+    utils = require('../../common/utils'),
+    Score = require('../../lib/score').Score;
 
 describe('Real time', function () {
   var cookies, cookies2, uid, uid2, score;
@@ -76,7 +77,10 @@ describe('Real time', function () {
         rq.cookies = cookies;
         rq.send({ aclWrite: true })
           .expect(200)
-          .end(callback);
+          // node-git sorts commits by date
+          .end(function () {
+            setTimeout(callback, 1000);
+          });
       }
     ], done);
   });
@@ -111,7 +115,8 @@ describe('Real time', function () {
       ], done);
     });
 
-    it('should execute setTitle() 3 times', function (done) {
+    it('should execute setTitle() 3 times and leave / commit', function (done) {
+      var s;
       async.waterfall([
         async.apply(rt.join.bind(rt), score.id, uid),
         async.apply(rt.edit.setTitle, score.id, uid, '42'),
@@ -119,7 +124,7 @@ describe('Real time', function () {
           rt.edit.setTitle(score.id, uid, '43', callback);
         },
         function (res, callback) {
-          rt.edit.setTitle(score.id, uid, '<script>alert("44");</script>', callback);
+          rt.edit.setTitle(score.id, uid, '<script>alert(44);</script>', callback);
         },
         function (res, callback) {
           assert.equal(rt.scores[score.id].events.length, 3);
@@ -130,21 +135,29 @@ describe('Real time', function () {
           
           assert.equal(rt.scores[score.id].events[0].args[0], '42');
           assert.equal(rt.scores[score.id].events[1].args[0], '43');
-          assert.equal(rt.scores[score.id].events[2].args[0], '<script>alert("44");</script>');
+          assert.equal(rt.scores[score.id].events[2].args[0], '<script>alert(44);</script>');
 
           assert.equal(rt.scores[score.id].events[0].parent, null);
           assert.equal(rt.scores[score.id].events[1].parent, rt.scores[score.id].events[0].id);
           assert.equal(rt.scores[score.id].events[2].parent, rt.scores[score.id].events[1].id);
 
           assert.equal(rt.scores[score.id].fdata.score['score-partwise']['movement-title'],
-                       '<script>alert("44");</script>');
+                       '<script>alert(44);</script>');
           rt.leave(score.id, uid, callback);
         },
-        function (callback) {
+        function (userId, eId, revId, callback) {
           schema.models.Score.find(score.id, callback);
         },
         function (scoredb, callback) {
-          assert.equal(scoredb.title, '&lt;script&gt;alert(&quot;44&quot;);&lt;/script&gt;');
+          assert.equal(scoredb.title, '&lt;script&gt;alert(44);&lt;/script&gt;');
+          s = new Score(scoredb.sid);
+          s.getRevisions(callback);
+        },
+        function (revisions, callback) {
+          assert.equal(revisions.length, 2);
+          assert.equal(revisions[0].message.indexOf('Save -'), 0);
+          assert.equal(revisions[0].author.name, uid);
+          assert.equal(revisions[0].author.email, uid + '@flat.io');
           callback();
         }
       ], done);
@@ -270,6 +283,41 @@ describe('Real time', function () {
         });
       }, done);
       socket.emit('edit', 'setTitle', 'Super title', 'Useless arg');
+    });
+
+    it('should commit the modification', function (done) {
+      var revision, s;
+      async.waterfall([
+        function (callback) {
+          async.each([socket, socket2], function (s, callback) {
+            s.on('save', function (_uid, eId, _revision) {
+              revision = _revision;
+              assert.equal(_uid, uid);
+              assert.ok(eId);
+              assert.ok(revision);
+              s.removeAllListeners('save');
+              callback();
+            });
+          }, callback);
+          socket.emit('save', 'Version 42');
+        },
+        function (callback) {
+          s = new Score(score.sid);
+          s.getRevisions(callback);
+        },
+        function (revisions, callback) {
+          assert.equal(revisions[0].id, revision);
+          assert.equal(revisions[0].message, 'Version 42');
+          assert.equal(revisions[0].author.name, uid);
+          assert.equal(revisions[0].author.email, uid + '@flat.io');
+          s.getScore(revision, callback);
+        },
+        function (scoreContent, callback) {
+          scoreContent = JSON.parse(scoreContent);
+          assert.equal(scoreContent['score-partwise']['movement-title'], 'Super title');
+          callback();
+        }
+      ], done);
     });
   });
 });
