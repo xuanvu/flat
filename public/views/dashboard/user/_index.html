@@ -6,10 +6,13 @@
                 <a ng-click="doFollow(user.id)" class="btn btn-primary btn-small" ng-show="user.id != account.id && !follow"><i class="glyphicon glyphicon-eye-open"></i> <span ng-i18next="flat:account.follow">Follow</span></a>
                 <a ng-click="doUnfollow(user.id)" class="btn btn-default btn-small" ng-show="user.id != account.id && follow"><i class="glyphicon glyphicon-eye-close"></i> <span ng-i18next="flat:account.unfollow">Unfollow</span></a>
             </div>
-            <div class="pull-left"><img src="https://secure.gravatar.com/avatar/{{user.email_md5}}?s=90&amp;d=mm" class="avatar"></div>
+            <div class="pull-left">
+                <img class="avatar" ng-show="user.picture" ng-src="{{ user.picture }}" />
+                <img class="avatar" ng-hide="user.picture" ng-src="https://secure.gravatar.com/avatar/{{user.email_md5}}?s=90&amp;d=mm" />
+            </div>
             <h1 class="small">{{ user.name || user.username }}</h1>
             <p class="light" ng-show="user.name">{{ user.username }}</small>
-            <p class="light"><span ng-i18next="flat:account.member-since">Member since</span> {{ user.registrationDate | date: longDate }}</p>
+            <!-- <p class="light"><span ng-i18next="flat:account.member-since">Member since</span> {{ user.registrationDate | date: longDate }}</p> -->
 
             <div class="clearfix"></div>
         </div>
