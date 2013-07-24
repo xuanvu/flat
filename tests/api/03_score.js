@@ -378,11 +378,14 @@ describe('API /score', function () {
         },
         function (res, callback) {
           revisions = res.body.revisions;
+
           assert.equal(revisions.length, 3);
           assert.equal(revisions[1].message.indexOf('Save - '), 0);
           assert.equal(revisions[2].message, 'I edited my score');
-          assert.equal(revisions[1].author.name, 'myUsername');
-          assert.equal(revisions[2].author.email, uid + '@flat.io');
+          assert.equal(revisions[1].author.name, uid);
+          assert.equal(revisions[1].author.email, uid + '@flat.io');
+          assert.equal(revisions[1].parents[0], revisions[0].id);
+          assert.equal(revisions[2].parents[0], revisions[1].id);
           newsfeed.getUserNews(uid, callback);
         },
         function (news, callback) {

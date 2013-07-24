@@ -243,13 +243,20 @@ exports.getScore = function (sw) {
         function (_revisions, callback) {
           var revisions = [];
           for (var i = 0 ; i < _revisions.length ; ++i) {
-            revisions.push({
+            var revision = {
               id: _revisions[i].id,
+              parents: [],
               author: _revisions[i].author,
               message: _revisions[i].message,
               short_message: _revisions[i].short_message,
               authored_date: _revisions[i].authored_date
-            });
+            };
+
+            for (var j = 0 ; j < _revisions[i].parents.length ; ++j) {
+              revision.parents.push(_revisions[i].parents[j].id);
+            }
+
+            revisions.push(revision);
           }
 
           return callback(null, {
@@ -320,19 +327,15 @@ exports.saveScore = function (sw) {
               callback(err, 400);
             }
 
-            s.getRevisions(callback);
+            s.commitScore(
+              req.body.message,
+              req.session.user.id, req.session.user.id + '@flat.io',
+              'master', callback
+            );
           }
           catch (e) {
             callback(e, 400);
           }
-        },
-        function (revisions, callback) {
-          var tree = revisions[revisions.length - 1].id;
-          s.commitScore(
-            req.body.message,
-            req.session.user.username, req.session.user.id + '@flat.io',
-            'master', callback
-          );
         },
         function (_revision, callback) {
           revision = _revision;

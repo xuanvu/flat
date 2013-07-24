@@ -134,6 +134,7 @@ exports.models = {
     id: 'ScoreRevision',
     properties: {
       id: { type: 'string', description: 'The revision identifier' },
+      parents: { type: 'List[String]', description: 'The revisions parents' },
       author: { type: 'ScoreRevisionAuthor', description: 'The revision author' },
       message: { type: 'string', description: 'The revision message' },
       short_message: { type: 'string', description: 'The revision short message' },
