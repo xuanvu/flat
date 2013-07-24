@@ -40,7 +40,8 @@
         "created": "%(user)s a créé une nouvelle partition %(title)s.",
         "recent-events": "Évènements récents",
         "joined": "%(user)s a rejoint Flat.",
-        "imported": "%(user)s a importé une nouvelle partition %(title)s."
+        "imported": "%(user)s a importé une nouvelle partition %(title)s.",
+        "updated": "%(user)s a mis a jour sa partition %(score)s: %(revision)s."
     },
     "account": {
         "my": "Mon compte",

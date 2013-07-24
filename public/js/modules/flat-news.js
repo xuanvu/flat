@@ -36,6 +36,9 @@ directive('newsitem', function () {
               sprintf[key] = '<a href="/editor#?score={{ n.parameters[\'' + key + '\'].id }}" ng-bind-html-unsafe="n.parameters[\'' + key + '\'].text"></a>';
               break;
 
+            case 'revision':
+              sprintf[key] = '<a href="/editor#?score={{ n.parameters[\'' + key + '\'].scoreId }}&revision={{ n.parameters[\'' + key + '\'].id }}">{{ n.parameters[\'' + key + '\'].text }}</a>';
+
           }
         }
       }
