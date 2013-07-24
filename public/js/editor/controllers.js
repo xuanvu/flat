@@ -126,3 +126,32 @@ function CollaboratorsCtrl($rootScope, $scope, $location, User, Collaborator) {
 };
 
 CollaboratorsCtrl.$inject = ['$rootScope', '$scope', '$location', 'User', 'Collaborator'];
+
+function PropertiesCtrl($rootScope, $scope, $location, RealTime) {
+  $scope.save = function () {
+    console.log(RealTime.edit);
+    RealTime.edit.setTitle($scope.title);
+    // $('#propertiesModal').modal('hide');
+  };
+
+  var unwatchScore = $scope.$watch(function () {
+    return $rootScope.data;
+  }, function () {
+    if (!$rootScope.data) {
+      return;
+    }
+
+    $scope.title = $rootScope.data.score['score-partwise']['movement-title'];
+
+    unwatchScore();
+
+    $('#propertiesModal')
+      .on('hidden.bs.modal', function () {
+        $location.path('/');
+        $scope.$apply();
+      })
+      .modal('show');
+  });
+}
+
+PropertiesCtrl.$inject = ['$rootScope', '$scope', '$location', 'RealTime'];

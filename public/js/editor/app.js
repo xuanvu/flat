@@ -13,6 +13,7 @@ var app = angular.module('flatEditor', ['flat', 'flat.editor']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', { templateUrl: '/views/editor/_editor.html', controller: EditorCtrl }).
+    when('/properties', { templateUrl: '/views/editor/_properties.html', controller: PropertiesCtrl }).
     when('/privacy', { templateUrl: '/views/editor/_privacy.html', controller: PrivacyCtrl }).
     when('/collaborators', { templateUrl: '/views/editor/_collaborators.html', controller: CollaboratorsCtrl }).
     otherwise({redirectTo: '/'});

@@ -14,7 +14,9 @@
                 <i class="glyphicon glyphicon-globe" ng-show="score.properties.public"></i>
                 <i class="glyphicon glyphicon-lock" ng-show="!score.properties.public"></i>
             </a>
-            <span ng-bind-html-unsafe="score.properties.title"></span>
+            <a href="#/properties?score={{ score.properties.id }}">
+                {{ data.score['score-partwise']['movement-title'] }}
+            </a>
             <span class="score-last-activity">
                 -
                 <span ng-i18next="flat:score.last-save">Last save</span>: {{ score.revisions[0].authored_date | fromNow }}
@@ -38,6 +40,7 @@
     <script src="/js/editor/controllers.js"></script>
     <script src="/js/editor/services.js"></script>
     <script src="/js/editor/flat.editor.js"></script>
+    <script src="/js/editor/flat.editor.realTime.js"></script>
     <script src="/js/editor/flat.editor.toolbarMenu.js"></script>
     <script src="/js/editor/interac/Flat.Interac.js"></script>
     <script src="/js/editor/interac/Flat.Cursor.js"></script>

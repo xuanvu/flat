@@ -30,7 +30,8 @@
         "visibility": "Score visibility",
         "canRead": "Can read",
         "canWrite": "Can write",
-        "canAdministrate": "Can administrate"
+        "canAdministrate": "Can administrate",
+        "properties": "Score properties"
     },
     "feed": {
         "title": "News feed",

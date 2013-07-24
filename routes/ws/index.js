@@ -21,13 +21,10 @@ function FlatWS(httpServer) {
   io.on('connection', function (socket) {
     socket.on('join', function (scoreId) {  this.join(socket, scoreId); }.bind(this));
     socket.on('disconnect', function () { this.leave(socket); }.bind(this));
-
-
     socket.on('position', function (partID, measureID, measurePos) {
-      // this.position.apply(this, arguments);
       this.position(socket, partID, measureID, measurePos);
     }.bind(this));
-    // socket.on('edit', function () { this.edit.apply(this, arguments); }.bind(this));
+    socket.on('edit', function () { console.log(arguments); this.edit(socket, arguments); }.bind(this));
   }.bind(this));
 };
 
@@ -105,8 +102,9 @@ FlatWS.prototype.join = function (socket, scoreId) {
 };
 
 FlatWS.prototype.leave = function (socket) {
-  io.sockets.in(socket.handshake.session.scoreId)
-            .emit('leave', socket.handshake.session.id);
+  io.sockets
+    .in(socket.handshake.session.scoreId)
+    .emit('leave', socket.handshake.session.id);
   this.rt.leave(socket.handshake.session.scoreId, socket.handshake.session.id);
 };
 
@@ -118,15 +116,35 @@ FlatWS.prototype.position = function (socket, partId, measureId, measurePos) {
     return;
   }
 
-  this.rt.position(socket.handshake.session.scoreId,
-                   socket.handshake.session.id,
-                   partId, measureId, measurePos);
-  io.sockets.in(socket.handshake.scoreId)
-            .emit(
-              'position',
-              socket.handshake.session.id,
-              partId, measureId, measurePos
-            );
+  this.rt.position(
+    socket.handshake.session.scoreId,
+    socket.handshake.session.id,
+    partId, measureId, measurePos
+  );
+
+  io.sockets
+    .in(socket.handshake.scoreId)
+    .emit(
+      'position',
+      socket.handshake.session.id,
+      partId, measureId, measurePos
+    );
+};
+
+FlatWS.prototype.edit = function (socket, args) {
+  args = Array.prototype.slice.call(args);
+  var f = args.shift();
+
+  args.unshift(socket.handshake.session.scoreId, socket.handshake.session.id);
+  var e = this.rt.edit[f].apply(this.rt, args);
+  io.sockets
+    .in(e.scoreId)
+    .emit(
+      'edit',
+      e.userId,
+      e.id, e.parent,
+      e.fnc, e.args
+    );
 };
 
 exports.ws = FlatWS;

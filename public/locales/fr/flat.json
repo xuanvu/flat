@@ -30,7 +30,8 @@
         "visibility": "Visibilité de la partition",
         "canAdministrate": "Peut administrer",
         "canRead": "Peut lire",
-        "canWrite": "Peut modifier"
+        "canWrite": "Peut modifier",
+        "properties": "Propriétés de la partition"
     },
     "feed": {
         "news-discover": "Découvrez les tendances des utilisateurs de Flat.",

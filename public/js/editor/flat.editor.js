@@ -1,9 +1,13 @@
-angular.module('flat.editor', ['flatEditorServices', 'flat.editor.toolbarMenu']).
+angular.module('flat.editor', [
+  'flatEditorServices',
+  'flat.editor.toolbarMenu',
+  'flat.editor.realTime'
+]).
 directive('editor', function () {
   return {
     controller: [
-      '$rootScope', '$scope', '$routeParams', 'Score', 'Socket', 'Revision', 'Collaborator', 'User', 'Realtime',
-      function ($rootScope, $scope, $routeParams, Score, Socket, Revision, Collaborator, User, Realtime) {
+      '$rootScope', '$scope', '$routeParams', 'Score', 'Socket', 'Revision', 'Collaborator', 'User', 'RealTime',
+      function ($rootScope, $scope, $routeParams, Score, Socket, Revision, Collaborator, User, RealTime) {
         $scope.loadScore = function () {
           if (typeof($routeParams) === 'undefined' ||
               typeof($routeParams.score) === 'undefined') {
@@ -12,7 +16,7 @@ directive('editor', function () {
 
           $rootScope.score = Score.get({ id: $routeParams.score }, function () {
             $rootScope.loadCollaborators();
-            Realtime.init();
+            RealTime.init();
             $rootScope.revision = Revision.get({ id: $routeParams.score, revision: $rootScope.score.revisions[0].id }, function () {
               $rootScope.data = new Fermata.Data($rootScope.revision);
               $rootScope.render = new Fermata.Render($rootScope.data);
@@ -49,26 +53,4 @@ directive('editor', function () {
       }
     ]
   };
-}).
-service('Realtime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
-  this.init = function () {
-    Socket.on('connect', function () {
-      console.log('[ws] emit join', $rootScope.score.properties.id);
-      Socket.emit('join', $rootScope.score.properties.id);
-    });
-  };
-
-  this.collaborators = [];
-
-  Socket.on('join', function (uid) {
-    console.log('[ws] on join', uid);
-  });
-
-  Socket.on('leave', function (uid) {
-    console.log('[ws] on leave', uid);
-  });
-
-  Socket.on('position', function (uid, partID, measureID, measurePos) {
-    console.log('[ws] on position', uid, partID, measureID, measurePos);
-  });
-}]);
+});

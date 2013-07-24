@@ -291,6 +291,8 @@
             _this.drawer.drawAll();
             _this.MouseInteracInit();
           }
+
+          console.log('position', posTick.nbPart, posTick.nbMeasure, posTick.nbTick);
           this_.Socket.emit('position', posTick.nbPart, posTick.nbMeasure, posTick.nbTick);
         }
       );
