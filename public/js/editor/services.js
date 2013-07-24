@@ -61,13 +61,17 @@ angular.module('flatEditorServices', ['ngResource']).
           });
         });
       },
-      emit: function (eventName, data, callback) {
-        socket.emit(eventName, data, function () {
+      // function (eventName, ..., callback)
+      emit: function () {
+        var args = Array.prototype.slice.call(arguments), callback;
+        if (args.len > 0 && typeof(args[args.len - 1]) === 'function') {
+          callback = args.pop();
+        }
+
+        socket.emit.apply(socket, args, function () {
           var args = arguments;
           $rootScope.$apply(function () {
-            if (callback) {
-              callback.apply(socket, args);
-            }
+            cb.apply(socket, args);
           });
         })
       }

@@ -62,6 +62,10 @@ FlatWS.prototype.auth = function (handshakeData, callback) {
 };
 
 FlatWS.prototype.join = function (socket, scoreId) {
+  if (!scoreId) {
+    return;
+  }
+
   async.waterfall([
     function (callback) {
       scoreUser.canWrite(scoreId, socket.handshake.session.id, callback);
@@ -107,7 +111,10 @@ FlatWS.prototype.leave = function (socket) {
 };
 
 FlatWS.prototype.position = function (socket, partId, measureId, measurePos) {
-  if (!socket.handshake.session.scoreId) {
+  if (!socket.handshake.session.scoreId ||
+      typeof(partId) !== 'number' ||
+      typeof(measureId) !== 'number' ||
+      typeof(measurePos) !== 'number') {
     return;
   }
 
