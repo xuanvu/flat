@@ -3,11 +3,12 @@ var Flat = Flat || {};
 (function() {
   "use strict";
 
-  Flat.Cursor = function (data, ctx) {
+  Flat.Cursor = function (data, ctx, socket) {
     this.curPart = 0;
     this.curMeasure = 0;
     this.curVoice = 0;
     this.curNote = 0;
+    this.Socket = socket;
     this.data = data['score'];
     this.context = ctx;
     this.CurTick = this.data['score-partwise']['part'][this.curPart]['measure'][this.curMeasure]['$fermata']['vexVoices'][this.curVoice]['tickables'][this.curNote];
@@ -21,7 +22,7 @@ var Flat = Flat || {};
     var _this = this;
     this.charfield.addEventListener("keydown", function(e, element) {
       e = e || window.event;
-    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+      var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
       if (charCode > 0) {
         if (charCode === 74) _this.nextVoice();
         if (charCode === 75) _this.prevVoice();
@@ -29,6 +30,9 @@ var Flat = Flat || {};
         if (charCode === 38) _this.cursorUp();
         if (charCode === 39) _this.cursorRight();
         if (charCode === 40) _this.cursorDown();
+        if (charCode === 74 || charCode === 75 || (charCode >= 37 && charCode <= 40)) {
+          _this.Socket.emit('position', _this.curPart, _this.curMeasure, _this.curNote);
+        }
       }
     }, false);
   };
