@@ -14,6 +14,7 @@
 @toolbarPrimaryHover: #247794;
 @toolbarPrimaryActive: darken(#247794, 15%);
 @toolbarSecondaryBG: #303030;
+
 // - Icons
 @iconFlatSpritePath: "../img/icon-test-white.png";
 
@@ -90,13 +91,14 @@
     height: @toolbarHeight;
     #gradient > .vertical(@toolbarPrimaryBG, 0%, lighten(@toolbarPrimaryBG, 3%), 100%);
     border-bottom: 1px solid #000;
+    padding-right: 100px;
 
     p.icon-wrapper {
       width: @iconWidth - 2 * 11;
       text-align: center;
     }
 
-    a {
+    a.link-tool {
       padding: 0px 11px;
       margin: 0 -1px 0 0;
       display: inline-block;
@@ -104,7 +106,7 @@
       text-align: center;
     }
 
-    a:hover {
+    a.link-tool:hover {
       #gradient > .vertical(@toolbarPrimaryHover, 0%, darken(@toolbarPrimaryHover, 15%), 100%);
       padding: 0px 10px;
       border-left: 1px solid #000;
@@ -112,7 +114,7 @@
       width: @iconWidth;
     }
 
-    a.active {
+    .active, a.active:hover {
       padding: 0px 10px;
       text-align: left;
       #gradient > .vertical(lighten(@toolbarPrimaryBG, 3%), 0%, lighten(@toolbarPrimaryBG, 6%), 100%);
@@ -124,6 +126,31 @@
         text-decoration: none;
         color: #999;
         line-height: @toolbarHeight - 2;
+      }
+    }
+
+    .tool-right {
+      float: right;
+    }
+
+    .tool-save  {
+      float: right;
+      padding-right: 0;
+      margin-right: -1px;
+
+      a:hover {
+        #gradient > .vertical(@state-success-text, 0%, lighten(@state-success-text, 6%), 100%);
+      }
+
+      input {
+        float: left;
+        width: 150px;
+        margin-top: 2px;
+      }
+
+      .toolbar-close {
+        float: left!important;
+        width: 18px;
       }
     }
   }
@@ -161,15 +188,15 @@
       stroke: #fff;
     }
 
-    #tb-keySignature .svg-container {
+    #tb-l02_keySignature .svg-container {
       padding: 0 5px;
     }
 
-    #tb-note .svg-container {
+    #tb-l03_note .svg-container {
       margin: 0 -10px;
     }
 
-    #tb-player {
+    #tb-l04_player {
       text-align: center;
 
       .svg-container {

@@ -1,5 +1,5 @@
-angular.module('flat.editor.realTime', []).
-service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
+angular.module('flat.editor.realTime', ['flatEditorServices']).
+service('RealTime', ['$rootScope', 'Socket', 'Score', function ($rootScope, Socket, Score) {
   this.init = function () {
     Socket.on('connect', function () {
       Socket.emit('join', $rootScope.score.properties.id);
@@ -65,5 +65,11 @@ service('RealTime', ['$rootScope', 'Socket', function ($rootScope, Socket) {
     if (uid + '' !== $rootScope.account.id + '') {
       $rootScope.data[f].apply($rootScope.data, args);
     }
+  });
+
+  Socket.on('save', function (userId, eId, revId) {
+    console.log('[ws] on save', userId, eId, revId);
+    $rootScope.score = Score.get({ id: $rootScope.score.properties.id });
+      // $rootScope.revision = Revision.get({ id: $rootScope.score.properties.id, revision: revId });
   });
 }]);
