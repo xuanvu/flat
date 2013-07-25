@@ -59,6 +59,7 @@ service('RealTime', ['$rootScope', 'Socket', 'Score', 'User', function ($rootSco
         $rootScope.data[f].apply($rootScope.data, args);
         $rootScope.render.renderAll();
         $rootScope.drawer.drawAll();
+        $rootScope.Interac.MouseInteracInit();
       }
     });
 
