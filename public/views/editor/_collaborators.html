@@ -42,7 +42,8 @@
           <div class="select" ng-show="collaborator.userId == account.id" ng-i18next="flat:account.its-you"></div>
 
           <div class="avatar rd-avatar">
-            <img class="rd-avatar" ng-src="https://secure.gravatar.com/avatar/{{ collaborator.user.email_md5 }}?s=30&amp;d=mm" />
+            <img class="rd-avatar avatar-30" ng-hide="collaborator.user.picture" ng-src="https://secure.gravatar.com/avatar/{{ collaborator.user.email_md5 }}?s=30&amp;d=mm" />
+            <img class="rd-avatar avatar-30" ng-show="collaborator.user.picture" ng-src="{{ collaborator.user.picture }}" />
           </div>
           <div class="username">{{ collaborator.user.name || collaborator.user.username }}</div>
         </div>

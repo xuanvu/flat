@@ -1,28 +1,41 @@
 angular.module('flat.editor.realTime', ['flatEditorServices']).
-service('RealTime', ['$rootScope', 'Socket', 'Score', function ($rootScope, Socket, Score) {
+service('RealTime', ['$rootScope', 'Socket', 'Score', 'User', function ($rootScope, Socket, Score, User) {
   this.myEdits = true;
+  this.events = [];
+
+  $rootScope.collaboratorsOnline = {};
+
   this.init = function () {
     console.log('[ws] init');
     Socket.socket = io.connect();
     Socket.on('connect', function () {
       console.log('[ws] connected');
       Socket.emit('join', $rootScope.score.properties.id);
+      $rootScope.collaboratorsOnline[$rootScope.account.id] = { color: '#000' };
     });
 
     this.loadFunctions();
 
     Socket.on('join', function (uid) {
-      if (uid + '' !== $rootScope.account.id + '') {
-        console.log('[ws] on join', uid);
-        $rootScope.netCursor.addGuys(uid, 'green');
+      if (uid == $rootScope.account.id) {
+        return;
       }
+
+      console.log('[ws] on join', uid);
+      $rootScope.collaboratorsOnline[uid] = {
+        color: 'green'
+      };
+      $rootScope.netCursor.addGuys(uid, 'green');
     });
 
     Socket.on('leave', function (uid) {
-      if (uid + '' !== $rootScope.account.id + '') {
-        console.log('[ws] on leave', uid);
-        $rootScope.netCursor.delGuys(uid);
+      if (uid == $rootScope.account.id) {
+        return;
       }
+      
+      delete $rootScope.collaboratorsOnline[uid];
+      console.log('[ws] on leave', uid);
+      $rootScope.netCursor.delGuys(uid);
     });
 
     Socket.on('position', function (uid, partID, measureID, measurePos) {
@@ -77,7 +90,4 @@ service('RealTime', ['$rootScope', 'Socket', 'Score', function ($rootScope, Sock
     var wsFunction = args.shift(), f = args.shift();
     $rootScope.data[f].apply($rootScope.data, args);
   };
-
-  this.collaborators = [];
-  this.events = {};
 }]);

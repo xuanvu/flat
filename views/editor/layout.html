@@ -27,6 +27,10 @@
                 <a href="#/collaborators?score={{ score.properties.id }}"><i class="glyphicon glyphicon-user"></i></a>
             </div>
             <div class="scroll"></div>
+            <div class="collaborators-avatars" ng-repeat="(uid, c) in collaboratorsOnline">
+                <img class="avatar" ng-show="collaborators[uid].user.picture" ng-src="{{ collaborators[uid].user.picture }}" />
+                <img class="avatar" ng-hide="collaborators[uid].user.picture" ng-src="https://secure.gravatar.com/avatar/{{collaborators[uid].user.email_md5}}?s=35&amp;d=mm" />
+            </div>
         </div>
     </div>
 

@@ -44,23 +44,23 @@ function CollaboratorsCtrl($rootScope, $scope, $location, User, Collaborator) {
 
   $scope.setCollaboratorsRightsModels = function () {
     $scope.collaboratorRights = {};
-    for (var i = 0 ; i < $rootScope.collaborators.length ; ++i) {
-      if ($rootScope.collaborators[i].aclAdmin) {
-        $scope.collaboratorRights[$rootScope.collaborators[i].userId] = 'canAdministrate';
+    for (var uid in $rootScope.collaborators) {
+      if ($rootScope.collaborators[uid].aclAdmin) {
+        $scope.collaboratorRights[uid] = 'canAdministrate';
       }
-      else if ($rootScope.collaborators[i].aclWrite) {
-        $scope.collaboratorRights[$rootScope.collaborators[i].userId] = 'canWrite';
+      else if ($rootScope.collaborators[uid].aclWrite) {
+        $scope.collaboratorRights[uid] = 'canWrite';
       }
       else {
-        $scope.collaboratorRights[$rootScope.collaborators[i].userId] = 'canRead';
+        $scope.collaboratorRights[uid] = 'canRead';
       }
     }
   };
 
   var unwatchCol = $scope.$watch(function () {
-    return $rootScope.collaborators && $rootScope.collaborators.length;
+    return $rootScope.collaborators && Object.keys($rootScope.collaborators).length;
   }, function () {
-    if (!$rootScope.collaborators || $rootScope.collaborators.length === 0) {
+    if (!$rootScope.collaborators || Object.keys($rootScope.collaborators).length === 0) {
       return;
     }
 

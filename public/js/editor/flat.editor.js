@@ -31,8 +31,10 @@ directive('editor', function () {
         };
 
         $rootScope.loadCollaborators = function (callback) {
-          $rootScope.collaborators = Collaborator.query({ id: $rootScope.score.properties.id }, function () {
-            async.each($rootScope.collaborators, function (collaborator, callback) {
+          $rootScope.collaborators = {};
+          var collaborators = Collaborator.query({ id: $rootScope.score.properties.id }, function () {
+            async.each(collaborators, function (collaborator, callback) {
+              $rootScope.collaborators[collaborator.userId] = collaborator;
               collaborator.user = User.get({ userId: collaborator.userId }, callback);
             }, callback);
           });
