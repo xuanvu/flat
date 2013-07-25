@@ -157,7 +157,7 @@ module.exports = function(grunt) {
       js_deps_editor: {
         src: [
           'node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js',
-          // 'public/js/deps/underscore-min.js',
+          'public/js/deps/underscore-min.js',
           'public/js/deps/raphael-min.js',
           'public/js/deps/MIDI/Base64.js',
           'public/js/deps/MIDI/base64binary.js',
