@@ -86,8 +86,8 @@ describe('API /score', function () {
             public: false,
             instruments: [{ group: 'keyboards', instrument: 'piano' }],
             fifths: 0,
-            beats: 3,
-            beatType: 8
+            beats: 4,
+            beatType: 4
           })
           .expect(200)
           .end(callback);
@@ -116,8 +116,8 @@ describe('API /score', function () {
             public: true,
             instruments: [{ group: 'keyboards', instrument: 'piano' }],
             fifths: 0,
-            beats: 3,
-            beatType: 8
+            beats: 4,
+            beatType: 4
           })
           .expect(200)
           .end(callback);
