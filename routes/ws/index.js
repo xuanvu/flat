@@ -104,8 +104,7 @@ FlatWS.prototype.join = function (socket, scoreId) {
 
       // Send modifications
       for (var i = 0 ; i < this.rt.scores[scoreId].events.length ; ++i) {
-        io.socket
-          .emit(
+        socket.emit(
             'edit',
             this.rt.scores[scoreId].events[i].userId,
             this.rt.scores[scoreId].events[i].id, this.rt.scores[scoreId].events[i].parent,
