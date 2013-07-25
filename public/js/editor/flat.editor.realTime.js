@@ -56,6 +56,7 @@ service('RealTime', ['$rootScope', 'Socket', 'Score', 'User', function ($rootSco
       console.log('[ws] current account is', $rootScope.account.id);
 
       if (this.myEdits || uid != $rootScope.account.id) {
+        console.log('[ws] on edit [process]', uid, eId, eParentId, f, args);
         $rootScope.data[f].apply($rootScope.data, args);
         $rootScope.render.renderAll();
         $rootScope.drawer.drawAll();
@@ -70,6 +71,7 @@ service('RealTime', ['$rootScope', 'Socket', 'Score', 'User', function ($rootSco
     });
 
     Socket.on('synced', function () {
+      console.log('[ws] synced');
       this.myEdits = false;
     }.bind(this));
   };
