@@ -52,6 +52,7 @@ service('RealTime', ['$rootScope', 'Socket', 'Score', 'User', function ($rootSco
         fnc: f, args: args
       };
 
+      console.log('[ws] will process my edits:', this.myEdits);
       console.log('[ws] on edit', uid, eId, eParentId, f, args);
       console.log('[ws] current account is', $rootScope.account.id);
 
