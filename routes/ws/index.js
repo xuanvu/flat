@@ -19,13 +19,18 @@ function FlatWS(httpServer) {
   }.bind(this));
 
   io.on('connection', function (socket) {
-    socket.on('join', function (scoreId) {  this.join(socket, scoreId); }.bind(this));
-    socket.on('disconnect', function () { this.leave(socket); }.bind(this));
-    socket.on('position', function (partID, measureID, measurePos) {
-      this.position(socket, partID, measureID, measurePos);
-    }.bind(this));
-    socket.on('edit', function () { this.edit(socket, arguments); }.bind(this));
-    socket.on('save', function (message) { this.save(socket, message); }.bind(this));
+    try {
+      socket.on('join', function (scoreId) {  this.join(socket, scoreId); }.bind(this));
+      socket.on('disconnect', function () { this.leave(socket); }.bind(this));
+      socket.on('position', function (partID, measureID, measurePos) {
+        this.position(socket, partID, measureID, measurePos);
+      }.bind(this));
+      socket.on('edit', function () { this.edit(socket, arguments); }.bind(this));
+      socket.on('save', function (message) { this.save(socket, message); }.bind(this));
+    }
+    catch (e) {
+      console.error('[ws]', e.message, e.stack);
+    }
   }.bind(this));
 };
 
