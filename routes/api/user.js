@@ -49,8 +49,8 @@ exports.getUser = function (sw) {
           return apiUtils.jsonResponse(res, sw, {
             id: user.id,
             username: user.username,
-            name: req.session.user.name,
-            picture: req.session.user.picture,
+            name: user.name,
+            picture: user.picture,
             registrationDate: user.registrationDate,
             email_md5: crypto.createHash('md5').update(user.email).digest('hex'),
           });

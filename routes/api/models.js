@@ -18,6 +18,7 @@ exports.models = {
     id: 'UserPublicDetails',
     properties: {
       username: { type: 'string' },
+      picture: { type: 'string' },
       email_md5: { type: 'string' },
       registrationDate: { type: 'string' },
       id: { type: 'string' }
