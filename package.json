@@ -31,7 +31,7 @@
     "validator": "1.2.1",
     "express-validator": "0.3.2",
     "less-middleware": "latest",
-    "jugglingdb-gierschv": ">= 0.2.0-35",
+    "jugglingdb-gierschv": "latest",
     "jugglingdb-nano-gierschv": "latest",
     "jugglingdb-mysql-gierschv": "latest",
     "bcrypt": "latest",
