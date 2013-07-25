@@ -202,12 +202,12 @@ exports.getApp = function () {
   swagger.setAppHandler(appApi);
   var flatApi = new api.api(swagger);
 
-  if ('development' === app.get('env')) {
-    swagger.configure('http://' + app.get('host') + ':' + app.get('port') + '/api', '0.1');
-  }
-  else {
-    swagger.configure('http://app.flat.io/api', '0.1');
-  }
+  // if ('development' === app.get('env')) {
+  //   swagger.configure('http://' + app.get('host') + ':' + app.get('port') + '/api', '0.1');
+  // }
+  // else {
+    swagger.configure(config.app.baseurl + '/api', '0.1');
+  // }
 
   return app;
 };
