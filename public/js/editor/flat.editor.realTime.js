@@ -62,7 +62,7 @@ service('RealTime', ['$rootScope', 'Socket', 'Score', 'User', function ($rootSco
         $rootScope.drawer.drawAll();
         $rootScope.Interac.MouseInteracInit();
       }
-    });
+    }.bind(this));
 
     Socket.on('save', function (userId, eId, revId) {
       console.log('[ws] on save', userId, eId, revId);
