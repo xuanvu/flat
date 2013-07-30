@@ -19,7 +19,7 @@ describe('lib/score', function () {
 
   it('should create a score', function (done) {
     var s = new Score();
-    s = s.create('Fur Elise', [{ group: 'keyboards', instrument: 'piano' }], 0, 3, 8, function (err, _sid) {
+    s = s.create('Fur Elise', [{ group: 'keyboards', instrument: 'piano' }], 0, 2, 4, function (err, _sid) {
       sid = _sid;
 
       assert.ifError(err);
@@ -68,8 +68,8 @@ describe('lib/score', function () {
       assert.equal(score['score-partwise'].part[0].measure.length, 10);
       assert.ok(!score['score-partwise'].part[0].measure[0].$fermata);
       assert.equal(score['score-partwise'].part[0].measure[0].$number, 1);
-      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time.beats, 3);
-      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time['beat-type'], 8);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time.beats, 2);
+      assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].time['beat-type'], 4);
       assert.equal(score['score-partwise'].part[0].measure[0].attributes[0].key.fifths, 0);
       done();
     });
@@ -100,6 +100,41 @@ describe('lib/score', function () {
       assert.equal(err, 'no such sha found');
       done();
     });
+  });
+
+  it('should create a second commit', function (done) {
+    var s = new Score(sid);
+    async.waterfall([
+      async.apply(s.getScore.bind(s), 'master'),
+      function (score, callback) {
+        score = JSON.parse(score);
+        score['score-partwise']['movement-title'] = 'Fur Elise 2';
+        var err = s.setScore(score);
+        if (err) {
+          return callback(err);
+        }
+        s.commitScore('Version 42', 42, '42@flat.io', 'master', callback);
+      },
+      async.apply(s.getScore.bind(s)),
+      function (score, callback) {
+        score = JSON.parse(score);
+        score['score-partwise']['movement-title'] = 'Fur Elise 3';
+        s.setScore(score);
+        s.commitScore('Version 43', 43, '43@flat.io', 'master', callback);
+      },
+      function (revision, callback) {
+        assert.ok(revision);
+        s.getRevisions(callback);
+      },
+      function (revisions, callback) {
+        assert.equal(revisions.length, 3);
+        assert.equal(revisions[1].message, 'Version 42');
+        assert.equal(revisions[1].parents[0], revisions[0].id);
+        assert.equal(revisions[2].message, 'Version 43');
+        assert.equal(revisions[2].parents[0], revisions[1].id);
+        callback();
+      }
+    ], done);
   });
 
   it('should import a MusicXML score', function (done) {

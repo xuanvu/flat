@@ -17,6 +17,11 @@ var assert = require('assert'),
 describe('Real time', function () {
   var cookies, cookies2, uid, uid2, score;
 
+  // Leave 1s between each test (commits are ordered by date)
+  beforeEach(function (done) {
+    setTimeout(done, 1000);
+  });
+
   before(function (done) {
     async.waterfall([
       function (callback) {
@@ -156,6 +161,33 @@ describe('Real time', function () {
         function (revisions, callback) {
           assert.equal(revisions.length, 2);
           assert.equal(revisions[0].message.indexOf('Save -'), 0);
+          assert.equal(revisions[0].author.name, uid);
+          assert.equal(revisions[0].author.email, uid + '@flat.io');
+          callback();
+        }
+      ], done);
+    });
+
+    it('should save a new commit', function (done) {
+      var s;
+      async.waterfall([
+        async.apply(rt.join.bind(rt), score.id, uid),
+        async.apply(rt.edit.setTitle, score.id, uid, '42'),
+        function (res, callback) {
+          rt.edit.setTitle(score.id, uid, '45', callback);
+        },
+        function (res, callback) {
+          rt.save(score.id, uid, { message: 'Update 45' }, callback);
+        },
+        function (userId, eId, revision, callback) {
+          rt.leave(score.id, uid, callback);
+        },
+        function (callback) {
+          s = new Score(score.sid);
+          s.getRevisions(callback);
+        },
+        function (revisions, callback) {
+          assert.equal(revisions[0].message, 'Update 45');
           assert.equal(revisions[0].author.name, uid);
           assert.equal(revisions[0].author.email, uid + '@flat.io');
           callback();
